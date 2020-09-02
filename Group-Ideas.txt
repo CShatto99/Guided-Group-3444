@@ -1,0 +1,11 @@
+Idea 3: Portal 2 Leadersboards through Steam API Integration:
+	Using Steam developer API to pull leaderboard information from official steam leaderboards. Official leaderboard tracks time, and UID information. This
+	proposed leaderboard takes that information, and builds a user-maintained leaderboard with moderation options to ban users / scores, require proof in the form
+	of video or demo files (.dem proof files) and change rulesets. Also allows for users to manually submit proof for levels that are not officially kept on 
+	Steam leaderboards.
+
+		Stack Includes:
+			* Front end UI (User submitting of times/proof comments, moderators removing times/players, overall visual design)
+			* Back-End API (Fetching data through Steam API, database interface for website and demo storage)
+			* DB Management (Storage of the .dem files (Google Drive?))
+			* Webserver (XAMPP, SQL)
