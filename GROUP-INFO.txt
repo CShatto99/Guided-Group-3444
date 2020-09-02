@@ -1,5 +1,6 @@
-Group Name: 	Guided Group
+Group Name: 			Guided Group
+Group Repository Name: 		Guided-Group-3444
 Created By: 			Cameron Shatto - CameronShatto@my.unt.edu
-Other Members: 	Joshua Wroughton
+Other Members: 			Joshua Wroughton
 				Sam Hearn - sam.hearn@unt.edu
 				Daniel Bates - DanielBates2@my.unt.edu
