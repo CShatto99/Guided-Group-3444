@@ -10,12 +10,22 @@ Idea 1: Personal Library Web/Mobile Application
 			* Back-end API to handle communication between front-end UI, mobile device, and DB
 			* DB Management
 
+Idea 2: Company Ride Share Application - Trabajo (trah-bah-hoh)
+		Trabajo is an application that allows companies to sign up for ride sharing for employees to and from work alongside other necessary
+		travelling (external meetings, conferences, social events). Employees, through their company, can then request to be added to/removed
+		from certain rides. Trabajo drivers can be among the company's employees or other Trabajo users. This application can potentially
+		save the company and its employees time and money alongside benefitting the environment.
 
+		Stack Includes:
+			* Front-end UI for web/progressive application (React, Angular; users can see what rides they're on, companies what rides they sign up for)
+			* Back-end API (managing communication between front-end and database)
+			* Database Management (storage of company, employees, and ride information)
+			* Potential mobile application
 
 Idea 3: Portal 2 Leadersboards through Steam API Integration:
 	Using Steam developer API to pull leaderboard information from official steam leaderboards. Official leaderboard tracks time, and UID information. This
 	proposed leaderboard takes that information, and builds a user-maintained leaderboard with moderation options to ban users / scores, require proof in the form
-	of video or demo files (.dem proof files) and change rulesets. Also allows for users to manually submit proof for levels that are not officially kept on 
+	of video or demo files (.dem proof files) and change rulesets. Also allows for users to manually submit proof for levels that are not officially kept on
 	Steam leaderboards.
 
 		Stack Includes:
