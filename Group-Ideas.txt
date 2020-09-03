@@ -1,3 +1,17 @@
+Idea 1: Personal Library Web/Mobile Application
+	This application will allow a user to sign up and either enter in or scan their personal books, movies, or games.  Our
+	application will then store their items on a DB and allow them to search through their items.  Uses for this could be to
+	catalogue their books to track if they own the item, lent the item to a friend, or are even trying to find a good way to sort
+	the items on a bookshelf (by author, genre, title, etc.)
+
+		Stack Includes:
+			* Front-end UI for web application (in some kind of front-end framework like React, Angular, etc.)
+			* Mobile application for Android or iOS or both to perform same function as web application
+			* Back-end API to handle communication between front-end UI, mobile device, and DB
+			* DB Management
+
+
+
 Idea 3: Portal 2 Leadersboards through Steam API Integration:
 	Using Steam developer API to pull leaderboard information from official steam leaderboards. Official leaderboard tracks time, and UID information. This
 	proposed leaderboard takes that information, and builds a user-maintained leaderboard with moderation options to ban users / scores, require proof in the form
