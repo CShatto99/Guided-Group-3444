@@ -3,5 +3,5 @@ Group Repository Name: 		Guided-Group-3444
 Created By: 			Cameron Shatto - CameronShatto@my.unt.edu
 Other Members:
 				Joshua Wroughton - JoshuaWroughton@my.unt.edu
-				Sam Hearn - sam.hearn@unt.edu
+				Sam Hearn - sam.hearn@unt.edu     
 				Daniel Bates - DanielBates2@my.unt.edu
