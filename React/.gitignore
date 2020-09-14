@@ -1,0 +1,2 @@
+#npm ignores
+node_modules/*
