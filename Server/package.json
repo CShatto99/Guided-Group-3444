@@ -4,8 +4,8 @@
   "description": "UNT 344 Group Repository",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
-
+    "start": "node server.js",
+    "server": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,8 @@
   "homepage": "https://github.com/CShatto99/Guided-Group-3444#readme",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
