@@ -1,4 +1,5 @@
 import * as React from "react";
+import { TopNavBar } from "../layout/TopNavBar";
 
 /* Interface for defining props for Register page
  */
@@ -21,7 +22,10 @@ export class Register extends React.Component<RegisterProps, RegisterState> {
 
     render() {
         return (
-            <p>FILL ME WITH REGISTRATION</p>
+            <div>
+                <TopNavBar/>
+                <h2>FILL ME WITH REGISTRATION</h2>
+            </div>
         );
     }
 }

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { TopNavBar } from "../layout/TopNavBar";
 
 /* Interface for defining props for Login page
  */
@@ -12,7 +13,7 @@ interface LoginState {
 
 }
 
-export class Register extends React.Component<LoginProps, LoginState> {
+export class Login extends React.Component<LoginProps, LoginState> {
     
     //constructor
     constructor(props: LoginProps) {
@@ -21,7 +22,10 @@ export class Register extends React.Component<LoginProps, LoginState> {
 
     render() {
         return (
-            <p>FILL ME WITH LOGS OF IN</p>
+            <div>
+                <TopNavBar/>
+                <h1>FILL ME WITH LOGS OF IN</h1>
+            </div>
         );
     }
 }

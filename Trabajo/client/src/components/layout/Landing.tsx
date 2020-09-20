@@ -1,4 +1,7 @@
 import * as React from "react";
+import { Button } from "reactstrap";
+import "./layoutStyles.css";
+import { TopNavBar } from "./TopNavBar";
 
 /* Interface for defining props for landing page
  */
@@ -23,7 +26,7 @@ export class Landing extends React.Component<LandingProps, LandingState> {
 
     render() {
         return (
-            <h1>This is a test</h1>
+            <TopNavBar/>
         )
     }
 }
