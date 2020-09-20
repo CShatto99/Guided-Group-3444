@@ -3,7 +3,6 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/", require("./routes/test"));
 app.use("/user", require("./routes/user"));
 
 const port = process.env.PORT || 5000;
