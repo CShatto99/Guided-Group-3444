@@ -14,6 +14,8 @@ interface TopNavBarState {
 
 }
 
+/* This class is the top navigation bar shown on all web pages.  
+    TODO: edit to show different buttons according to whether the user is logged in or not.*/
 export class TopNavBar extends React.Component<TopNavBarProps, TopNavBarState> {
 
     //constructor
@@ -25,17 +27,19 @@ export class TopNavBar extends React.Component<TopNavBarProps, TopNavBarState> {
 
     render() {
         return (
-            <Navbar>
-                <NavbarBrand href="/">Trabajo</NavbarBrand>
-                <Nav>
-                    <NavItem>
-                        <Button className={"navButton"} href="/login">Login</Button>
-                    </NavItem>
-                    <NavItem>
-                        <Button className={"navButton"} href="/register">Register</Button>
-                    </NavItem>
-                </Nav>
-            </Navbar>
+            <div className={"topNavBar"}>
+                <Navbar>
+                    <NavbarBrand href="/">Logo will go here</NavbarBrand>
+                    <Nav>
+                        <NavItem>
+                            <Button className={"navButton"} href="/login" size="lg">Login</Button>
+                        </NavItem>
+                        <NavItem>
+                            <Button className={"navButton"} href="/register" size="lg">Register</Button>
+                        </NavItem>
+                    </Nav>
+                </Navbar>
+            </div>
         )
     }
 }
