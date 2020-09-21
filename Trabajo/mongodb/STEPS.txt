@@ -1,0 +1,37 @@
+Install mongodb for windows: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/#run-mongodb-from-cmd
+	I installed the binaries, and not as a service
+	Add The Mongo \bin to windows PATH
+	Open CMD with admin ~mongod.exe" --dbpath="c:\data\db"
+
+http://mongodb.github.io/node-mongodb-native/3.4/quick-start/quick-start/
+	
+Run: ~npm install mongodb 
+  in the trabajo folder to install the node client
+Run: ~node dbConnectionCheck.js 
+  in the mongodb folder and look for "Connected successfully to mongodb server"
+Run: ~node dbRunScript.js
+  in the mongodb folder and the console should log the created entries in the respective collections
+
+3 Collections: ID, profile, company
+
+Follows this schema (from trello):
+
+- ID (Holds user ID, name and hashed password)
+  - ID
+  - Name
+  - Hashed Password
+  
+- profile
+  - Email Address
+  - Phone Number
+  - Address
+  - Latitude
+  - Longitude
+  - Number of people given ride to
+  - Number of miles saved
+
+- company
+  - Name
+  - Address
+
+More detailed schema information in dbShema.txt
