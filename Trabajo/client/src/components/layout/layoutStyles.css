@@ -1,10 +1,49 @@
+/* Navbar styles */
+.topNavBar {
+    height: 8vh;
+}
 .navButton {
     background-color: #2d545e !important;
     color: white !important;
     border: 1px solid black !important;
+    margin: 5px 5px;
 }
 
 .navButton:hover {
     background-color: #12343b !important;
     color: #c3c3c3 !important;
+}
+
+/*  FooterBar Styles */
+.footerBar {
+    height: 10vh;
+    background-color: black;
+    stroke: white;
+    font-size: small;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+}
+
+.footerLink {
+    stroke: white;
+    color: white;
+}
+
+/* Main content area */
+.mainContentArea {
+    min-height: 82vh;
+    background-color: #2d545e;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Landing Page */
+.titleHeader {
+    text-align: center;
+    font-size: 6em;
 }
