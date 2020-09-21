@@ -23,8 +23,8 @@ export class NotFound extends React.Component<NotFoundProps, NotFoundState> {
             <div>
                 <TopNavBar/>
                 <div className={"mainContentArea"}>
-                    <h1 className={"titleHeader"}>Error 404: Page Not Found</h1>
-                    <Link style={{color: "white", textAlign: "center"}} to="/">Return Home</Link>
+                    <h1>Error 404: Page Not Found</h1>
+                    <Link style={{color: "white"}} to="/">Return Home</Link>
                 </div>
                 <FooterBar/>
             </div>
