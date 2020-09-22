@@ -2,16 +2,24 @@
 
 UNT 344 Group Repository
 
-## React
-
-- To build and run react project:
-  - Make sure you are in the React/trabajo folder
-  - Install dependencies: npm install
-  - Run the project: npm start
-
-## Server
-
-- To start the server:
-  - Make sure you are in the Server/trabajo folder
-  - Install dependencies: npm install
-  - Run the server: npm run server
+## Local Setup
+1. Run the following commands
+    ```
+    git clone https://github.com/CShatto99/Guided-Group-3444.git
+    
+    cd Guided-Group-3444
+    
+    npm run installDep
+    ```
+2. Servers
+   ```
+    Option 1 (runs backend and frontend servers):
+    
+    npm run dev
+    
+    Option 2 (for running both the servers individually):
+    
+    npm run server (runs backend server only)
+    
+    npm run client (runs frontend server only)
+    ```
