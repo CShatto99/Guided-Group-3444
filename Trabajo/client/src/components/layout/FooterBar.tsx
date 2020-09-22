@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Navbar, Button, NavbarBrand, NavItem, Nav } from "reactstrap";
+import { Navbar, NavItem, Nav } from "reactstrap";
 import "./layoutStyles.css";
 
 /* Interface for defining props for landing page
@@ -15,15 +15,8 @@ interface FooterBarState {
 
 }
 
+/* The FooterBar is the black bar shown at the bottom of all web pages */
 export class FooterBar extends React.Component<FooterBarProps, FooterBarState> {
-
-    //constructor
-    constructor(props: FooterBarProps) {
-        super(props);
-
-        //any other setup should go here
-    }
-
     render() {
         return (
             <Navbar className={"footerBar"}>

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Button } from "reactstrap";
 import { FooterBar } from "./FooterBar";
 import "./layoutStyles.css";
 import { TopNavBar } from "./TopNavBar";
@@ -21,13 +20,6 @@ interface LandingState {
     */
 export class Landing extends React.Component<LandingProps, LandingState> {
 
-    //constructor
-    constructor(props: LandingProps) {
-        super(props);
-
-        //any other setup should go here
-    }
-
     render() {
         return (
             <div>
@@ -36,7 +28,7 @@ export class Landing extends React.Component<LandingProps, LandingState> {
                         <h1 className={"titleHeader"}>Trabajo</h1>
                         <h1 className={"subtitleHeader"}>A ride-share solution for going to and from work</h1>
                         <div className={"landingInfo"}>
-                            <img src="/images/carpool.png" className={"landingImages"}/>
+                            <img src="/images/carpool.png" alt="carpoolIcon" className={"landingImages"}/>
                             <div className={"textBoxInfo"}>
                                 <h3>
                                     Why Trabajo?
@@ -61,10 +53,10 @@ export class Landing extends React.Component<LandingProps, LandingState> {
                                     how much you have helped the environment by using Trabajo.
                                 </p>
                             </div>
-                            <img src="/images/greenLeaf.png" className={"landingImages"}/>
+                            <img src="/images/greenLeaf.png" alt="ecoIcon" className={"landingImages"}/>
                         </div>
                         <div className={"landingInfo"}>
-                            <img src="/images/calendar.png" className={"landingImages"}/>
+                            <img src="/images/calendar.png" alt="calendarIcon" className={"landingImages"}/>
                             <div className={"textBoxInfo"}>
                                 <h3>
                                     Find a Ride or Drive Others
@@ -87,7 +79,7 @@ export class Landing extends React.Component<LandingProps, LandingState> {
                                     the nearest people to you.
                                 </p>
                             </div>
-                            <img src="/images/mapmarker.png" className={"landingImages"}/>
+                            <img src="/images/mapmarker.png" alt="mapMarkerIcon" className={"landingImages"}/>
                         </div>
                     </div>
                 <FooterBar/>

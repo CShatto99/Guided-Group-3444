@@ -18,13 +18,6 @@ interface TopNavBarState {
     TODO: edit to show different buttons according to whether the user is logged in or not.*/
 export class TopNavBar extends React.Component<TopNavBarProps, TopNavBarState> {
 
-    //constructor
-    constructor(props: TopNavBarProps) {
-        super(props);
-
-        //any other setup should go here
-    }
-
     render() {
         return (
             <div className={"topNavBar"}>

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { isWhiteSpaceLike } from "typescript";
 import { FooterBar } from "./FooterBar";
 import "./layoutStyles.css";
 import { TopNavBar } from "./TopNavBar";
