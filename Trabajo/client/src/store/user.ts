@@ -2,9 +2,23 @@ import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setAlert } from "./alert";
 
-interface IUser {
-  ID: number | null;
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+interface RegisterData {
   fullName: string;
+  email: string;
+  phone: number;
+  company: string;
+  companyCode: number;
+  address: string;
+  city: string;
+  state: string;
+  password: string;
+  confirmPassword: string;
+  companyImage: string;
 }
 
 interface UserState {
@@ -59,7 +73,7 @@ export const loadUser = () => async (dispatch: (setAlert: any) => void) => {
   }
 };
 
-export const login = (user: IUser) => async (
+export const login = (user: LoginData) => async (
   dispatch: (setAlert: any) => void
 ) => {
   axios.defaults.headers.withCredentials = true; // allows cookie to be sent to server
@@ -80,6 +94,38 @@ export const login = (user: IUser) => async (
       dispatch(loadUser())
       dispatch(loadProfile())
     */
+    console.log("You are attempting to login with the following data:", user);
+  } catch (error) {
+    console.log(error.response.data); // remove log after complete implementation
+    dispatch(setAlert(error.response.data.msg, error.response.status));
+  }
+};
+
+export const register = (user: RegisterData) => async (
+  dispatch: (setAlert: any) => void
+) => {
+  axios.defaults.headers.withCredentials = true; // allows cookie to be sent to server
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    /* 
+      TODO: fetch user access token from api endpoint
+      const { data } = await axios.post('/user/register', user, config)
+
+      setAuthToken(data.accessToken)
+
+      dispatch(login_user())
+      dispatch(loadUser())
+      dispatch(loadProfile())
+    */
+    console.log(
+      "You are attempting to register with the following data:",
+      user
+    );
   } catch (error) {
     console.log(error.response.data); // remove log after complete implementation
     dispatch(setAlert(error.response.data.msg, error.response.status));

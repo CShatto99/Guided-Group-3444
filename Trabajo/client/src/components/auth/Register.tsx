@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
-import { FooterBar } from "../layout/FooterBar";
-import { TopNavBar } from "../layout/TopNavBar";
 import states from "../../json/states.json";
+import { register } from "../../store/user";
 
 /* Interface for defining props for Register page
  */
@@ -25,6 +25,7 @@ interface RegisterState {
 }
 
 export const Register: React.FC<RegisterState> = () => {
+  const dispatch = useDispatch();
   const [fullName, setFullName] = useState<RegisterState["fullName"]>("");
   const [email, setEmail] = useState<RegisterState["email"]>("");
   const [phone, setPhone] = useState<RegisterState["phone"]>(5555555555);
@@ -55,11 +56,26 @@ export const Register: React.FC<RegisterState> = () => {
     alertMessage += `state: ${state}\n`;
     alertMessage += `password: ${password}\n`;
     alert(`TODO, send form to api:\n${alertMessage}`);
+
+    const user = {
+      fullName,
+      email,
+      phone,
+      company,
+      companyCode,
+      address,
+      city,
+      state,
+      password,
+      confirmPassword,
+      companyImage,
+    };
+
+    dispatch(register(user));
   };
 
   return (
     <div>
-      <TopNavBar />
       <div className={"mainContentArea"}>
         <div className={"registerContainer"}>
           <div className={"loginregContainer"}>
@@ -268,7 +284,6 @@ export const Register: React.FC<RegisterState> = () => {
           </div>
         </div>
       </div>
-      <FooterBar />
     </div>
   );
 };

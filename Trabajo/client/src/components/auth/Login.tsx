@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
-import { FooterBar } from "../layout/FooterBar";
-import { TopNavBar } from "../layout/TopNavBar";
 import { login } from "../../store/user";
 
 /* Interface for defining props for Login page
@@ -31,7 +29,6 @@ export const Login: React.FC<LoginState> = () => {
 
   return (
     <div>
-      <TopNavBar />
       <div className={"mainContentArea"}>
         <div className={"loginregContainer"}>
           <h1>Please Login</h1>
@@ -85,7 +82,6 @@ export const Login: React.FC<LoginState> = () => {
           </Button>
         </div>
       </div>
-      <FooterBar />
     </div>
   );
 };
