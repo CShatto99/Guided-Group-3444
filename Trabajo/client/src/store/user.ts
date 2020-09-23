@@ -1,4 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createTempVariable } from "typescript";
+
+interface IUser {
+  fullName: string;
+  email: string;
+}
+
+interface UserState {
+  isAuth: boolean;
+  user: IUser;
+  loading: boolean;
+}
 
 const user = createSlice({
   name: "user",
@@ -6,58 +18,23 @@ const user = createSlice({
     isAuth: false,
     user: {},
     loading: true,
-  },
+  } as UserState,
   reducers: {
-    load_user: (state, action) => {
-      return {
-        ...state,
-        isAuth: true,
-        user: action.payload,
-        loading: false,
-      };
+    login_user(state, action: PayloadAction<UserState>) {
+      state.isAuth = true;
+      state.user = action.payload.user;
+      state.loading = false;
     },
-    login_user: (state, action) => {
-      return {
-        ...state,
-        isAuth: true,
-        loading: false,
-      };
-    },
-    logout_user: (state, action) => {
-      return {
-        ...state,
-        isAuth: false,
-        user: {},
-        loading: true,
-      };
+    logout_user(state, action: PayloadAction<UserState>) {
+      state.isAuth = false;
+      state.user = { fullName: "", email: "" };
+      state.loading = true;
     },
   },
 });
 
 export default user.reducer;
 
-//const { load_user, login_user, logout_user } = user.actions;
+const { login_user, logout_user } = user.actions;
 
-export const loadUser = () => (dispatch: () => void) => {
-  try {
-  } catch (err) {
-    console.log(err.response.data);
-    // dispatch(setAlert(err.response.data.msg, err.response.status));
-  }
-};
-
-export const login = () => (dispatch: () => void) => {
-  try {
-  } catch (err) {
-    console.log(err.response.data);
-    // dispatch(setAlert(err.response.data.msg, err.response.status));
-  }
-};
-
-export const logout = () => (dispatch: () => void) => {
-  try {
-  } catch (err) {
-    console.log(err.response.data);
-    // dispatch(setAlert(err.response.data.msg, err.response.status));
-  }
-};
+export const loginUser = (user: IUser) => (dispatch: () => void) => {};
