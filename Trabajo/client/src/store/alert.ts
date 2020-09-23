@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface AlertState {
+export interface AlertState {
   msg: string;
   status: number | null;
 }

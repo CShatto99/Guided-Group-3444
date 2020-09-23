@@ -1,14 +1,18 @@
+import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { createTempVariable } from "typescript";
+import { setAlert } from "./alert";
 
 interface IUser {
+  ID: number | null;
   fullName: string;
-  email: string;
 }
 
 interface UserState {
   isAuth: boolean;
-  user: IUser;
+  user: {
+    ID: number | null;
+    fullName: string;
+  };
   loading: boolean;
 }
 
@@ -20,14 +24,18 @@ const user = createSlice({
     loading: true,
   } as UserState,
   reducers: {
-    login_user(state, action: PayloadAction<UserState>) {
-      state.isAuth = true;
+    load_user(state, action: PayloadAction<UserState>) {
       state.user = action.payload.user;
+    },
+    login_user(state, action: PayloadAction<UserState>) {
+      localStorage.setItem("isAuth", "true"); // will persist user data
+      state.isAuth = true;
       state.loading = false;
     },
-    logout_user(state, action: PayloadAction<UserState>) {
+    logout_user(state) {
+      localStorage.removeItem("isAuth");
       state.isAuth = false;
-      state.user = { fullName: "", email: "" };
+      state.user = { ID: null, fullName: "" };
       state.loading = true;
     },
   },
@@ -35,6 +43,54 @@ const user = createSlice({
 
 export default user.reducer;
 
-const { login_user, logout_user } = user.actions;
+const { load_user, login_user, logout_user } = user.actions;
 
-export const loginUser = (user: IUser) => (dispatch: () => void) => {};
+export const loadUser = () => async (dispatch: (setAlert: any) => void) => {
+  try {
+    /* 
+      TODO: fetch user ID and fullName, cookie will be send to server
+      const { data } = await axios.get('/user')
+
+      dispatch(load_user(data))
+    */
+  } catch (error) {
+    console.log(error.response.data); // remove log after complete implementation
+    dispatch(setAlert(error.response.data.msg, error.response.status));
+  }
+};
+
+export const login = (user: IUser) => async (
+  dispatch: (setAlert: any) => void
+) => {
+  axios.defaults.headers.withCredentials = true; // allows cookie to be sent to server
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    /* 
+      TODO: fetch user access token from api endpoint
+      const { data } = await axios.post('/user', user, config)
+
+      setAuthToken(data.accessToken)
+
+      dispatch(login_user())
+      dispatch(loadUser())
+      dispatch(loadProfile())
+    */
+  } catch (error) {
+    console.log(error.response.data); // remove log after complete implementation
+    dispatch(setAlert(error.response.data.msg, error.response.status));
+  }
+};
+
+export const logout = () => (dispatch: (set_alert: any) => void) => {
+  try {
+    dispatch(logout_user());
+  } catch (error) {
+    console.log(error.response.data); // remove log after complete implementation
+    dispatch(setAlert(error.response.data.msg, error.response.status));
+  }
+};

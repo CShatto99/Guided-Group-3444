@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
 import { FooterBar } from "../layout/FooterBar";
 import { TopNavBar } from "../layout/TopNavBar";
+import { login } from "../../store/user";
 
 /* Interface for defining props for Login page
  */
@@ -25,6 +26,7 @@ export const Login: React.FC<LoginState> = () => {
 
     // let alertMessage = `TODO send form to API:\nemail: ${email}\npassword: ${password}`;
     // alert(alertMessage);
+    dispatch(login({ email, password }));
   };
 
   return (
