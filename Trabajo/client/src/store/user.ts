@@ -21,7 +21,7 @@ interface RegisterData {
   companyImage: string;
 }
 
-interface UserState {
+export interface UserState {
   isAuth: boolean;
   user: {
     ID: number | null;
@@ -41,7 +41,7 @@ const user = createSlice({
     load_user(state, action: PayloadAction<UserState>) {
       state.user = action.payload.user;
     },
-    login_user(state, action: PayloadAction<UserState>) {
+    login_user(state) {
       localStorage.setItem("isAuth", "true"); // will persist user data
       state.isAuth = true;
       state.loading = false;
@@ -95,6 +95,7 @@ export const login = (user: LoginData) => async (
       dispatch(loadProfile())
     */
     console.log("You are attempting to login with the following data:", user);
+    dispatch(login_user());
   } catch (error) {
     console.log(error.response.data); // remove log after complete implementation
     dispatch(setAlert(error.response.data.msg, error.response.status));
