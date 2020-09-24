@@ -1,5 +1,18 @@
 .globalSettings {
   background-color: #2d545e;
   font-family: Georgia, serif;
-  height: 100%;
+}
+
+
+
+/* Main content area */
+.mainContentArea {
+  min-height: 82vh;
+  background-color: #2d545e;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }

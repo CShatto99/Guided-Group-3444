@@ -17,13 +17,15 @@ function App() {
       <Provider store={store}>
         <div className={"globalSettings"}>
           <TopNavBar />
-          <Switch>
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/404" component={NotFound} />
-            <Redirect to="/404" />
-          </Switch>
+            <div className={"mainContentArea"}>
+              <Switch>
+                <Route exact path="/" component={Landing} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/404" component={NotFound} />
+                <Redirect to="/404" />
+              </Switch>
+            </div>
           <FooterBar />
         </div>
       </Provider>

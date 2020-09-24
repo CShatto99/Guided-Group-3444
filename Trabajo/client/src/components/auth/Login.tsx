@@ -29,58 +29,56 @@ export const Login: React.FC<LoginState> = () => {
 
   return (
     <div>
-      <div className={"mainContentArea"}>
-        <div className={"loginregContainer"}>
-          <h1>Please Login</h1>
-          <Form onSubmit={e => handleSubmit(e)}>
-            <FormGroup row>
-              <Label for="email" sm={3}>
-                Email
-              </Label>
-              <Col>
-                <Input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="example@example.com"
-                  value={email}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setEmail(e.target.value)
-                  }
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="password" sm={3}>
-                Password
-              </Label>
-              <Col>
-                <Input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="myPassword123!"
-                  value={password}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setPassword(e.target.value)
-                  }
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Col>
-                <Button className={"submitButton"} type="submit">
-                  Login
-                </Button>
-              </Col>
-            </FormGroup>
-          </Form>
-          <Button className={"submitButton"} href="/forgotPassword">
-            Forgot Password
-          </Button>
-        </div>
+      <div className={"loginregContainer"}>
+        <h1>Please Login</h1>
+        <Form onSubmit={e => handleSubmit(e)}>
+          <FormGroup row>
+            <Label for="email" sm={3}>
+              Email
+            </Label>
+            <Col>
+              <Input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="example@example.com"
+                value={email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
+                sm={9}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="password" sm={3}>
+              Password
+            </Label>
+            <Col>
+              <Input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="myPassword123!"
+                value={password}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setPassword(e.target.value)
+                }
+                sm={9}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Col>
+              <Button className={"submitButton"} type="submit">
+                Login
+              </Button>
+            </Col>
+          </FormGroup>
+        </Form>
+        <Button className={"submitButton"} href="/forgotPassword">
+          Forgot Password
+        </Button>
       </div>
     </div>
   );

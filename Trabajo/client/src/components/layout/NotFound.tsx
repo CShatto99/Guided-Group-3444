@@ -14,12 +14,10 @@ export class NotFound extends React.Component<NotFoundProps, NotFoundState> {
   render() {
     return (
       <div>
-        <div className={"mainContentArea"}>
           <h1>Error 404: Page Not Found</h1>
           <Link style={{ color: "white" }} to="/">
             Return Home
           </Link>
-        </div>
       </div>
     );
   }
