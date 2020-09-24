@@ -23,6 +23,11 @@ export const TopNavBar: React.FC = () => {
   const guestLinks = (
     <>
       <NavItem>
+        <Button className={"navButton"} href="/Companies" size="lg">
+          Companies
+        </Button>
+      </NavItem>
+      <NavItem>
         <Button className={"navButton"} href="/login" size="lg">
           Login
         </Button>
