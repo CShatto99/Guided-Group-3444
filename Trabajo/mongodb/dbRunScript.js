@@ -37,16 +37,6 @@ client.connect(function (err) {
 });
 
 // Test function to insert documents
-const insertNewID = function (user, callback) {
-  // Get the documents collection
-  const collection = db.collection("ID");
-  // Insert some documents
-  collection.insertOne(user);
-
-  console.log(user);
-};
-
-// Test function to insert documents
 const insertID = function (db, callback) {
   // Get the documents collection
   const collection = db.collection("ID");

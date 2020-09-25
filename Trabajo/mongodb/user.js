@@ -27,9 +27,18 @@ const insertID = async (user) => {
   // Insert some documents
   const newUser = await collection.insertOne(user);
 
-  return newUser;
+  return newUser.ops[0];
+};
+
+const findUserByEmail = async (user) => {
+  const collection = db.collection("profile");
+
+  const userFound = await collection.find({ email })
+
+  return userFound
 };
 
 module.exports = {
   insertID,
+  findUserByEmail,
 };

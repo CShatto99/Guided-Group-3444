@@ -1,25 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { TopNavBar } from "./components/layout/TopNavBar";
+import { Landing } from "./components/layout/Landing";
+import { Login } from "./components/auth/Login";
+import { Register } from "./components/auth/Register";
+import { NotFound } from "./components/layout/NotFound";
+import { FooterBar } from "./components/layout/FooterBar";
+
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store";
+import { Companies } from "./components/layout/Companies";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Provider store={store}>
+        <div className={"globalSettings"}>
+          <TopNavBar />
+            <div className={"mainContentArea"}>
+              <Switch>
+                <Route exact path="/" component={Landing} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/companies" component={Companies} />
+                <Route exact path="/404" component={NotFound} />
+                <Redirect to="/404" />
+              </Switch>
+            </div>
+          <FooterBar />
+        </div>
+      </Provider>
+    </BrowserRouter>
   );
 }
 
