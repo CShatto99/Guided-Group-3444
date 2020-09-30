@@ -67,6 +67,7 @@ export const updateProfile = (profile: Profile) => async (
       "Content-Type": "application/json",
     },
   };
+
   try {
     const { data } = await axios.post("/profile", profile, config);
     /* data should contain updated profile information */
