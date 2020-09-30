@@ -21,7 +21,7 @@ client.connect(function (err) {
   db = client.db(dbName);
 });
 
-const insertID = async (user) => {
+const insertID = async user => {
   // Get the documents collection
   const collection = db.collection("ID");
   // Insert some documents
@@ -30,12 +30,12 @@ const insertID = async (user) => {
   return newUser.ops[0];
 };
 
-const findUserByEmail = async (user) => {
+const findUserByEmail = async email => {
   const collection = db.collection("profile");
 
-  const userFound = await collection.find({ email })
+  const userFound = await collection.find({ email });
 
-  return userFound
+  return userFound;
 };
 
 module.exports = {
