@@ -11,6 +11,7 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import { Companies } from "./components/layout/Companies";
+import { UserHome } from "./components/layout/userHome";
 
 function App() {
   return (
@@ -18,16 +19,17 @@ function App() {
       <Provider store={store}>
         <div className={"globalSettings"}>
           <TopNavBar />
-            <div className={"mainContentArea"}>
-              <Switch>
-                <Route exact path="/" component={Landing} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/companies" component={Companies} />
-                <Route exact path="/404" component={NotFound} />
-                <Redirect to="/404" />
-              </Switch>
-            </div>
+          <div className={"mainContentArea"}>
+            <Switch>
+              <Route exact path="/" component={Landing} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/companies" component={Companies} />
+              <Route exact path="/userHome" component={UserHome} />
+              <Route exact path="/404" component={NotFound} />
+              <Redirect to="/404" />
+            </Switch>
+          </div>
           <FooterBar />
         </div>
       </Provider>
