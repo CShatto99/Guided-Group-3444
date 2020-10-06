@@ -13,6 +13,7 @@ import store from "./store";
 import { CreateCompany } from "./components/layout/createCompany";
 import { UserHome } from "./components/layout/userHome";
 import { UpdateProfile } from "./components/layout/updateProfile";
+import { ChangeCompanyCode } from "./components/layout/changeCompanyCode";
 
 function App() {
   return (
@@ -35,6 +36,11 @@ function App() {
                 exact
                 path="/userHome/createCompany"
                 component={CreateCompany}
+              />
+              <Route
+                exact
+                path="/userHome/admin/changeCompanyCode"
+                component={ChangeCompanyCode}
               />
               <Route exact path="/404" component={NotFound} />
               <Redirect to="/404" />
