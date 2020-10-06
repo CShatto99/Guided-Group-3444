@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { Companies } from "./components/layout/Companies";
 import { UserHome } from "./components/layout/userHome";
+import { UpdateProfile } from "./components/layout/updateProfile";
 
 function App() {
   return (
@@ -24,8 +25,12 @@ function App() {
               <Route exact path="/" component={Landing} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
-              <Route exact path="/companies" component={Companies} />
               <Route exact path="/userHome" component={UserHome} />
+              <Route
+                exact
+                path="/userHome/updateProfile"
+                component={UpdateProfile}
+              />
               <Route exact path="/404" component={NotFound} />
               <Redirect to="/404" />
             </Switch>

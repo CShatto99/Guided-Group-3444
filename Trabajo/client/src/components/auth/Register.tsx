@@ -8,135 +8,125 @@ import { register } from "../../store/user";
  */
 interface RegisterProps {}
 
-/* Interface for defining the State of the Register page
- */
-interface RegisterState {
-  fullName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  registerSuccess: boolean;
-}
+export const Register: React.FC<RegisterProps> = () => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [registerSuccess, setRegisterSuccess] = useState(false);
 
-export class Register extends React.Component<RegisterProps, RegisterState> {
-  constructor(props: RegisterProps) {
-    super(props);
-    this.state = {
-      fullName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      registerSuccess: false,
-    };
-  }
-
-  handleStateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      ...this.state,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let alertMessage = `name: ${this.state.fullName}\n`;
-    alertMessage += `email: ${this.state.email}\n`;
-    alertMessage += `password: ${this.state.password}\n`;
+    let alertMessage = `name: ${fullName}\n`;
+    alertMessage += `email: ${email}\n`;
+    alertMessage += `password: ${password}\n`;
     alert(`TODO, send form to api:\n${alertMessage}`);
 
     //this will value will be updated in the fetch
-    this.setState({ registerSuccess: true });
+    setRegisterSuccess(true);
   };
 
-  render() {
-    return this.state.registerSuccess ? (
-      <div>
-        <div className={"loginregContainer"}>
-          <h1>Success!</h1>
-          <Button className={"submitButton"} href="/login" size="lg">
-            Proceed to Login
-          </Button>
-        </div>
+  return registerSuccess ? (
+    <div>
+      <div className={"formContainer"}>
+        <h1>Success!</h1>
+        <Button className={"submitButton"} href="/login" size="lg">
+          Proceed to Login
+        </Button>
       </div>
-    ) : (
-      <div>
-        <div className={"loginregContainer"}>
-          <h1>Register</h1>
-          <Form onSubmit={this.handleSubmit}>
-            <FormGroup row>
-              <Label for="fullName" sm={3}>
-                Full Name
-              </Label>
-              <Col>
-                <Input
-                  type="text"
-                  name="fullName"
-                  id="fullName"
-                  placeholder="Bobby Bobberson"
-                  value={this.state.fullName}
-                  onChange={this.handleStateChange}
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="email" sm={3}>
-                Email
-              </Label>
-              <Col>
-                <Input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="example@example.com"
-                  value={this.state.email}
-                  onChange={this.handleStateChange}
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="password" sm={3}>
-                Password
-              </Label>
-              <Col>
-                <Input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="myPassword123!"
-                  value={this.state.password}
-                  onChange={this.handleStateChange}
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="confirmPassword" sm={3}>
-                Confirm Password
-              </Label>
-              <Col>
-                <Input
-                  type="password"
-                  name="confirmPassword"
-                  id="confirmPassword"
-                  placeholder="myPassword123!"
-                  value={this.state.confirmPassword}
-                  onChange={this.handleStateChange}
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Col>
-                <Button className={"submitButton"} type="submit">
-                  Register
-                </Button>
-              </Col>
-            </FormGroup>
-          </Form>
-        </div>
+    </div>
+  ) : (
+    <div>
+      <div className={"formContainer"}>
+        <h1>Register</h1>
+        <Form
+          onSubmit={(e: React.ChangeEvent<HTMLFormElement>) => handleSubmit(e)}
+        >
+          <FormGroup row>
+            <Label for="fullName" sm={3}>
+              Full Name
+            </Label>
+            <Col>
+              <Input
+                type="text"
+                name="fullName"
+                id="fullName"
+                placeholder="Bobby Bobberson"
+                required
+                value={fullName}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setFullName(e.target.value)
+                }
+                sm={9}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="email" sm={3}>
+              Email
+            </Label>
+            <Col>
+              <Input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="example@example.com"
+                required
+                value={email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
+                sm={9}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="password" sm={3}>
+              Password
+            </Label>
+            <Col>
+              <Input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="myPassword123!"
+                required
+                value={password}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setPassword(e.target.value)
+                }
+                sm={9}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="confirmPassword" sm={3}>
+              Confirm Password
+            </Label>
+            <Col>
+              <Input
+                type="password"
+                name="confirmPassword"
+                id="confirmPassword"
+                placeholder="myPassword123!"
+                required
+                value={confirmPassword}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setConfirmPassword(e.target.value)
+                }
+                sm={9}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Col>
+              <Button className={"submitButton"} type="submit">
+                Register
+              </Button>
+            </Col>
+          </FormGroup>
+        </Form>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};

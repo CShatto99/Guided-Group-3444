@@ -8,16 +8,10 @@ import profile from "../../store/profile";
  */
 interface LoginProps {}
 
-/* Interface for defining the State of the Login page
- */
-interface LoginState {
-  email: string;
-  password: string;
-}
-
-export const Login: React.FC<LoginState> = () => {
-  let userEmail: string = "";
-  let userPass: string = "";
+export const Login: React.FC<LoginProps> = () => {
+  const [userEmail, setUserEmail] = useState("");
+  const [userPass, setUserPass] = useState("");
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,11 +24,14 @@ export const Login: React.FC<LoginState> = () => {
     //on success update global profile state
 
     //after state updated redirect to user home
+    setLoginSuccess(true);
   };
 
-  return (
+  return loginSuccess ? (
+    <Redirect push to="/userHome" />
+  ) : (
     <div>
-      <div className={"loginregContainer"}>
+      <div className={"formContainer"}>
         <h1>Please Login</h1>
         <Form onSubmit={(e) => handleSubmit(e)}>
           <FormGroup row>
@@ -47,9 +44,10 @@ export const Login: React.FC<LoginState> = () => {
                 name="email"
                 id="email"
                 placeholder="example@example.com"
+                required
                 value={userEmail}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  (userEmail = e.target.value)
+                  setUserEmail(e.target.value)
                 }
                 sm={9}
               />
@@ -65,9 +63,10 @@ export const Login: React.FC<LoginState> = () => {
                 name="password"
                 id="password"
                 placeholder="myPassword123!"
+                required
                 value={userPass}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  (userPass = e.target.value)
+                  setUserPass(e.target.value)
                 }
                 sm={9}
               />
