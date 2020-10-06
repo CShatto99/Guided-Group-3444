@@ -14,6 +14,7 @@ import { CreateCompany } from "./components/layout/createCompany";
 import { UserHome } from "./components/layout/userHome";
 import { UpdateProfile } from "./components/layout/updateProfile";
 import { ChangeCompanyCode } from "./components/layout/changeCompanyCode";
+import { UpdateUserCompany } from "./components/layout/updateUserCompany";
 
 /*  The App() function sole purpose in our app is to provide the standard layout
  *  for our application and to provide routing to our different components
@@ -52,6 +53,11 @@ function App() {
                 exact
                 path="/userHome/admin/changeCompanyCode"
                 component={ChangeCompanyCode}
+              />
+              <Route
+                exact
+                path="/userHome/updateUserCompany"
+                component={UpdateUserCompany}
               />
               <Route exact path="/404" component={NotFound} />
               <Redirect to="/404" />
