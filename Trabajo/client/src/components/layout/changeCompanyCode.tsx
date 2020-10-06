@@ -4,15 +4,28 @@ import { Redirect } from "react-router-dom";
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
 import profile from "../../store/profile";
 
-/* Interface for defining props for Login page
- */
+// Interface for defining props for ChangeCompanyCode page
 interface ChangeCompanyCodeProps {}
 
+/* ChangeCompanyCode is rendered when a user is an admin of a company and
+ * they need to change the code for whatever reason
+ */
 export const ChangeCompanyCode: React.FC<ChangeCompanyCodeProps> = () => {
+  //state variables
   const [originalCode, setOriginalCode] = useState("");
   const [newCode, setNewCode] = useState("");
   const [newCodeCheck, setNewCodeCheck] = useState("");
 
+  /* Function:    handleSubmit
+   * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
+   * Return:      void
+   * Purpose:     This function is called when the user submits the form.  It
+   *              creates the json object that is expected by the createCompany
+   *              endpoint on the API server, then requests the server to update the
+   *              company code.  If the result is a failure, it updates the variables
+   *              that will inform the user of the errors.  If the result is a success
+   *              the user is informed.
+   */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -25,6 +38,7 @@ export const ChangeCompanyCode: React.FC<ChangeCompanyCodeProps> = () => {
     //send form to API
   };
 
+  //render the form
   return (
     <div>
       <div className={"formContainer"}>

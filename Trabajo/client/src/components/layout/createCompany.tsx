@@ -3,24 +3,16 @@ import { Link } from "react-router-dom";
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
 import "./layoutStyles.css";
 import states from "../../json/states.json";
+import Axios from "axios";
 
-/* Interface for defining props for landing page
- */
+// Interface for defining props for CreateCompany page
 interface createCompanyProps {}
 
-/* Interface for defining state for landing page
+/* The CreateCompany component is rendered when a user wants to
+ * create a new company.
  */
-interface companiesState {
-  name: string;
-  code: string;
-  checkCode: string;
-  address: string;
-  city: string;
-  state: string;
-  image: string;
-}
-
 export const CreateCompany: React.FC<createCompanyProps> = () => {
+  //State variables
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -30,10 +22,19 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
   const [checkCode, setCheckCode] = useState("");
   const [image, setImage] = useState("");
 
+  /* Function:    handleFile
+   * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
+   * Return:      void
+   * Purpose:     This function is called when a user inputs an image file into
+   *              the add image form element.  It then reads the file's contents
+   *              and updates the image state variable to a base64 encoded version
+   *              of the image.
+   */
   let handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //reader is needed for reading the file
     const reader = new FileReader();
-    let img: string = "";
 
+    //event listener that is called when file is read
     reader.addEventListener("load", function () {
       // convert image file to base64 string
       if (reader.result) {
@@ -41,23 +42,49 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
       }
     });
 
+    //read the file
     reader.readAsDataURL(e.target.files![0]);
-
-    console.log(image);
   };
 
+  /* Function:    handleSubmit
+   * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
+   * Return:      void
+   * Purpose:     This function is called when the user submits the form.  It
+   *              creates the json object that is expected by the createCompany
+   *              endpoint on the API server, then requests the server to add the
+   *              company.  If the result is a failure, it updates the variables
+   *              that will inform the user of the errors.  If the result is a success
+   *              the user is informed.
+   */
   let handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let alertMessage = `New Company Request\nname: ${name}\n`;
-    alertMessage += `code: ${code}\n`;
-    alertMessage += `address: ${address}\n`;
-    alertMessage += `city: ${city}\n`;
-    alertMessage += `state: ${state}\n`;
-    alertMessage += `zip: ${parseInt(zip)}\n`;
-    alertMessage += `image string: ${image}\n`;
-    alert(`TODO, send form to api:\n${alertMessage}`);
+
+    //create request object
+    let requestObject: Object = {
+      name: name,
+      address: address + "\n" + city + ", " + state + "  " + zip,
+      code: code,
+      codeCheck: checkCode,
+      image: image,
+    };
+
+    //convert  object to json string
+    let requestJson: string = JSON.stringify(requestObject);
+
+    //TODO remove this once implemented
+    alert(`TODO, send form to api:\n${requestJson}`);
+
+    //make api call
+    Axios.post("localhost:5000/createCompany", requestJson)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
+  //return html form
   return (
     <div>
       <div>

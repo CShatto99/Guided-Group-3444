@@ -15,6 +15,17 @@ import { UserHome } from "./components/layout/userHome";
 import { UpdateProfile } from "./components/layout/updateProfile";
 import { ChangeCompanyCode } from "./components/layout/changeCompanyCode";
 
+/*  The App() function sole purpose in our app is to provide the standard layout
+ *  for our application and to provide routing to our different components
+ *
+ *  Valid endpoitns for users not authorized are:
+ *    - /
+ *    - /login
+ *    - /register
+ *
+ *  Authorized users are valid for all of the endpoints.
+ */
+
 function App() {
   return (
     <BrowserRouter>

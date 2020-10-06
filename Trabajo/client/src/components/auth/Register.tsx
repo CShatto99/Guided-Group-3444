@@ -8,13 +8,26 @@ import { register } from "../../store/user";
  */
 interface RegisterProps {}
 
+/* The Register page is where users can sign up for using our application.
+ */
 export const Register: React.FC<RegisterProps> = () => {
+  //state variables
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [registerSuccess, setRegisterSuccess] = useState(false);
 
+  /* Function:    handleSubmit
+   * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
+   * Return:      void
+   * Purpose:     This function is called when the user submits the form.  It
+   *              creates the json object that is expected by the register
+   *              endpoint on the API server, then requests the server to create the
+   *              new user.  If the result is a failure, it updates the variables
+   *              that will inform the user of the errors.  If the result is a success
+   *              the user is informed.
+   */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let alertMessage = `name: ${fullName}\n`;
@@ -26,6 +39,7 @@ export const Register: React.FC<RegisterProps> = () => {
     setRegisterSuccess(true);
   };
 
+  //render the form
   return registerSuccess ? (
     <div>
       <div className={"formContainer"}>

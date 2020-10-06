@@ -6,21 +6,21 @@ import { isConstructorDeclaration } from "typescript";
 import states from "../../json/states.json";
 import { register } from "../../store/user";
 
+// Interface for defining the props for the UpdateProfile page
 interface updateProfileProps {}
 
-interface updateProfileState {
-  phone: number;
-  address: string;
-  city: string;
-  state: string;
-}
-
+/* The UpdateProfile page is where the user can update their profile
+ * information.  If the user has just registered and does not yet have
+ * profile information, they are first redirected to this page on login.
+ */
 export const UpdateProfile: React.FC<updateProfileProps> = () => {
+  //state variables for address
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zip, setZip] = useState("");
 
+  //state variables for weekday preferences
   const [monday, setMonday] = useState("Not Riding");
   const [tuesday, setTuesday] = useState("Not Riding");
   const [wednesday, setWednesday] = useState("Not Riding");
@@ -29,6 +29,16 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const [saturday, setSaturday] = useState("Not Riding");
   const [sunday, setSunday] = useState("Not Riding");
 
+  /* Function:    handleAddressSubmit
+   * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
+   * Return:      void
+   * Purpose:     This function is called when the user submits the address update
+   *              form.  It creates the json object that is expected by the updateProfileAddress
+   *              endpoint on the API server, then requests the server to update the user's
+   *              address.  If the result is a failure, it updates the variables
+   *              that will inform the user of the errors.  If the result is a success
+   *              the user is informed.
+   */
   let handleAddressSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let alertMessage = `address: ${address}\n`;
@@ -38,6 +48,16 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
     alert(`TODO, send form to api:\n${alertMessage}`);
   };
 
+  /* Function:    handleDaySubmit
+   * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
+   * Return:      void
+   * Purpose:     This function is called when the user submits the address update
+   *              form.  It creates the json object that is expected by the updateProfileDay
+   *              endpoint on the API server, then requests the server to update the ride day
+   *              preferences for the user.  If the result is a failure, it updates the variables
+   *              that will inform the user of the errors.  If the result is a success
+   *              the user is informed.
+   */
   let handleDaySubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let alertMessage = `monday: ${monday}\n`;
@@ -50,8 +70,10 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
     alert(`TODO, send form to api:\n${alertMessage}`);
   };
 
+  //local variable for displaying ride options for each day
   let rideOptions = ["Not Riding", "Riding"];
 
+  //render the form
   return (
     <div className={"registerContainer"}>
       <div className={"formContainer"}>

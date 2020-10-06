@@ -5,13 +5,8 @@ import "./layoutStyles.css";
 import { RootState } from "../../store";
 import { UserState } from "../../store/user";
 
-/* Interface for defining props for landing page
- */
+// Interface for defining props for landing page
 interface TopNavBarProps {}
-
-/* Interface for defining state for landing page
- */
-interface TopNavBarState {}
 
 /* This function is the top navigation bar shown on all web pages.  
     TODO: edit to show different buttons according to whether the user is logged in or not.*/

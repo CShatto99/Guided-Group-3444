@@ -4,15 +4,28 @@ import { Redirect } from "react-router-dom";
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
 import profile from "../../store/profile";
 
-/* Interface for defining props for Login page
- */
+// Interface for defining props for Login page
 interface LoginProps {}
 
+/* The Login page is where users can login to our system to use our
+ * application. This is the first step to gain access to the rest of our system.
+ */
 export const Login: React.FC<LoginProps> = () => {
+  //state variables
   const [userEmail, setUserEmail] = useState("");
   const [userPass, setUserPass] = useState("");
   const [loginSuccess, setLoginSuccess] = useState(false);
 
+  /* Function:    handleSubmit
+   * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
+   * Return:      void
+   * Purpose:     This function is called when the user submits the form.  It
+   *              creates the json object that is expected by the updateProfile
+   *              endpoint on the API server, then requests the server to login the
+   *              user.  If the result is a failure, it updates the variables
+   *              that will inform the user of the errors.  If the result is a success
+   *              the user is informed.
+   */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -27,6 +40,8 @@ export const Login: React.FC<LoginProps> = () => {
     setLoginSuccess(true);
   };
 
+  // If the user has successfully logged in then redirect them to the UserHome page.
+  // Otherwise render the form.
   return loginSuccess ? (
     <Redirect push to="/userHome" />
   ) : (
