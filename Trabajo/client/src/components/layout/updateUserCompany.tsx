@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
+import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import "./layoutStyles.css";
 import states from "../../json/states.json";
 import Axios from "axios";
@@ -69,6 +69,7 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
     companies.forEach((company) => {
       if (company.name === name) {
         setImage(company.image);
+        setID(company.id);
       }
     });
   }, [name]);
@@ -102,7 +103,13 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
   //return html form
   return (
     <div>
-      <div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <div className={"registerContainer"}>
           <div className={"formContainer"}>
             <h1>Register New Company</h1>
@@ -120,7 +127,7 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
                     type="select"
                     name="companies"
                     id="companies"
-                    value={ID}
+                    value={name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setName(e.target.value)
                     }
@@ -170,12 +177,32 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
               }}
             >
               <img
-                src={image}
+                src={image === "" ? "/images/defaultCompany.png" : image}
                 alt="companyPhoto"
                 className={"companyInfoPic"}
+                style={{ minHeight: "50vh" }}
               />
             </div>
           </div>
+        </div>
+        <div
+          className={"formContainer"}
+          style={{
+            display: "flex",
+            width: "auto",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "25px",
+          }}
+        >
+          <h3>Is your company not listed? Create it here:</h3>
+          <Button
+            style={{ marginLeft: "15px" }}
+            className={"navButton"}
+            href="/userHome/createCompany"
+          >
+            Create Company
+          </Button>
         </div>
       </div>
     </div>
