@@ -1,37 +1,54 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
-import { login } from "../../store/user";
+import profile from "../../store/profile";
 
-/* Interface for defining props for Login page
- */
+// Interface for defining props for Login page
 interface LoginProps {}
 
-/* Interface for defining the State of the Login page
+/* The Login page is where users can login to our system to use our
+ * application. This is the first step to gain access to the rest of our system.
  */
-interface LoginState {
-  email: string;
-  password: string;
-}
+export const Login: React.FC<LoginProps> = () => {
+  //state variables
+  const [userEmail, setUserEmail] = useState("");
+  const [userPass, setUserPass] = useState("");
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
-export const Login: React.FC<LoginState> = () => {
-  const dispatch = useDispatch();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-
+  /* Function:    handleSubmit
+   * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
+   * Return:      void
+   * Purpose:     This function is called when the user submits the form.  It
+   *              creates the json object that is expected by the updateProfile
+   *              endpoint on the API server, then requests the server to login the
+   *              user.  If the result is a failure, it updates the variables
+   *              that will inform the user of the errors.  If the result is a success
+   *              the user is informed.
+   */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // let alertMessage = `TODO send form to API:\nemail: ${email}\npassword: ${password}`;
-    // alert(alertMessage);
-    dispatch(login({ email, password }));
+    let msg = "send form to API: \n";
+    msg += `email: ${userEmail}\n`;
+    msg += `password: ${userPass}`;
+    alert(msg);
+
+    //on success update global profile state
+
+    //after state updated redirect to user home
+    setLoginSuccess(true);
   };
 
-  return (
+  // If the user has successfully logged in then redirect them to the UserHome page.
+  // Otherwise render the form.
+  return loginSuccess ? (
+    <Redirect push to="/userHome" />
+  ) : (
     <div>
-      <div className={"loginregContainer"}>
+      <div className={"formContainer"}>
         <h1>Please Login</h1>
-        <Form onSubmit={e => handleSubmit(e)}>
+        <Form onSubmit={(e) => handleSubmit(e)}>
           <FormGroup row>
             <Label for="email" sm={3}>
               Email
@@ -42,9 +59,10 @@ export const Login: React.FC<LoginState> = () => {
                 name="email"
                 id="email"
                 placeholder="example@example.com"
-                value={email}
+                required
+                value={userEmail}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setEmail(e.target.value)
+                  setUserEmail(e.target.value)
                 }
                 sm={9}
               />
@@ -60,9 +78,10 @@ export const Login: React.FC<LoginState> = () => {
                 name="password"
                 id="password"
                 placeholder="myPassword123!"
-                value={password}
+                required
+                value={userPass}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setPassword(e.target.value)
+                  setUserPass(e.target.value)
                 }
                 sm={9}
               />

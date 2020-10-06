@@ -17,6 +17,7 @@ client.connect(function (err) {
   //db.dropDatabase()
   db.createCollection("profile");
   db.createCollection("ID");
+  db.createCollection("user");
   db.createCollection("company");
 
   // Run the DB functions

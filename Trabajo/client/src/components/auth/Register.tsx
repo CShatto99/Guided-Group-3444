@@ -8,281 +8,138 @@ import { register } from "../../store/user";
  */
 interface RegisterProps {}
 
-/* Interface for defining the State of the Register page
+/* The Register page is where users can sign up for using our application.
  */
-interface RegisterState {
-  fullName: string;
-  email: string;
-  phone: number;
-  company: string;
-  companyCode: number;
-  address: string;
-  city: string;
-  state: string;
-  password: string;
-  confirmPassword: string;
-  companyImage: string;
-}
+export const Register: React.FC<RegisterProps> = () => {
+  //state variables
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [registerSuccess, setRegisterSuccess] = useState(false);
 
-export const Register: React.FC<RegisterState> = () => {
-  const dispatch = useDispatch();
-  const [fullName, setFullName] = useState<RegisterState["fullName"]>("");
-  const [email, setEmail] = useState<RegisterState["email"]>("");
-  const [phone, setPhone] = useState<RegisterState["phone"]>(5555555555);
-  const [company, setCompany] = useState<RegisterState["company"]>("Select Company");
-  const [companyCode, setCompanyCode] = useState<RegisterState["companyCode"]>(
-    1234
-  );
-  const [address, setAddress] = useState<RegisterState["address"]>("");
-  const [city, setCity] = useState<RegisterState["city"]>("");
-  const [state, setState] = useState<RegisterState["state"]>("");
-  const [password, setPassword] = useState<RegisterState["password"]>("");
-  const [confirmPassword, setConfirmPassword] = useState<
-    RegisterState["confirmPassword"]
-  >("");
-  const [companyImage, setCompanyImage] = useState<
-    RegisterState["companyImage"]
-  >("/images/defaultCompany.png");
-
+  /* Function:    handleSubmit
+   * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
+   * Return:      void
+   * Purpose:     This function is called when the user submits the form.  It
+   *              creates the json object that is expected by the register
+   *              endpoint on the API server, then requests the server to create the
+   *              new user.  If the result is a failure, it updates the variables
+   *              that will inform the user of the errors.  If the result is a success
+   *              the user is informed.
+   */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let alertMessage = `name: ${fullName}\n`;
     alertMessage += `email: ${email}\n`;
-    alertMessage += `phone: ${phone}\n`;
-    alertMessage += `company: ${company}\n`;
-    alertMessage += `company code: ${companyCode}\n`;
-    alertMessage += `address: ${address}\n`;
-    alertMessage += `city: ${city}\n`;
-    alertMessage += `state: ${state}\n`;
     alertMessage += `password: ${password}\n`;
     alert(`TODO, send form to api:\n${alertMessage}`);
 
-    const user = {
-      fullName,
-      email,
-      phone,
-      company,
-      companyCode,
-      address,
-      city,
-      state,
-      password,
-      confirmPassword,
-      companyImage,
-    };
-
-    dispatch(register(user));
+    //this will value will be updated in the fetch
+    setRegisterSuccess(true);
   };
 
-  return (
+  //render the form
+  return registerSuccess ? (
     <div>
-      <div className={"registerContainer"}>
-        <div className={"loginregContainer"}>
-          <h1>Register</h1>
-          <Form onSubmit={e => handleSubmit(e)}>
-            <FormGroup row>
-              <Label for="name" sm={3}>
-                Full Name
-              </Label>
-              <Col>
-                <Input
-                  type="text"
-                  name="Name"
-                  id="name"
-                  placeholder="Bobby Bobberson"
-                  value={fullName}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setFullName(e.target.value)
-                  }
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="email" sm={3}>
-                Email
-              </Label>
-              <Col>
-                <Input
-                  type="email"
-                  name="Email"
-                  id="email"
-                  placeholder="example@example.com"
-                  value={email}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setEmail(e.target.value)
-                  }
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="phone" sm={3}>
-                Phone
-              </Label>
-              <Col>
-                <Input
-                  type="tel"
-                  name="Phone"
-                  id="phone"
-                  placeholder="8175555555"
-                  value={phone}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setPhone(parseInt(e.target.value))
-                  }
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="company" sm={3}>
-                Company
-              </Label>
-              <Col>
-                <Input
-                  type="select"
-                  name="Company"
-                  id="company"
-                  value={company}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setCompany(e.target.value)
-                  }
-                  sm={9}
-                >
-                  <option>Select Company</option>
-                  <option>TODO make this pull from web request</option>
-                </Input>
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="companyCode" sm={3}>
-                Company Code
-              </Label>
-              <Col>
-                <Input
-                  type="text"
-                  name="CompanyCode"
-                  id="companyCode"
-                  value={companyCode}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setCompanyCode(parseInt(e.target.value))
-                  }
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="address" sm={3}>
-                Address
-              </Label>
-              <Col>
-                <Input
-                  type="text"
-                  name="Address"
-                  id="address"
-                  value={address}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setAddress(e.target.value)
-                  }
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="city" sm={3}>
-                City
-              </Label>
-              <Col>
-                <Input
-                  type="text"
-                  name="City"
-                  id="city"
-                  value={city}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setCity(e.target.value)
-                  }
-                  sm={4}
-                />
-              </Col>
-              <Label for="state" sm={2}>
-                State
-              </Label>
-              <Col>
-                <Input
-                  type="select"
-                  name="State"
-                  id="state"
-                  value={state}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setState(e.target.value)
-                  }
-                  sm={1}
-                >
-                  {states.map(value => {
-                    return <option key={value}>{value}</option>;
-                  })}
-                </Input>
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="password" sm={3}>
-                Password
-              </Label>
-              <Col>
-                <Input
-                  type="password"
-                  name="Password"
-                  id="password"
-                  placeholder="myPassword123!"
-                  value={password}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setPassword(e.target.value)
-                  }
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="confirmpassword" sm={3}>
-                Confirm Password
-              </Label>
-              <Col>
-                <Input
-                  type="password"
-                  name="ConfirmPassword"
-                  id="confirmpassword"
-                  placeholder="myPassword123!"
-                  value={confirmPassword}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setConfirmPassword(e.target.value)
-                  }
-                  sm={9}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Col>
-                <Button className={"submitButton"} type="submit">
-                  Register
-                </Button>
-              </Col>
-            </FormGroup>
-          </Form>
-        </div>
-        <div className={"companyInfo"}>
-          <img
-            src={company === "Select Company"
-                ? "images/defaultCompany.png"
-                : "TODO Company Image"}
-            alt="companyPhoto"
-            className={"companyInfoPic"}
-          />
-          <p>
-            {company === "Select Company"
-              ? "Please Select Company From List"
-              : "TODO pull company address/info from web request"}
-          </p>
-        </div>
+      <div className={"formContainer"}>
+        <h1>Success!</h1>
+        <Button className={"submitButton"} href="/login" size="lg">
+          Proceed to Login
+        </Button>
+      </div>
+    </div>
+  ) : (
+    <div>
+      <div className={"formContainer"}>
+        <h1>Register</h1>
+        <Form
+          onSubmit={(e: React.ChangeEvent<HTMLFormElement>) => handleSubmit(e)}
+        >
+          <FormGroup row>
+            <Label for="fullName" sm={3}>
+              Full Name
+            </Label>
+            <Col>
+              <Input
+                type="text"
+                name="fullName"
+                id="fullName"
+                placeholder="Bobby Bobberson"
+                required
+                value={fullName}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setFullName(e.target.value)
+                }
+                sm={9}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="email" sm={3}>
+              Email
+            </Label>
+            <Col>
+              <Input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="example@example.com"
+                required
+                value={email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
+                sm={9}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="password" sm={3}>
+              Password
+            </Label>
+            <Col>
+              <Input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="myPassword123!"
+                required
+                value={password}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setPassword(e.target.value)
+                }
+                sm={9}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="confirmPassword" sm={3}>
+              Confirm Password
+            </Label>
+            <Col>
+              <Input
+                type="password"
+                name="confirmPassword"
+                id="confirmPassword"
+                placeholder="myPassword123!"
+                required
+                value={confirmPassword}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setConfirmPassword(e.target.value)
+                }
+                sm={9}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Col>
+              <Button className={"submitButton"} type="submit">
+                Register
+              </Button>
+            </Col>
+          </FormGroup>
+        </Form>
       </div>
     </div>
   );
