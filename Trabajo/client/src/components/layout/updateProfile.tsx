@@ -19,7 +19,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const [zip, setZip] = useState(0);
+  const [zip, setZip] = useState("");
 
   const [monday, setMonday] = useState("Not Riding");
   const [tuesday, setTuesday] = useState("Not Riding");
@@ -34,6 +34,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
     let alertMessage = `address: ${address}\n`;
     alertMessage += `city: ${city}\n`;
     alertMessage += `state: ${state}`;
+    alertMessage += `zip: ${parseInt(zip)}`;
     alert(`TODO, send form to api:\n${alertMessage}`);
   };
 
@@ -120,7 +121,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
                 id="zip"
                 value={zip}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setZip(parseInt(e.target.value))
+                  setZip(e.target.value)
                 }
                 sm={9}
               />
