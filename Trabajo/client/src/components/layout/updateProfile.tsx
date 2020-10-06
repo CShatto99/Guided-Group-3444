@@ -19,6 +19,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
+  const [zip, setZip] = useState(0);
 
   const [monday, setMonday] = useState("Not Riding");
   const [tuesday, setTuesday] = useState("Not Riding");
@@ -106,6 +107,23 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
                   return <option key={value}>{value}</option>;
                 })}
               </Input>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="zip" sm={3}>
+              Zipcode
+            </Label>
+            <Col>
+              <Input
+                type="text"
+                name="zip"
+                id="zip"
+                value={zip}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setZip(parseInt(e.target.value))
+                }
+                sm={9}
+              />
             </Col>
           </FormGroup>
           <FormGroup row>

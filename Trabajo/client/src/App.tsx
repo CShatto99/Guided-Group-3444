@@ -10,7 +10,7 @@ import { FooterBar } from "./components/layout/FooterBar";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
-import { Companies } from "./components/layout/Companies";
+import { CreateCompany } from "./components/layout/createCompany";
 import { UserHome } from "./components/layout/userHome";
 import { UpdateProfile } from "./components/layout/updateProfile";
 
@@ -30,6 +30,11 @@ function App() {
                 exact
                 path="/userHome/updateProfile"
                 component={UpdateProfile}
+              />
+              <Route
+                exact
+                path="/userHome/createCompany"
+                component={CreateCompany}
               />
               <Route exact path="/404" component={NotFound} />
               <Redirect to="/404" />
