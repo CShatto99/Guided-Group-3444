@@ -37,7 +37,7 @@ const findUserByEmail = async email => {
   try {
     const collection = db.collection("user");
 
-    const userFound = collection.find({ email });
+    const userFound = await collection.find({ email }).toArray();
 
     return userFound;
   } catch (error) {
