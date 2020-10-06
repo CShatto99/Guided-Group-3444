@@ -66,7 +66,7 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
       ]);
       setCompaniesLoaded(true);
     }
-    companies.forEach((company) => {
+    companies.forEach(company => {
       if (company.name === name) {
         setImage(company.image);
       }
@@ -126,7 +126,7 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
                     }
                     sm={9}
                   >
-                    {companies.map((val) => {
+                    {companies.map(val => {
                       return <option key={val.name}>{val.name}</option>;
                     })}
                   </Input>

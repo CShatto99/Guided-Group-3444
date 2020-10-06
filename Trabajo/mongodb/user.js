@@ -21,24 +21,31 @@ client.connect(function (err) {
   db = client.db(dbName);
 });
 
-const insertID = async user => {
-  // Get the documents collection
-  const collection = db.collection("ID");
-  // Insert some documents
-  const newUser = await collection.insertOne(user);
+const insertUser = async user => {
+  try {
+    const collection = db.collection("user");
 
-  return newUser.ops[0];
+    const newUser = await collection.insertOne(user);
+
+    return newUser.ops[0];
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 const findUserByEmail = async email => {
-  const collection = db.collection("profile");
+  try {
+    const collection = db.collection("user");
 
-  const userFound = await collection.find({ email });
+    const userFound = collection.find({ email });
 
-  return userFound;
+    return userFound;
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 module.exports = {
-  insertID,
+  insertUser,
   findUserByEmail,
 };
