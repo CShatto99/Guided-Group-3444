@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setAlert } from "./alert";
+import setAuthToken from '../utils/setAuthToken'
 
 interface LoginData {
   email: string;
@@ -10,22 +11,16 @@ interface LoginData {
 interface RegisterData {
   fullName: string;
   email: string;
-  phone: number;
-  company: string;
-  companyCode: number;
-  address: string;
-  city: string;
-  state: string;
   password: string;
   confirmPassword: string;
-  companyImage: string;
 }
 
 export interface UserState {
   isAuth: boolean;
   user: {
-    ID: number | null;
+    ID: string | null;
     fullName: string;
+    email: string
   };
   loading: boolean;
 }
@@ -41,15 +36,16 @@ const user = createSlice({
     load_user(state, action: PayloadAction<UserState>) {
       state.user = action.payload.user;
     },
-    login_user(state) {
+    login_user(state, action: PayloadAction<UserState>) {
       localStorage.setItem("isAuth", "true"); // will persist user data
       state.isAuth = true;
+      state.user = action.payload.user
       state.loading = false;
     },
     logout_user(state) {
       localStorage.removeItem("isAuth");
       state.isAuth = false;
-      state.user = { ID: null, fullName: "" };
+      state.user = { ID: null, fullName: "", email: "" };
       state.loading = true;
     },
   },
@@ -58,20 +54,6 @@ const user = createSlice({
 export default user.reducer;
 
 const { load_user, login_user, logout_user } = user.actions;
-
-export const loadUser = () => async (dispatch: (setAlert: any) => void) => {
-  try {
-    /* 
-      TODO: fetch user ID and fullName, cookie will be send to server
-      const { data } = await axios.get('/user')
-
-      dispatch(load_user(data))
-    */
-  } catch (error) {
-    console.log(error.response.data); // remove log after complete implementation
-    dispatch(setAlert(error.response.data.msg, error.response.status));
-  }
-};
 
 export const login = (user: LoginData) => async (
   dispatch: (setAlert: any) => void
@@ -95,7 +77,7 @@ export const login = (user: LoginData) => async (
       dispatch(loadProfile())
     */
     console.log("You are attempting to login with the following data:", user);
-    dispatch(login_user());
+    //dispatch(login_user());
   } catch (error) {
     console.log(error.response.data); // remove log after complete implementation
     dispatch(setAlert(error.response.data.msg, error.response.status));
@@ -113,20 +95,13 @@ export const register = (user: RegisterData) => async (
   };
 
   try {
-    /* 
-      TODO: fetch user access token from api endpoint
+      //TODO: fetch user access token from api endpoint
       const { data } = await axios.post('/user/register', user, config)
 
+      // set the x-auth-token header for all routes
       setAuthToken(data.accessToken)
 
-      dispatch(login_user())
-      dispatch(loadUser())
-      dispatch(loadProfile())
-    */
-    console.log(
-      "You are attempting to register with the following data:",
-      user
-    );
+      dispatch(login_user(data.user))
   } catch (error) {
     console.log(error.response.data); // remove log after complete implementation
     dispatch(setAlert(error.response.data.msg, error.response.status));

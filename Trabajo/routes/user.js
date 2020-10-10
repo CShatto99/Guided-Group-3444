@@ -6,6 +6,9 @@ const genAccessToken = require("../utils/genAccessToken");
 const genRefreshToken = require("../utils/genRefreshToken");
 const { insertUser, findUserByEmail } = require("../mongodb/user");
 
+// @route POST /user/login
+// @desc Login a user
+// @access Public
 router.post("/login", async (req, res) => {
   // pull body from request
   const { email, password } = req.body;
@@ -40,6 +43,9 @@ router.post("/login", async (req, res) => {
   res.json({ accessToken });
 });
 
+// @route POST /user/register
+// @desc Register a user
+// @access Public
 router.post("/register", async (req, res) => {
   // pull body from request
   const { fullName, email, password, confirmPassword } = req.body;
@@ -66,11 +72,11 @@ router.post("/register", async (req, res) => {
 
   // create and store new user
   const newUser = { fullName, email, password: hashedPass };
-  const userInserted = await insertUser(newUser);
+  const user = await insertUser(newUser);
 
   // generate access tokens
-  const accessToken = genAccessToken({ id: userInserted._id });
-  const refreshToken = genRefreshToken({ id: userInserted._id });
+  const accessToken = genAccessToken({ id: user._id });
+  const refreshToken = genRefreshToken({ id: user._id });
 
   // store refresh token in httpOnly cookie
   res.cookie("token", refreshToken, {
@@ -78,8 +84,12 @@ router.post("/register", async (req, res) => {
     httpOnly: true,
   });
 
-  // respond with access token
-  res.json({ accessToken });
+  // respond with new user and access token
+
+  res.json({
+    user: { _id: user._id, fullName: user.fullName, email: user.email },
+    accessToken,
+  });
 });
 
 module.exports = router;

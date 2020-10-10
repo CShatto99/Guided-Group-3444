@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
+import { Redirect } from 'react-router-dom'
+import { DefaultRootState, useDispatch, useSelector } from "react-redux";
+import { Button, Col, Form, FormGroup, Input, Label, Alert } from "reactstrap";
 import states from "../../json/states.json";
 import { register } from "../../store/user";
+import { RootState } from '../../store/index'
+import { AlertState } from '../../store/alert'
+import { UserState } from '../../store/user'
 
 /* Interface for defining props for Register page
  */
@@ -11,7 +15,9 @@ interface RegisterProps {}
 /* The Register page is where users can sign up for using our application.
  */
 export const Register: React.FC<RegisterProps> = () => {
-  //state variables
+  const dispatch = useDispatch();
+  const { isAuth } = useSelector<RootState, UserState>(state => state.user);
+  const { msg } = useSelector<RootState, AlertState>(state => state.alert) 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,27 +41,37 @@ export const Register: React.FC<RegisterProps> = () => {
     alertMessage += `password: ${password}\n`;
     alert(`TODO, send form to api:\n${alertMessage}`);
 
+    const user = {
+      fullName,
+      email,
+      password,
+      confirmPassword
+    }
+
+    dispatch(register(user))
+
     //this will value will be updated in the fetch
-    setRegisterSuccess(true);
+    //setRegisterSuccess(true);
   };
 
+
+  console.log(msg);
+
+  if(isAuth) return <Redirect to='/userHome' />
+
   //render the form
-  return registerSuccess ? (
-    <div>
-      <div className={"formContainer"}>
-        <h1>Success!</h1>
-        <Button className={"submitButton"} href="/login" size="lg">
-          Proceed to Login
-        </Button>
-      </div>
-    </div>
-  ) : (
+  return (
     <div>
       <div className={"formContainer"}>
         <h1>Register</h1>
         <Form
           onSubmit={(e: React.ChangeEvent<HTMLFormElement>) => handleSubmit(e)}
         >
+          <FormGroup row>
+            <Col>
+              <Alert color='danger'>Hello</Alert>
+            </Col>
+          </FormGroup>
           <FormGroup row>
             <Label for="fullName" sm={3}>
               Full Name
