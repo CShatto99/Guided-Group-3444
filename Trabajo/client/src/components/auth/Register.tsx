@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Redirect } from 'react-router-dom'
+import { Redirect } from "react-router-dom";
 import { DefaultRootState, useDispatch, useSelector } from "react-redux";
 import { Button, Col, Form, FormGroup, Input, Label, Alert } from "reactstrap";
 import states from "../../json/states.json";
 import { register } from "../../store/user";
-import { RootState } from '../../store/index'
-import { AlertState } from '../../store/alert'
-import { UserState } from '../../store/user'
+import { RootState } from "../../store/index";
+import { AlertState } from "../../store/alert";
+import { UserState } from "../../store/user";
 
 /* Interface for defining props for Register page
  */
@@ -17,7 +17,7 @@ interface RegisterProps {}
 export const Register: React.FC<RegisterProps> = () => {
   const dispatch = useDispatch();
   const { isAuth } = useSelector<RootState, UserState>(state => state.user);
-  const { msg } = useSelector<RootState, AlertState>(state => state.alert) 
+  const { msg } = useSelector<RootState, AlertState>(state => state.alert);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,28 +41,32 @@ export const Register: React.FC<RegisterProps> = () => {
       fullName,
       email,
       password,
-      confirmPassword
-    }
+      confirmPassword,
+    };
 
-    dispatch(register(user))
+    dispatch(register(user));
 
     //this will value will be updated in the fetch
     //setRegisterSuccess(true);
   };
 
   //render the form
-  return isAuth ? <Redirect to='/userHome' /> : (
+  return isAuth ? (
+    <Redirect to="/userHome" />
+  ) : (
     <div>
       <div className={"formContainer"}>
         <h1>Register</h1>
         <Form
           onSubmit={(e: React.ChangeEvent<HTMLFormElement>) => handleSubmit(e)}
         >
-          {msg && <FormGroup row>
-            <Col>
-              <Alert color='danger'>{msg}</Alert>
-            </Col>
-          </FormGroup>}
+          {msg && (
+            <FormGroup row>
+              <Col>
+                <Alert color="danger">{msg}</Alert>
+              </Col>
+            </FormGroup>
+          )}
           <FormGroup row>
             <Label for="fullName" sm={3}>
               Full Name

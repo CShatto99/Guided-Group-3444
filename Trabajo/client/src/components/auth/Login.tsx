@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
-import { login } from '../../store/user'
-import { RootState } from '../../store/index'
-import { UserState } from '../../store/user'
-import { AlertState } from '../../store/alert'
+import { Button, Col, Form, FormGroup, Input, Label, Alert } from "reactstrap";
+import { login } from "../../store/user";
+import { RootState } from "../../store/index";
+import { UserState } from "../../store/user";
+import { AlertState } from "../../store/alert";
 
 // Interface for defining props for Login page
 interface LoginProps {}
@@ -14,12 +14,11 @@ interface LoginProps {}
  * application. This is the first step to gain access to the rest of our system.
  */
 export const Login: React.FC<LoginProps> = () => {
-  const dispatch = useDispatch()
-  const { isAuth } = useSelector<RootState, UserState>(state => state.user)
-  const { msg } = useSelector<RootState, AlertState>(state => state.alert)
+  const dispatch = useDispatch();
+  const { isAuth } = useSelector<RootState, UserState>(state => state.user);
+  const { msg } = useSelector<RootState, AlertState>(state => state.alert);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginSuccess, setLoginSuccess] = useState(false);
 
   /* Function:    handleSubmit
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
@@ -36,10 +35,10 @@ export const Login: React.FC<LoginProps> = () => {
 
     const user = {
       email,
-      password
-    }
+      password,
+    };
 
-    dispatch(login(user))
+    dispatch(login(user));
   };
 
   // If the user has successfully logged in then redirect them to the UserHome page.
@@ -50,7 +49,15 @@ export const Login: React.FC<LoginProps> = () => {
     <div>
       <div className={"formContainer"}>
         <h1>Please Login</h1>
-        <Form onSubmit={(e) => handleSubmit(e)}>
+        <Form onSubmit={e => handleSubmit(e)}>
+          {msg && (
+            <FormGroup row>
+              <Col>
+                <Alert color="danger">{msg}</Alert>
+              </Col>
+            </FormGroup>
+          )}
+
           <FormGroup row>
             <Label for="email" sm={3}>
               Email
@@ -61,7 +68,6 @@ export const Login: React.FC<LoginProps> = () => {
                 name="email"
                 id="email"
                 placeholder="example@example.com"
-                required
                 value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setEmail(e.target.value)
@@ -80,7 +86,6 @@ export const Login: React.FC<LoginProps> = () => {
                 name="password"
                 id="password"
                 placeholder="myPassword123!"
-                required
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setPassword(e.target.value)

@@ -69,10 +69,7 @@ export const login = (user: LoginData) => async (
       setAuthToken(data.accessToken)
 
       dispatch(login_user(data.user))
-    console.log("You are attempting to login with the following data:", user);
-    //dispatch(login_user());
   } catch (error) {
-    console.log(error.response.data);
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
 };
@@ -95,16 +92,29 @@ export const register = (user: RegisterData) => async (
 
       dispatch(login_user(data.user))
   } catch (error) {
-    console.log(error.response.data);
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
 };
+
+export const refresh = () => async (dispatch: (set_alert: any) => void) => {
+  try { 
+    const { data } = await axios.get('/auth/token')
+
+    setAuthToken(data.accessToken)
+
+    if(data.accessToken) {
+      const res = await axios.get('/auth/user');
+      console.log(res.data);
+    }
+  } catch (err) {
+    dispatch(setAlert(err.response.data.msg, err.response.status))
+  }
+}
 
 export const logout = () => (dispatch: (set_alert: any) => void) => {
   try {
     dispatch(logout_user());
   } catch (error) {
-    console.log(error.response.data);
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
 };

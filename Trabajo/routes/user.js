@@ -19,21 +19,18 @@ router.post("/login", async (req, res) => {
 
   // check if user email exists
   const lowercaseEmail = email.toLowerCase();
-  const findEmail = await findUserByEmail(lowercaseEmail);
+  const user = await findUserByEmail(lowercaseEmail);
 
-  if (findEmail.length === 0)
-    return res.status(400).json({ msg: "Invalid credentials" });
-
-  console.log(findEmail[0]);
+  if (!user) return res.status(400).json({ msg: "Invalid credentials" });
 
   // check if password is correct
-  const match = await bcrypt.compare(password, findEmail[0].password);
+  const match = await bcrypt.compare(password, user.password);
 
   if (!match) return res.status(400).json({ msg: "Invalid credentials" });
 
   // generate access tokens
-  const accessToken = genAccessToken({ id: findEmail[0]._id });
-  const refreshToken = genRefreshToken({ id: findEmail[0]._id });
+  const accessToken = genAccessToken({ id: user._id });
+  const refreshToken = genRefreshToken({ id: user._id });
 
   // store refresh token in httpOnly cookie
   res.cookie("token", refreshToken, {
@@ -41,12 +38,12 @@ router.post("/login", async (req, res) => {
     httpOnly: true,
   });
 
-  // respond with access token
+  // respond with new user and access token
   res.json({
     user: {
-      _id: findEmail[0]._id,
-      fullName: findEmail[0].fullName,
-      email: findEmail[0].email,
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
     },
     accessToken,
   });
@@ -67,9 +64,8 @@ router.post("/register", async (req, res) => {
 
   // check if user email already exists
   const lowercaseEmail = email.toLowerCase();
-  const findEmail = await findUserByEmail(lowercaseEmail);
-  if (findEmail.length > 0)
-    return res.status(400).json({ msg: "Email already exists." });
+  const userFound = await findUserByEmail(lowercaseEmail);
+  if (userFound) return res.status(400).json({ msg: "Email already exists." });
 
   // Check if passwords match
   if (password !== confirmPassword)
@@ -94,7 +90,6 @@ router.post("/register", async (req, res) => {
   });
 
   // respond with new user and access token
-
   res.json({
     user: { _id: user._id, fullName: user.fullName, email: user.email },
     accessToken,

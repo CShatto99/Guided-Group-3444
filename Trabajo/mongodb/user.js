@@ -1,5 +1,6 @@
 const MongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
+const { ObjectId } = require("mongodb");
 
 // Connection URL
 const url = "mongodb://localhost:27017";
@@ -39,7 +40,19 @@ const findUserByEmail = async email => {
 
     const userFound = await collection.find({ email }).toArray();
 
-    return userFound;
+    return userFound[0];
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const findUserByID = async _id => {
+  try {
+    const collection = db.collection("user");
+
+    const userFound = await collection.find({ _id: ObjectId(_id) }).toArray();
+
+    return userFound[0];
   } catch (error) {
     console.log(error.message);
   }
@@ -47,5 +60,6 @@ const findUserByEmail = async email => {
 
 module.exports = {
   insertUser,
+  findUserByID,
   findUserByEmail,
 };
