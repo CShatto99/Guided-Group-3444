@@ -31,7 +31,7 @@ export const TopNavBar: React.FC = () => {
   const authLinks = (
     <>
       <NavItem>
-        <Button className={"navButton"} href="/" size="lg">
+        <Button className={"navButton"} href="/userHome" size="lg">
           Home
         </Button>
       </NavItem>
