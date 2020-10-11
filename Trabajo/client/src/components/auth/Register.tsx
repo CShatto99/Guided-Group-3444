@@ -36,10 +36,6 @@ export const Register: React.FC<RegisterProps> = () => {
    */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let alertMessage = `name: ${fullName}\n`;
-    alertMessage += `email: ${email}\n`;
-    alertMessage += `password: ${password}\n`;
-    alert(`TODO, send form to api:\n${alertMessage}`);
 
     const user = {
       fullName,
@@ -54,24 +50,19 @@ export const Register: React.FC<RegisterProps> = () => {
     //setRegisterSuccess(true);
   };
 
-
-  console.log(msg);
-
-  if(isAuth) return <Redirect to='/userHome' />
-
   //render the form
-  return (
+  return isAuth ? <Redirect to='/userHome' /> : (
     <div>
       <div className={"formContainer"}>
         <h1>Register</h1>
         <Form
           onSubmit={(e: React.ChangeEvent<HTMLFormElement>) => handleSubmit(e)}
         >
-          <FormGroup row>
+          {msg && <FormGroup row>
             <Col>
-              <Alert color='danger'>Hello</Alert>
+              <Alert color='danger'>{msg}</Alert>
             </Col>
-          </FormGroup>
+          </FormGroup>}
           <FormGroup row>
             <Label for="fullName" sm={3}>
               Full Name
@@ -82,7 +73,6 @@ export const Register: React.FC<RegisterProps> = () => {
                 name="fullName"
                 id="fullName"
                 placeholder="Bobby Bobberson"
-                required
                 value={fullName}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setFullName(e.target.value)
@@ -101,7 +91,6 @@ export const Register: React.FC<RegisterProps> = () => {
                 name="email"
                 id="email"
                 placeholder="example@example.com"
-                required
                 value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setEmail(e.target.value)
@@ -120,7 +109,6 @@ export const Register: React.FC<RegisterProps> = () => {
                 name="password"
                 id="password"
                 placeholder="myPassword123!"
-                required
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setPassword(e.target.value)
@@ -139,7 +127,6 @@ export const Register: React.FC<RegisterProps> = () => {
                 name="confirmPassword"
                 id="confirmPassword"
                 placeholder="myPassword123!"
-                required
                 value={confirmPassword}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setConfirmPassword(e.target.value)

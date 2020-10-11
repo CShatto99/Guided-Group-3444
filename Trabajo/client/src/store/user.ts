@@ -33,9 +33,6 @@ const user = createSlice({
     loading: true,
   } as UserState,
   reducers: {
-    load_user(state, action: PayloadAction<UserState>) {
-      state.user = action.payload.user;
-    },
     login_user(state, action: PayloadAction<UserState>) {
       localStorage.setItem("isAuth", "true"); // will persist user data
       state.isAuth = true;
@@ -53,12 +50,12 @@ const user = createSlice({
 
 export default user.reducer;
 
-const { load_user, login_user, logout_user } = user.actions;
+const { login_user, logout_user } = user.actions;
 
 export const login = (user: LoginData) => async (
   dispatch: (setAlert: any) => void
 ) => {
-  axios.defaults.headers.withCredentials = true; // allows cookie to be sent to server
+  axios.defaults.headers.withCredentials = true;
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -66,20 +63,16 @@ export const login = (user: LoginData) => async (
   };
 
   try {
-    /* 
-      TODO: fetch user access token from api endpoint
-      const { data } = await axios.post('/user', user, config)
+      const { data } = await axios.post('/user/login', user, config)
 
+      // set the x-auth-token header for all routes
       setAuthToken(data.accessToken)
 
-      dispatch(login_user())
-      dispatch(loadUser())
-      dispatch(loadProfile())
-    */
+      dispatch(login_user(data.user))
     console.log("You are attempting to login with the following data:", user);
     //dispatch(login_user());
   } catch (error) {
-    console.log(error.response.data); // remove log after complete implementation
+    console.log(error.response.data);
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
 };
@@ -87,7 +80,7 @@ export const login = (user: LoginData) => async (
 export const register = (user: RegisterData) => async (
   dispatch: (setAlert: any) => void
 ) => {
-  axios.defaults.headers.withCredentials = true; // allows cookie to be sent to server
+  axios.defaults.headers.withCredentials = true;
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -95,7 +88,6 @@ export const register = (user: RegisterData) => async (
   };
 
   try {
-      //TODO: fetch user access token from api endpoint
       const { data } = await axios.post('/user/register', user, config)
 
       // set the x-auth-token header for all routes
@@ -103,7 +95,7 @@ export const register = (user: RegisterData) => async (
 
       dispatch(login_user(data.user))
   } catch (error) {
-    console.log(error.response.data); // remove log after complete implementation
+    console.log(error.response.data);
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
 };
@@ -112,7 +104,7 @@ export const logout = () => (dispatch: (set_alert: any) => void) => {
   try {
     dispatch(logout_user());
   } catch (error) {
-    console.log(error.response.data); // remove log after complete implementation
+    console.log(error.response.data);
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
 };

@@ -1,5 +1,13 @@
 import React, { useState } from "react";
+import { Redirect } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Spinner } from 'reactstrap'
+import { RootState } from '../../store/index'
+import { UserState } from '../../store/user'
 
 export const UserHome: React.FC = () => {
-  return <h1>Welcome username!!</h1>;
+  const { isAuth, user, loading } = useSelector<RootState, UserState>(state => state.user)
+
+
+  return !isAuth ? (<Redirect to='/login' />) : (<h1>helo</h1>)
 };

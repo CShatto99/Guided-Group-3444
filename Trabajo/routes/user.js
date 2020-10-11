@@ -24,6 +24,8 @@ router.post("/login", async (req, res) => {
   if (findEmail.length === 0)
     return res.status(400).json({ msg: "Invalid credentials" });
 
+  console.log(findEmail[0]);
+
   // check if password is correct
   const match = await bcrypt.compare(password, findEmail[0].password);
 
@@ -40,7 +42,14 @@ router.post("/login", async (req, res) => {
   });
 
   // respond with access token
-  res.json({ accessToken });
+  res.json({
+    user: {
+      _id: findEmail[0]._id,
+      fullName: findEmail[0].fullName,
+      email: findEmail[0].email,
+    },
+    accessToken,
+  });
 });
 
 // @route POST /user/register

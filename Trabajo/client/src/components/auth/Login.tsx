@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
-import profile from "../../store/profile";
+import { login } from '../../store/user'
+import { RootState } from '../../store/index'
+import { UserState } from '../../store/user'
+import { AlertState } from '../../store/alert'
 
 // Interface for defining props for Login page
 interface LoginProps {}
@@ -11,9 +14,11 @@ interface LoginProps {}
  * application. This is the first step to gain access to the rest of our system.
  */
 export const Login: React.FC<LoginProps> = () => {
-  //state variables
-  const [userEmail, setUserEmail] = useState("");
-  const [userPass, setUserPass] = useState("");
+  const dispatch = useDispatch()
+  const { isAuth } = useSelector<RootState, UserState>(state => state.user)
+  const { msg } = useSelector<RootState, AlertState>(state => state.alert)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loginSuccess, setLoginSuccess] = useState(false);
 
   /* Function:    handleSubmit
@@ -29,20 +34,17 @@ export const Login: React.FC<LoginProps> = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let msg = "send form to API: \n";
-    msg += `email: ${userEmail}\n`;
-    msg += `password: ${userPass}`;
-    alert(msg);
+    const user = {
+      email,
+      password
+    }
 
-    //on success update global profile state
-
-    //after state updated redirect to user home
-    setLoginSuccess(true);
+    dispatch(login(user))
   };
 
   // If the user has successfully logged in then redirect them to the UserHome page.
   // Otherwise render the form.
-  return loginSuccess ? (
+  return isAuth ? (
     <Redirect push to="/userHome" />
   ) : (
     <div>
@@ -60,9 +62,9 @@ export const Login: React.FC<LoginProps> = () => {
                 id="email"
                 placeholder="example@example.com"
                 required
-                value={userEmail}
+                value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setUserEmail(e.target.value)
+                  setEmail(e.target.value)
                 }
                 sm={9}
               />
@@ -79,9 +81,9 @@ export const Login: React.FC<LoginProps> = () => {
                 id="password"
                 placeholder="myPassword123!"
                 required
-                value={userPass}
+                value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setUserPass(e.target.value)
+                  setPassword(e.target.value)
                 }
                 sm={9}
               />
