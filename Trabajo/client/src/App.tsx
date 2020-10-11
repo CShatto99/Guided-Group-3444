@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import {} from "react-redux";
+import { Provider } from "react-redux";
 import "./App.css";
 import { TopNavBar } from "./components/layout/TopNavBar";
 import { Landing } from "./components/layout/Landing";
@@ -6,15 +9,13 @@ import { Login } from "./components/auth/Login";
 import { Register } from "./components/auth/Register";
 import { NotFound } from "./components/layout/NotFound";
 import { FooterBar } from "./components/layout/FooterBar";
-
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { Provider } from "react-redux";
 import store from "./store";
 import { CreateCompany } from "./components/layout/createCompany";
 import { UserHome } from "./components/layout/userHome";
 import { UpdateProfile } from "./components/layout/updateProfile";
 import { ChangeCompanyCode } from "./components/layout/changeCompanyCode";
 import { UpdateUserCompany } from "./components/layout/updateUserCompany";
+import { refresh } from "./store/user";
 
 /*  The App() function sole purpose in our app is to provide the standard layout
  *  for our application and to provide routing to our different components
@@ -27,7 +28,11 @@ import { UpdateUserCompany } from "./components/layout/updateUserCompany";
  *  Authorized users are valid for all of the endpoints.
  */
 
-function App() {
+const App = () => {
+  useEffect(() => {
+    store.dispatch(refresh());
+  }, []);
+
   return (
     <BrowserRouter>
       <Provider store={store}>
@@ -68,6 +73,6 @@ function App() {
       </Provider>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

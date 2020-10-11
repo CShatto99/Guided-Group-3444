@@ -104,7 +104,7 @@ export const refresh = () => async (dispatch: (set_alert: any) => void) => {
 
     if(data.accessToken) {
       const res = await axios.get('/auth/user');
-      console.log(res.data);
+      dispatch(login_user(res.data))
     }
   } catch (err) {
     dispatch(setAlert(err.response.data.msg, err.response.status))

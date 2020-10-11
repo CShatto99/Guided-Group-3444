@@ -11,9 +11,7 @@ interface TopNavBarProps {}
 /* This function is the top navigation bar shown on all web pages.  
     TODO: edit to show different buttons according to whether the user is logged in or not.*/
 export const TopNavBar: React.FC = () => {
-  const { isAuth } = useSelector<RootState, UserState>((state) => state.user);
-
-  console.log(isAuth);
+  const { isAuth } = useSelector<RootState, UserState>(state => state.user);
 
   const guestLinks = (
     <>
