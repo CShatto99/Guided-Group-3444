@@ -111,9 +111,10 @@ export const refresh = () => async (dispatch: (set_alert: any) => void) => {
   }
 }
 
-export const logout = () => (dispatch: (set_alert: any) => void) => {
+export const logout = () => async (dispatch: (set_alert: any) => void) => {
   try {
     dispatch(logout_user());
+    await axios.post('/auth/logout')
   } catch (error) {
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
