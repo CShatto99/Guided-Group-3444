@@ -36,7 +36,7 @@ const user = createSlice({
     login_user(state, action: PayloadAction<UserState>) {
       localStorage.setItem("isAuth", "true"); // will persist user data
       state.isAuth = true;
-      state.user = action.payload.user
+      state.user = action.payload.user;
       state.loading = false;
     },
     logout_user(state) {
@@ -51,6 +51,15 @@ const user = createSlice({
 export default user.reducer;
 
 const { login_user, logout_user } = user.actions;
+
+export const loadUser = () => async (dispatch: (setAlert: any) => void) => {
+  try {
+    const {data} = await axios.get('/auth/user')
+    dispatch(login_user(data))
+  } catch (error) {
+    dispatch(setAlert(error.response.data.msg, error.response.status));
+  }
+}
 
 export const login = (user: LoginData) => async (
   dispatch: (setAlert: any) => void
@@ -68,7 +77,7 @@ export const login = (user: LoginData) => async (
       // set the x-auth-token header for all routes
       setAuthToken(data.accessToken)
 
-      dispatch(login_user(data.user))
+      dispatch(login_user(data))
   } catch (error) {
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
@@ -105,6 +114,7 @@ export const refresh = () => async (dispatch: (set_alert: any) => void) => {
     if(data.accessToken) {
       const res = await axios.get('/auth/user');
       dispatch(login_user(res.data))
+      dispatch(loadUser())
     }
   } catch (err) {
     dispatch(setAlert(err.response.data.msg, err.response.status))
