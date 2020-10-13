@@ -23,7 +23,7 @@ interface Profile {
   };
 }
 
-interface ProfileState {
+export interface ProfileState {
   profile: Profile;
   loading: boolean;
 }

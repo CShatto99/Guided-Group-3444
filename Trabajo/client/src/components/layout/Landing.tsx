@@ -1,4 +1,8 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { RootState } from "../../store";
+import { UserState } from "../../store/user";
 import "./layoutStyles.css";
 
 // Interface for defining props for landing page
@@ -8,7 +12,12 @@ interface LandingProps {}
     our website.  
     */
 export const Landing: React.FC<LandingProps> = () => {
-  return (
+
+  const { isAuth } = useSelector<RootState, UserState>(state => state.user);
+
+  return isAuth ? (
+      <Redirect push to="/userHome" />
+  ) : (
     <div className={"mainContentArea"}>
       <h1 className={"titleHeader"}>Trabajo</h1>
       <h1 className={"subtitleHeader"}>
