@@ -1,10 +1,11 @@
 import { stringify } from "querystring";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
-import { isConstructorDeclaration } from "typescript";
 import states from "../../json/states.json";
-import { register } from "../../store/user";
+import { RootState } from "../../store";
+import { Profile, ProfileState, updateProfile } from "../../store/profile";
+import { UserState } from "../../store/user";
 
 // Interface for defining the props for the UpdateProfile page
 interface updateProfileProps {}
@@ -14,6 +15,10 @@ interface updateProfileProps {}
  * profile information, they are first redirected to this page on login.
  */
 export const UpdateProfile: React.FC<updateProfileProps> = () => {
+  const dispatch = useDispatch();
+  const { profile } = useSelector<RootState, ProfileState>( state => state.profile);
+  const { user } = useSelector<RootState, UserState>(state => state.user)
+
   //state variables for address
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -41,11 +46,24 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
    */
   let handleAddressSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let alertMessage = `address: ${address}\n`;
-    alertMessage += `city: ${city}\n`;
-    alertMessage += `state: ${state}`;
-    alertMessage += `zip: ${parseInt(zip)}`;
-    alert(`TODO, send form to api:\n${alertMessage}`);
+
+    //TODO this isn't loaded after initial login so 
+    let userProfile: Profile = profile;
+
+    if (JSON.stringify(profile) == "{}") {
+      //TODO user isn't loaded after initial login so undefined error is thrown
+      userProfile.name = user.fullName;
+      userProfile.email = user.email;
+    }
+
+    //combine fields for address
+    let fullAddress = `${address}, ${city}, ${state}  ${zip}`
+
+    userProfile.address = fullAddress;
+    alert(JSON.stringify(userProfile));
+
+    //TODO this is throwing error
+    //dispatch(updateProfile(userProfile));
   };
 
   /* Function:    handleDaySubmit
@@ -60,14 +78,30 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
    */
   let handleDaySubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let alertMessage = `monday: ${monday}\n`;
-    alertMessage += `tuesday: ${tuesday}\n`;
-    alertMessage += `wednesday: ${wednesday}\n`;
-    alertMessage += `thursday: ${thursday}\n`;
-    alertMessage += `friday: ${friday}\n`;
-    alertMessage += `saturday: ${saturday}\n`;
-    alertMessage += `sunday: ${sunday}`;
-    alert(`TODO, send form to api:\n${alertMessage}`);
+
+    let userProfile: Profile = profile;
+
+    if (JSON.stringify(profile) == "{}") {
+      //TODO user isn't loaded after initial login so undefined error is thrown
+      userProfile.name = user.fullName;
+      userProfile.email = user.email;
+    }
+
+    let rides: string = "";
+    monday == "Riding" ? rides += "1" : rides += "0";
+    tuesday == "Riding" ? rides += "1" : rides += "0";
+    wednesday == "Riding" ? rides += "1" : rides += "0";
+    thursday == "Riding" ? rides += "1" : rides += "0";
+    friday == "Riding" ? rides += "1" : rides += "0";
+    saturday == "Riding" ? rides += "1" : rides += "0";
+    sunday == "Riding" ? rides += "1" : rides += "0";
+
+    userProfile.rideDays = rides;
+
+    alert(JSON.stringify(userProfile));
+
+    //TODO this is throwing error
+    //dispatch(updateProfile(userProfile));
   };
 
   //local variable for displaying ride options for each day

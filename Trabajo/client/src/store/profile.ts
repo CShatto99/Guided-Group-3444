@@ -7,8 +7,7 @@ interface Ride {
   riders: [string];
 }
 
-interface Profile {
-  profile: {
+export interface Profile {
     name: string;
     email: string;
     phoneNum: string;
@@ -19,8 +18,7 @@ interface Profile {
     rides: [Ride];
     admin: string | null;
     rideDays: string;
-    companyID: number;
-  };
+    companyID: number
 }
 
 export interface ProfileState {
