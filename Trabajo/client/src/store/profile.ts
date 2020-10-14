@@ -12,6 +12,9 @@ export interface Profile {
     email: string;
     phoneNum: string;
     address: string;
+    city: string;
+    state: string;
+    zip: string;
     coordinates: [number, number];
     ridesGiven: number;
     milesDriven: number;
@@ -19,6 +22,18 @@ export interface Profile {
     admin: string | null;
     rideDays: string;
     companyID: number
+
+    // Name
+    // - Email
+    // - Address
+    // - Latitude
+    // - Longitude
+    // - Number of people given ride to (not on report)
+    // - Number of miles saved (not on report)
+    // - rides[Ride]
+    // - admin - (null or company name)
+    // - rideDays - list of weekdays with status of (riding, driving, or neither)
+    // - company id
 }
 
 export interface ProfileState {

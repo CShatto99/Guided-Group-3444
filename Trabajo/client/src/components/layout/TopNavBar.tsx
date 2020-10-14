@@ -16,7 +16,7 @@ export const TopNavBar: React.FC = () => {
 
   const userLogout = () => {
     dispatch(logout());
-  }
+  };
 
   const guestLinks = (
     <>
@@ -36,17 +36,17 @@ export const TopNavBar: React.FC = () => {
   const authLinks = (
     <>
       <NavItem>
-        <Button className={"navButton"} href="/userHome" size="lg">
+        <Button className={"navButton"} href="/userHome">
           Home
         </Button>
       </NavItem>
       <NavItem>
-        <Button className={"navButton"} href="/" size="lg">
+        <Button className={"navButton"} href="/">
           Other
         </Button>
       </NavItem>
       <NavItem>
-        <Button className={"navButton"} onClick={userLogout} size="lg">
+        <Button className={"navButton"} onClick={userLogout}>
           Logout
         </Button>
       </NavItem>

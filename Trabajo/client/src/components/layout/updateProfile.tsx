@@ -1,11 +1,20 @@
 import { stringify } from "querystring";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
+import {
+  Button,
+  ButtonGroup,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+} from "reactstrap";
 import states from "../../json/states.json";
 import { RootState } from "../../store";
 import { Profile, ProfileState, updateProfile } from "../../store/profile";
 import { UserState } from "../../store/user";
+import "../../css/updateProfile.css";
 
 // Interface for defining the props for the UpdateProfile page
 interface updateProfileProps {}
@@ -16,8 +25,10 @@ interface updateProfileProps {}
  */
 export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const dispatch = useDispatch();
-  const { profile } = useSelector<RootState, ProfileState>( state => state.profile);
-  const { user } = useSelector<RootState, UserState>(state => state.user)
+  const { profile } = useSelector<RootState, ProfileState>(
+    state => state.profile
+  );
+  const { user } = useSelector<RootState, UserState>(state => state.user);
 
   //state variables for address
   const [address, setAddress] = useState("");
@@ -26,13 +37,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const [zip, setZip] = useState("");
 
   //state variables for weekday preferences
-  const [monday, setMonday] = useState("Not Riding");
-  const [tuesday, setTuesday] = useState("Not Riding");
-  const [wednesday, setWednesday] = useState("Not Riding");
-  const [thursday, setThursday] = useState("Not Riding");
-  const [friday, setFriday] = useState("Not Riding");
-  const [saturday, setSaturday] = useState("Not Riding");
-  const [sunday, setSunday] = useState("Not Riding");
+  const [rideDays, setRideDays] = useState(new Array(7).fill(0));
 
   /* Function:    handleAddressSubmit
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
@@ -47,7 +52,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   let handleAddressSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    //TODO this isn't loaded after initial login so 
+    //TODO this isn't loaded after initial login so
     let userProfile: Profile = profile;
 
     if (JSON.stringify(profile) == "{}") {
@@ -57,7 +62,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
     }
 
     //combine fields for address
-    let fullAddress = `${address}, ${city}, ${state}  ${zip}`
+    let fullAddress = `${address}, ${city}, ${state}  ${zip}`;
 
     userProfile.address = fullAddress;
     alert(JSON.stringify(userProfile));
@@ -87,25 +92,22 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
       userProfile.email = user.email;
     }
 
-    let rides: string = "";
-    monday == "Riding" ? rides += "1" : rides += "0";
-    tuesday == "Riding" ? rides += "1" : rides += "0";
-    wednesday == "Riding" ? rides += "1" : rides += "0";
-    thursday == "Riding" ? rides += "1" : rides += "0";
-    friday == "Riding" ? rides += "1" : rides += "0";
-    saturday == "Riding" ? rides += "1" : rides += "0";
-    sunday == "Riding" ? rides += "1" : rides += "0";
-
-    userProfile.rideDays = rides;
+    userProfile.rideDays = rideDays.join("");
 
     alert(JSON.stringify(userProfile));
 
     //TODO this is throwing error
-    //dispatch(updateProfile(userProfile));
+    dispatch(updateProfile(userProfile));
   };
 
   //local variable for displaying ride options for each day
-  let rideOptions = ["Not Riding", "Riding"];
+  //let rideOptions = ["Not Riding", "Riding"];
+
+  const handleRideDays = (index: number) => {
+    const newRideDays = [...rideDays];
+    newRideDays[index] = newRideDays[index] === 1 ? 0 : 1;
+    setRideDays(newRideDays);
+  };
 
   //render the form
   return (
@@ -160,7 +162,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
                 }
                 sm={1}
               >
-                {states.map((value) => {
+                {states.map(value => {
                   return <option key={value}>{value}</option>;
                 })}
               </Input>
@@ -200,21 +202,35 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
             <Label for="monday" sm={3}>
               Monday
             </Label>
-            <Col>
-              <Input
+            <Col style={{ display: "flex" }}>
+              {/* <Input
                 type="select"
                 name="monday"
                 id="monday"
-                value={monday}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setMonday(e.target.value)
-                }
+                value={rideDays[0] === 0 ? "Not Riding" : "Riding"}
+                onChange={() => handleRideDays(0)}
                 sm={9}
               >
                 {rideOptions.map((value, key) => (
                   <option key={key}>{value}</option>
                 ))}
-              </Input>
+              </Input> */}
+              <ButtonGroup color="danger" style={{ width: "100%" }}>
+                <Button
+                  type="button"
+                  className={rideDays[0] === 0 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(0)}
+                >
+                  Not Riding
+                </Button>
+                <Button
+                  type="button"
+                  className={rideDays[0] === 1 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(0)}
+                >
+                  Riding
+                </Button>
+              </ButtonGroup>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -222,20 +238,34 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               Tuesday
             </Label>
             <Col>
-              <Input
+              {/* <Input
                 type="select"
                 name="tuesday"
                 id="tuesday"
-                value={tuesday}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setTuesday(e.target.value)
-                }
+                value={rideDays[1] === 0 ? "Not Riding" : "Riding"}
+                onChange={() => handleRideDays(1)}
                 sm={9}
               >
                 {rideOptions.map((value, key) => (
                   <option key={key}>{value}</option>
                 ))}
-              </Input>
+              </Input> */}
+              <ButtonGroup color="danger" style={{ width: "100%" }}>
+                <Button
+                  type="button"
+                  className={rideDays[1] === 0 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(1)}
+                >
+                  Not Riding
+                </Button>
+                <Button
+                  type="button"
+                  className={rideDays[1] === 1 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(1)}
+                >
+                  Riding
+                </Button>
+              </ButtonGroup>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -243,20 +273,34 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               Wednesday
             </Label>
             <Col>
-              <Input
+              {/* <Input
                 type="select"
                 name="wednesday"
                 id="wednesday"
-                value={wednesday}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setWednesday(e.target.value)
-                }
+                value={rideDays[2] === 0 ? "Not Riding" : "Riding"}
+                onChange={() => handleRideDays(2)}
                 sm={9}
               >
                 {rideOptions.map((value, key) => (
                   <option key={key}>{value}</option>
                 ))}
-              </Input>
+              </Input> */}
+              <ButtonGroup color="danger" style={{ width: "100%" }}>
+                <Button
+                  type="button"
+                  className={rideDays[2] === 0 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(2)}
+                >
+                  Not Riding
+                </Button>
+                <Button
+                  type="button"
+                  className={rideDays[2] === 1 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(2)}
+                >
+                  Riding
+                </Button>
+              </ButtonGroup>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -264,20 +308,34 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               Thursday
             </Label>
             <Col>
-              <Input
+              {/* <Input
                 type="select"
                 name="thursday"
                 id="thursday"
-                value={thursday}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setThursday(e.target.value)
-                }
+                value={rideDays[3] === 0 ? "Not Riding" : "Riding"}
+                onChange={() => handleRideDays(3)}
                 sm={9}
               >
                 {rideOptions.map((value, key) => (
                   <option key={key}>{value}</option>
                 ))}
-              </Input>
+              </Input> */}
+              <ButtonGroup color="danger" style={{ width: "100%" }}>
+                <Button
+                  type="button"
+                  className={rideDays[3] === 0 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(3)}
+                >
+                  Not Riding
+                </Button>
+                <Button
+                  type="button"
+                  className={rideDays[3] === 1 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(3)}
+                >
+                  Riding
+                </Button>
+              </ButtonGroup>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -285,20 +343,34 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               Friday
             </Label>
             <Col>
-              <Input
+              {/* <Input
                 type="select"
                 name="friday"
                 id="friday"
-                value={friday}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setFriday(e.target.value)
-                }
+                value={rideDays[4] === 0 ? "Not Riding" : "Riding"}
+                onChange={() => handleRideDays(4)}
                 sm={9}
               >
                 {rideOptions.map((value, key) => (
                   <option key={key}>{value}</option>
                 ))}
-              </Input>
+              </Input> */}
+              <ButtonGroup color="danger" style={{ width: "100%" }}>
+                <Button
+                  type="button"
+                  className={rideDays[4] === 0 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(4)}
+                >
+                  Not Riding
+                </Button>
+                <Button
+                  type="button"
+                  className={rideDays[4] === 1 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(4)}
+                >
+                  Riding
+                </Button>
+              </ButtonGroup>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -306,20 +378,34 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               Saturday
             </Label>
             <Col>
-              <Input
+              {/* <Input
                 type="select"
                 name="saturday"
                 id="saturday"
-                value={saturday}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setSaturday(e.target.value)
-                }
+                value={rideDays[5] === 0 ? "Not Riding" : "Riding"}
+                onChange={() => handleRideDays(5)}
                 sm={9}
               >
                 {rideOptions.map((value, key) => (
                   <option key={key}>{value}</option>
                 ))}
-              </Input>
+              </Input> */}
+              <ButtonGroup color="danger" style={{ width: "100%" }}>
+                <Button
+                  type="button"
+                  className={rideDays[5] === 0 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(5)}
+                >
+                  Not Riding
+                </Button>
+                <Button
+                  type="button"
+                  className={rideDays[5] === 1 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(5)}
+                >
+                  Riding
+                </Button>
+              </ButtonGroup>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -327,20 +413,34 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               Sunday
             </Label>
             <Col>
-              <Input
+              {/* <Input
                 type="select"
                 name="sunday"
                 id="sunday"
-                value={sunday}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setSunday(e.target.value)
-                }
+                value={rideDays[6] === 0 ? "Not Riding" : "Riding"}
+                onChange={() => handleRideDays(6)}
                 sm={9}
               >
                 {rideOptions.map((value, key) => (
                   <option key={key}>{value}</option>
                 ))}
-              </Input>
+              </Input> */}
+              <ButtonGroup color="danger" style={{ width: "100%" }}>
+                <Button
+                  type="button"
+                  className={rideDays[6] === 0 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(6)}
+                >
+                  Not Riding
+                </Button>
+                <Button
+                  type="button"
+                  className={rideDays[6] === 1 ? "ride-btn-active" : "ride-btn"}
+                  onClick={() => handleRideDays(6)}
+                >
+                  Riding
+                </Button>
+              </ButtonGroup>
             </Col>
           </FormGroup>
 
