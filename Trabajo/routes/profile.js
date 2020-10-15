@@ -11,9 +11,10 @@ const { insertProfile } = require("../mongodb/profile");
 // @access Private
 router.post("/", authToken, async (req, res) => {
   const {
+    name,
     email,
     company,
-    companyCode,
+    companyID,
     coordinates,
     address,
     city,
@@ -25,9 +26,10 @@ router.post("/", authToken, async (req, res) => {
   } = req.body;
 
   if (
+    !name ||
     !email ||
     !company ||
-    !companyCode ||
+    !companyID ||
     !coordinates ||
     !address ||
     !city ||
@@ -38,9 +40,10 @@ router.post("/", authToken, async (req, res) => {
   }
 
   const profile = {
+    name,
     email,
     company,
-    companyCode,
+    companyID,
     coordinates,
     address,
     city,

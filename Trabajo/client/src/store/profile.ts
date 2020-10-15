@@ -10,19 +10,16 @@ interface Ride {
 export interface Profile {
     name: string;
     email: string;
-    phoneNum: string;
     address: string;
     city: string;
     state: string;
     zip: string;
     coordinates: [number, number];
-    ridesGiven: number;
-    milesDriven: number;
-    rides: [Ride];
+    rides?: [Ride];
     admin: string | null;
     rideDays: string;
     companyID: number
-}
+}     
 
 export interface ProfileState {
   profile: Profile;
@@ -60,8 +57,8 @@ export const loadProfile = () => async (
   }
 };
 
-export const updateProfile = (profile: Profile) => async (
-  dispatch: (load_profile: PayloadAction<ProfileState>) => void
+export const updateProfile = (profile: any) => async (
+  dispatch: (setAlert: any) => void
 ) => {
   const config = {
     headers: {
@@ -70,9 +67,10 @@ export const updateProfile = (profile: Profile) => async (
   };
 
   try {
-    const { data } = await axios.post("/profile", profile, config);
+    //const { data } = await axios.post("/profile", profile, config);
     /* data should contain updated profile information */
-    dispatch(load_profile(data));
+    console.log(profile)
+    //dispatch(load_profile(data));
   } catch (error) {
     console.log(error.response);
   }

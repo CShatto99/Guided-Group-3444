@@ -1,5 +1,5 @@
-import { stringify } from "querystring";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
@@ -25,11 +25,12 @@ interface updateProfileProps {}
  */
 export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const dispatch = useDispatch();
-  const { profile } = useSelector<RootState, ProfileState>(
+  const { profile, loading } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
   const { user } = useSelector<RootState, UserState>(state => state.user);
 
+  const [userProfile, setUserProfile] = useState({});
   //state variables for address
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -38,6 +39,10 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
 
   //state variables for weekday preferences
   const [rideDays, setRideDays] = useState(new Array(7).fill(0));
+
+  useEffect(() => {
+    if (!loading) setUserProfile(profile);
+  });
 
   /* Function:    handleAddressSubmit
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
@@ -49,27 +54,30 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
    *              that will inform the user of the errors.  If the result is a success
    *              the user is informed.
    */
-  let handleAddressSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // const handleAddressSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
 
-    //TODO this isn't loaded after initial login so
-    let userProfile: Profile = profile;
+  //   //TODO this isn't loaded after initial login so
+  //   let userProfile: Profile = profile;
 
-    if (JSON.stringify(profile) == "{}") {
-      //TODO user isn't loaded after initial login so undefined error is thrown
-      userProfile.name = user.fullName;
-      userProfile.email = user.email;
-    }
+  //   // if (JSON.stringify(profile) == "{}") {
+  //   //   //TODO user isn't loaded after initial login so undefined error is thrown
+  //   //   userProfile.name = user.fullName;
+  //   //   userProfile.email = user.email;
+  //   // }
 
-    //combine fields for address
-    let fullAddress = `${address}, ${city}, ${state}  ${zip}`;
+  //   userProfile.name = user.fullName;
+  //   userProfile.email = user.email;
+  //   userProfile.address = address;
+  //   userProfile.city = city;
+  //   userProfile.state = state;
+  //   userProfile.zip = zip;
 
-    userProfile.address = fullAddress;
-    alert(JSON.stringify(userProfile));
+  //   alert(JSON.stringify(userProfile));
 
-    //TODO this is throwing error
-    dispatch(updateProfile(userProfile));
-  };
+  //   //TODO this is throwing error
+  //   dispatch(updateProfile(userProfile));
+  // };
 
   /* Function:    handleDaySubmit
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
@@ -81,24 +89,24 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
    *              that will inform the user of the errors.  If the result is a success
    *              the user is informed.
    */
-  let handleDaySubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // let handleDaySubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
 
-    let userProfile: Profile = profile;
+  //   let userProfile: Profile = profile;
 
-    if (JSON.stringify(profile) == "{}") {
-      //TODO user isn't loaded after initial login so undefined error is thrown
-      userProfile.name = user.fullName;
-      userProfile.email = user.email;
-    }
+  //   if (JSON.stringify(profile) == "{}") {
+  //     //TODO user isn't loaded after initial login so undefined error is thrown
+  //     userProfile.name = user.fullName;
+  //     userProfile.email = user.email;
+  //   }
 
-    userProfile.rideDays = rideDays.join("");
+  //   userProfile.rideDays = rideDays.join("");
 
-    alert(JSON.stringify(userProfile));
+  //   alert(JSON.stringify(userProfile));
 
-    //TODO this is throwing error
-    dispatch(updateProfile(userProfile));
-  };
+  //   //TODO this is throwing error
+  //   dispatch(updateProfile(userProfile));
+  // };
 
   //local variable for displaying ride options for each day
   //let rideOptions = ["Not Riding", "Riding"];
@@ -109,12 +117,37 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
     setRideDays(newRideDays);
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newUserProfile = {
+      name: user.fullName,
+      email: user.email,
+      address,
+      state,
+      city,
+      zip,
+      rideDays: rideDays.join(""),
+    };
+
+    setUserProfile(newUserProfile);
+
+    dispatch(updateProfile(userProfile));
+  };
+
+  console.log(userProfile);
+
+  if (!localStorage.getItem("isAuth")) return <Redirect to="/login" />;
+
   //render the form
   return (
     <div className={"registerContainer"}>
-      <div className={"formContainer"}>
+      <div
+        className={"formContainer"}
+        style={{ width: "80%", maxWidth: "72rem" }}
+      >
         <h1>Update Address</h1>
-        <Form onSubmit={handleAddressSubmit}>
+        <Form onSubmit={e => handleSubmit(e)}>
           <FormGroup row>
             <Label for="address" sm={3}>
               Address
@@ -185,36 +218,12 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               />
             </Col>
           </FormGroup>
-          <FormGroup row>
-            <Col>
-              <Button className={"submitButton"} type="submit">
-                Update
-              </Button>
-            </Col>
-          </FormGroup>
-        </Form>
-      </div>
-
-      <div className={"formContainer"}>
-        <h1>Choose Ride Days</h1>
-        <Form onSubmit={handleDaySubmit}>
+          <h1>Choose Ride Days</h1>
           <FormGroup row>
             <Label for="monday" sm={3}>
               Monday
             </Label>
             <Col style={{ display: "flex" }}>
-              {/* <Input
-                type="select"
-                name="monday"
-                id="monday"
-                value={rideDays[0] === 0 ? "Not Riding" : "Riding"}
-                onChange={() => handleRideDays(0)}
-                sm={9}
-              >
-                {rideOptions.map((value, key) => (
-                  <option key={key}>{value}</option>
-                ))}
-              </Input> */}
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
@@ -238,18 +247,6 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               Tuesday
             </Label>
             <Col>
-              {/* <Input
-                type="select"
-                name="tuesday"
-                id="tuesday"
-                value={rideDays[1] === 0 ? "Not Riding" : "Riding"}
-                onChange={() => handleRideDays(1)}
-                sm={9}
-              >
-                {rideOptions.map((value, key) => (
-                  <option key={key}>{value}</option>
-                ))}
-              </Input> */}
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
@@ -273,18 +270,6 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               Wednesday
             </Label>
             <Col>
-              {/* <Input
-                type="select"
-                name="wednesday"
-                id="wednesday"
-                value={rideDays[2] === 0 ? "Not Riding" : "Riding"}
-                onChange={() => handleRideDays(2)}
-                sm={9}
-              >
-                {rideOptions.map((value, key) => (
-                  <option key={key}>{value}</option>
-                ))}
-              </Input> */}
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
@@ -308,18 +293,6 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               Thursday
             </Label>
             <Col>
-              {/* <Input
-                type="select"
-                name="thursday"
-                id="thursday"
-                value={rideDays[3] === 0 ? "Not Riding" : "Riding"}
-                onChange={() => handleRideDays(3)}
-                sm={9}
-              >
-                {rideOptions.map((value, key) => (
-                  <option key={key}>{value}</option>
-                ))}
-              </Input> */}
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
@@ -343,18 +316,6 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               Friday
             </Label>
             <Col>
-              {/* <Input
-                type="select"
-                name="friday"
-                id="friday"
-                value={rideDays[4] === 0 ? "Not Riding" : "Riding"}
-                onChange={() => handleRideDays(4)}
-                sm={9}
-              >
-                {rideOptions.map((value, key) => (
-                  <option key={key}>{value}</option>
-                ))}
-              </Input> */}
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
@@ -378,18 +339,6 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               Saturday
             </Label>
             <Col>
-              {/* <Input
-                type="select"
-                name="saturday"
-                id="saturday"
-                value={rideDays[5] === 0 ? "Not Riding" : "Riding"}
-                onChange={() => handleRideDays(5)}
-                sm={9}
-              >
-                {rideOptions.map((value, key) => (
-                  <option key={key}>{value}</option>
-                ))}
-              </Input> */}
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
@@ -413,18 +362,6 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               Sunday
             </Label>
             <Col>
-              {/* <Input
-                type="select"
-                name="sunday"
-                id="sunday"
-                value={rideDays[6] === 0 ? "Not Riding" : "Riding"}
-                onChange={() => handleRideDays(6)}
-                sm={9}
-              >
-                {rideOptions.map((value, key) => (
-                  <option key={key}>{value}</option>
-                ))}
-              </Input> */}
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
@@ -443,8 +380,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               </ButtonGroup>
             </Col>
           </FormGroup>
-
-          <FormGroup row>
+          <FormGroup row style={{ textAlign: "center" }}>
             <Col>
               <Button className={"submitButton"} type="submit">
                 Update
