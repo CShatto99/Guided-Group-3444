@@ -16,7 +16,7 @@ let db;
 
 // Use connect method to connect to the server
 client.connect(function (err) {
-  assert.equal(null, err);
+  assert.strictEqual(null, err);
   console.log("Connected successfully to mongodb server");
 
   db = client.db(dbName);

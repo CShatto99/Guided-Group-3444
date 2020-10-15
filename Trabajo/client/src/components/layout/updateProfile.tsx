@@ -68,7 +68,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
     alert(JSON.stringify(userProfile));
 
     //TODO this is throwing error
-    //dispatch(updateProfile(userProfile));
+    dispatch(updateProfile(userProfile));
   };
 
   /* Function:    handleDaySubmit

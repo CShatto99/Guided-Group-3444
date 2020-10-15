@@ -3,46 +3,58 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
+const authToken = require("../middleware/authToken");
+const { insertProfile } = require("../mongodb/profile");
 
-router.post("/profile", async (req, res) => {
+// @route POST /profile
+// @desc Create a new profile
+// @access Private
+router.post("/", authToken, async (req, res) => {
   const {
-    fullName,
     email,
-    phone,
     company,
     companyCode,
+    coordinates,
     address,
     city,
     state,
-    password,
-    confirmPassword,
-    companyImage,
+    zip,
+    rides,
+    rideDays,
+    admin,
   } = req.body;
 
   if (
-    !fullName ||
     !email ||
-    !phone ||
     !company ||
     !companyCode ||
+    !coordinates ||
     !address ||
     !city ||
     !state ||
-    !password ||
-    !confirmPassword ||
-    !companyImage
+    !zip
   ) {
-    return res.status(400).json({ msg: "Please enter all required fields." });
+    return res.status(400).json({ msg: "Please enter all required fields" });
   }
 
-  // Check if passwords match
-  if (password !== confirmPassword) {
-    return res.status(400).json({ msg: "Passwords do not match." });
-  }
+  const profile = {
+    email,
+    company,
+    companyCode,
+    coordinates,
+    address,
+    city,
+    state,
+    zip,
+    rides,
+    rideDays,
+    admin,
+    userID: req.user.ID.id,
+  };
 
-  // All form data exists and passwords match
+  const newProfile = await insertProfile(profile);
 
-  res.send("hey");
+  res.json(newProfile);
 });
 
 module.exports = router;
