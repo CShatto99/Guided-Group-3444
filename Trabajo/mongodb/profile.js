@@ -31,6 +31,36 @@ const insertProfile = async profile => {
   }
 };
 
+const findProfileByUser = async userID => {
+  try {
+    const collection = db.collection("profile");
+
+    const profileFound = await collection.find({ userID }).toArray();
+
+    return profileFound[0];
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const updateProfile = async profile => {
+  try {
+    const collection = db.collection("profile");
+
+    const updatedProfile = await collection.findOneAndUpdate(
+      { userID: profile.userID },
+      { $set: profile },
+      { returnOriginal: false }
+    );
+
+    return updatedProfile.value;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   insertProfile,
+  findProfileByUser,
+  updateProfile,
 };

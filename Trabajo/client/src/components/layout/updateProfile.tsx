@@ -41,75 +41,10 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const [rideDays, setRideDays] = useState(new Array(7).fill(0));
 
   useEffect(() => {
-    if (!loading) setUserProfile(profile);
-  });
-
-  /* Function:    handleAddressSubmit
-   * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
-   * Return:      void
-   * Purpose:     This function is called when the user submits the address update
-   *              form.  It creates the json object that is expected by the updateProfileAddress
-   *              endpoint on the API server, then requests the server to update the user's
-   *              address.  If the result is a failure, it updates the variables
-   *              that will inform the user of the errors.  If the result is a success
-   *              the user is informed.
-   */
-  // const handleAddressSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   //TODO this isn't loaded after initial login so
-  //   let userProfile: Profile = profile;
-
-  //   // if (JSON.stringify(profile) == "{}") {
-  //   //   //TODO user isn't loaded after initial login so undefined error is thrown
-  //   //   userProfile.name = user.fullName;
-  //   //   userProfile.email = user.email;
-  //   // }
-
-  //   userProfile.name = user.fullName;
-  //   userProfile.email = user.email;
-  //   userProfile.address = address;
-  //   userProfile.city = city;
-  //   userProfile.state = state;
-  //   userProfile.zip = zip;
-
-  //   alert(JSON.stringify(userProfile));
-
-  //   //TODO this is throwing error
-  //   dispatch(updateProfile(userProfile));
-  // };
-
-  /* Function:    handleDaySubmit
-   * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
-   * Return:      void
-   * Purpose:     This function is called when the user submits the address update
-   *              form.  It creates the json object that is expected by the updateProfileDay
-   *              endpoint on the API server, then requests the server to update the ride day
-   *              preferences for the user.  If the result is a failure, it updates the variables
-   *              that will inform the user of the errors.  If the result is a success
-   *              the user is informed.
-   */
-  // let handleDaySubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   let userProfile: Profile = profile;
-
-  //   if (JSON.stringify(profile) == "{}") {
-  //     //TODO user isn't loaded after initial login so undefined error is thrown
-  //     userProfile.name = user.fullName;
-  //     userProfile.email = user.email;
-  //   }
-
-  //   userProfile.rideDays = rideDays.join("");
-
-  //   alert(JSON.stringify(userProfile));
-
-  //   //TODO this is throwing error
-  //   dispatch(updateProfile(userProfile));
-  // };
-
-  //local variable for displaying ride options for each day
-  //let rideOptions = ["Not Riding", "Riding"];
+    if (!loading) {
+      setUserProfile(profile);
+    }
+  }, []);
 
   const handleRideDays = (index: number) => {
     const newRideDays = [...rideDays];
@@ -135,9 +70,9 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
     dispatch(updateProfile(userProfile));
   };
 
-  console.log(userProfile);
-
   if (!localStorage.getItem("isAuth")) return <Redirect to="/login" />;
+
+  console.log(userProfile);
 
   //render the form
   return (

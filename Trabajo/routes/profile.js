@@ -4,7 +4,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const authToken = require("../middleware/authToken");
-const { insertProfile } = require("../mongodb/profile");
+const {
+  insertProfile,
+  findProfileByUser,
+  updateProfile,
+} = require("../mongodb/profile");
 
 // @route POST /profile
 // @desc Create a new profile
@@ -39,21 +43,17 @@ router.post("/", authToken, async (req, res) => {
     return res.status(400).json({ msg: "Please enter all required fields" });
   }
 
-  const profile = {
-    name,
-    email,
-    company,
-    companyID,
-    coordinates,
-    address,
-    city,
-    state,
-    zip,
-    rides,
-    rideDays,
-    admin,
-    userID: req.user.ID.id,
-  };
+  let profile = req.body;
+  profile.userID = req.user.ID.id;
+
+  const profileFound = await findProfileByUser(req.user.ID.id);
+
+  // update profile if it already exists
+  if (profileFound) {
+    const updatedProfile = await updateProfile(profile);
+
+    return res.json(updatedProfile);
+  }
 
   const newProfile = await insertProfile(profile);
 
