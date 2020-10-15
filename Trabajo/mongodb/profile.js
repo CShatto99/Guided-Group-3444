@@ -49,7 +49,11 @@ const updateProfile = async profile => {
 
     const updatedProfile = await collection.findOneAndUpdate(
       { userID: profile.userID },
-      { $set: profile },
+      {
+        $set: {
+          address: profile.address,
+        },
+      },
       { returnOriginal: false }
     );
 

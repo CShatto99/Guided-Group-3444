@@ -51,6 +51,7 @@ export const loadProfile = () => async (
   try {
     const { data } = await axios.get("/profile");
     /* data should contain profile information */
+    console.log(data)
     dispatch(load_profile(data));
   } catch (error) {
     console.log(error.response);
@@ -65,12 +66,12 @@ export const updateProfile = (profile: any) => async (
       "Content-Type": "application/json",
     },
   };
-
+  
   try {
-    //const { data } = await axios.post("/profile", profile, config);
-    /* data should contain updated profile information */
-    console.log(profile)
-    //dispatch(load_profile(data));
+    const { data } = await axios.post("/profile", profile, config);
+    // data should contain updated profile information
+ 
+    dispatch(load_profile(data));
   } catch (error) {
     console.log(error.response);
   }

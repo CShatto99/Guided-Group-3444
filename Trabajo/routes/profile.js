@@ -10,6 +10,19 @@ const {
   updateProfile,
 } = require("../mongodb/profile");
 
+// @route GET /profile
+// @desc Get a user profile
+// @access Private
+
+router.get("/", authToken, async (req, res) => {
+  try {
+    const profileFound = await findProfileByUser(req.user.ID.id);
+    return res.json({ profile: profileFound });
+  } catch (error) {
+    return res.status(500).json({ msg: "Internal Server error" });
+  }
+});
+
 // @route POST /profile
 // @desc Create a new profile
 // @access Private
@@ -32,9 +45,9 @@ router.post("/", authToken, async (req, res) => {
   if (
     !name ||
     !email ||
-    !company ||
-    !companyID ||
-    !coordinates ||
+    // !company ||
+    // !companyID ||
+    // !coordinates ||
     !address ||
     !city ||
     !state ||
@@ -46,18 +59,23 @@ router.post("/", authToken, async (req, res) => {
   let profile = req.body;
   profile.userID = req.user.ID.id;
 
-  const profileFound = await findProfileByUser(req.user.ID.id);
+  try {
+    const profileFound = await findProfileByUser(req.user.ID.id);
 
-  // update profile if it already exists
-  if (profileFound) {
-    const updatedProfile = await updateProfile(profile);
+    // update profile if it already exists
+    if (profileFound) {
+      console.log(profile);
+      const updatedProfile = await updateProfile(profile);
 
-    return res.json(updatedProfile);
+      return res.json(updatedProfile);
+    }
+
+    const newProfile = await insertProfile(profile);
+
+    res.json(newProfile);
+  } catch (error) {
+    res.status(500).json({ msg: "Internal Server error" });
   }
-
-  const newProfile = await insertProfile(profile);
-
-  res.json(newProfile);
 });
 
 module.exports = router;

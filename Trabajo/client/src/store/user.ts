@@ -2,6 +2,7 @@ import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setAlert } from "./alert";
 import setAuthToken from '../utils/setAuthToken'
+import { loadProfile } from './profile';
 
 interface LoginData {
   email: string;
@@ -115,6 +116,7 @@ export const refresh = () => async (dispatch: (set_alert: any) => void) => {
       const res = await axios.get('/auth/user');
       dispatch(login_user(res.data))
       dispatch(loadUser())
+      dispatch(loadProfile())
     }
   } catch (err) {
     dispatch(setAlert(err.response.data.msg, err.response.status))

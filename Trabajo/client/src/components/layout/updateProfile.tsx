@@ -43,8 +43,12 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   useEffect(() => {
     if (!loading) {
       setUserProfile(profile);
+      setAddress(profile.address);
+      setCity(profile.city);
+      setState(profile.state);
+      setZip(profile.zip);
     }
-  }, []);
+  }, [loading]);
 
   const handleRideDays = (index: number) => {
     const newRideDays = [...rideDays];
@@ -72,7 +76,9 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
 
   if (!localStorage.getItem("isAuth")) return <Redirect to="/login" />;
 
-  console.log(userProfile);
+  //console.log(userProfile);
+
+  console.log(address);
 
   //render the form
   return (
