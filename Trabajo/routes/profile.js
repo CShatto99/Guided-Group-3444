@@ -41,20 +41,20 @@ router.post("/", authToken, async (req, res) => {
     rideDays,
     admin,
   } = req.body;
-
+/*
   if (
     !name ||
     !email ||
-    // !company ||
-    // !companyID ||
-    // !coordinates ||
+    !company ||
+    !companyID ||
+    !coordinates ||
     !address ||
     !city ||
     !state ||
     !zip
   ) {
     return res.status(400).json({ msg: "Please enter all required fields" });
-  }
+  }*/
 
   let profile = req.body;
   profile.userID = req.user.ID.id;
@@ -65,7 +65,18 @@ router.post("/", authToken, async (req, res) => {
     // update profile if it already exists
     if (profileFound) {
       console.log(profile);
-      const updatedProfile = await updateProfile(profile);
+
+      profileFound.name = profile.name;
+      profileFound.email = profile.email;
+      profileFound.company = profile.company;
+      profileFound.companyID = profile.companyID;
+      profileFound.coordinates = profile.coordinates;
+      profileFound.address = profile.address;
+      profileFound.city = profile.city;
+      profileFound.state = profile.state;
+      profileFound.zip = profile.zip;
+
+      const updatedProfile = await updateProfile(profileFound);
 
       return res.json(updatedProfile);
     }

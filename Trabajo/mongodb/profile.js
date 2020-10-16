@@ -48,11 +48,9 @@ const updateProfile = async profile => {
     const collection = db.collection("profile");
 
     const updatedProfile = await collection.findOneAndUpdate(
-      { userID: profile.userID },
+      { _id: profile._id },
       {
-        $set: {
-          address: profile.address,
-        },
+        $set: profile,
       },
       { returnOriginal: false }
     );

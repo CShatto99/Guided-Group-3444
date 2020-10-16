@@ -41,7 +41,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const [rideDays, setRideDays] = useState(new Array(7).fill(0));
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading && profile) {
       setUserProfile(profile);
       setAddress(profile.address);
       setCity(profile.city);

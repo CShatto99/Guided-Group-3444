@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Spinner } from "reactstrap";
@@ -7,14 +7,25 @@ import { UserState } from "../../store/user";
 import { ProfileState } from "../../store/profile";
 
 export const UserHome: React.FC = () => {
-  const { isAuth, user, loading } = useSelector<RootState, UserState>(
+  const { isAuth, user } = useSelector<RootState, UserState>(
     state => state.user
   );
-  const { profile } = useSelector<RootState, ProfileState>( state => state.profile);
+
+  const { profile, loading } = useSelector<RootState, ProfileState>(
+    state => state.profile
+  );
+
+  const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    if (!loading && JSON.stringify(profile) == "{}") {
+      setRedirect(true);
+    }
+  }, [loading]);
 
   return !localStorage.getItem("isAuth") ? (
     <Redirect to="/login" />
-  ) : JSON.stringify(profile) === "{}" ? (
+  ) : redirect ? (
     <Redirect to="/userHome/updateProfile" />
   ) : (
     <h1>helo</h1>
