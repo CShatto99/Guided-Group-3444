@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { setAlert } from './alert'
 
 interface Ride {
   dateOfRide: string;
@@ -70,7 +71,7 @@ export const updateProfile = (profile: any) => async (
   try {
     const { data } = await axios.post("/profile", profile, config);
     // data should contain updated profile information
- 
+    dispatch(setAlert("Profile updated", 200))
     dispatch(load_profile(data));
   } catch (error) {
     console.log(error.response);

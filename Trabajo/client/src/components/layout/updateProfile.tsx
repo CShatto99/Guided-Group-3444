@@ -9,11 +9,13 @@ import {
   FormGroup,
   Input,
   Label,
+  Alert,
 } from "reactstrap";
 import states from "../../json/states.json";
 import { RootState } from "../../store";
 import { Profile, ProfileState, updateProfile } from "../../store/profile";
 import { UserState } from "../../store/user";
+import { AlertState } from "../../store/alert";
 import "../../css/updateProfile.css";
 
 // Interface for defining the props for the UpdateProfile page
@@ -29,6 +31,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
     state => state.profile
   );
   const { user } = useSelector<RootState, UserState>(state => state.user);
+  const { msg } = useSelector<RootState, AlertState>(state => state.alert);
 
   const [userProfile, setUserProfile] = useState({});
   const [sendUpdate, setSendUpdate] = useState(false);
@@ -54,7 +57,6 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
       dispatch(updateProfile(userProfile));
       setSendUpdate(false);
     }
-
   }, [loading, sendUpdate]);
 
   const handleRideDays = (index: number) => {
@@ -89,6 +91,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
         className={"formContainer"}
         style={{ width: "80%", maxWidth: "72rem" }}
       >
+        {msg && <Alert color="success">{msg}</Alert>}
         <h1>Update Address</h1>
         <Form onSubmit={e => handleSubmit(e)}>
           <FormGroup row>
