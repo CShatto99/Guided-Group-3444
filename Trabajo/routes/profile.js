@@ -64,7 +64,6 @@ router.post("/", authToken, async (req, res) => {
 
     // update profile if it already exists
     if (profileFound) {
-      console.log(profile);
 
       profileFound.name = profile.name;
       profileFound.email = profile.email;

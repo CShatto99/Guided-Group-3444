@@ -31,6 +31,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const { user } = useSelector<RootState, UserState>(state => state.user);
 
   const [userProfile, setUserProfile] = useState({});
+  const [sendUpdate, setSendUpdate] = useState(false);
   //state variables for address
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -48,7 +49,13 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
       setState(profile.state);
       setZip(profile.zip);
     }
-  }, [loading]);
+
+    if (sendUpdate) {
+      dispatch(updateProfile(userProfile));
+      setSendUpdate(false);
+    }
+
+  }, [loading, sendUpdate]);
 
   const handleRideDays = (index: number) => {
     const newRideDays = [...rideDays];
@@ -70,15 +77,10 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
     };
 
     setUserProfile(newUserProfile);
-
-    dispatch(updateProfile(userProfile));
+    setSendUpdate(true);
   };
 
   if (!localStorage.getItem("isAuth")) return <Redirect to="/login" />;
-
-  //console.log(userProfile);
-
-  console.log(address);
 
   //render the form
   return (

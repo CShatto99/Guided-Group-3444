@@ -41,8 +41,8 @@ export const TopNavBar: React.FC = () => {
         </Button>
       </NavItem>
       <NavItem>
-        <Button className={"navButton"} href="/">
-          Other
+        <Button className={"navButton"} href="/userHome/updateProfile">
+          Update Profile
         </Button>
       </NavItem>
       <NavItem>
