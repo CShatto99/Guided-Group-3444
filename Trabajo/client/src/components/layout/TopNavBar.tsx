@@ -12,7 +12,7 @@ interface TopNavBarProps {}
     TODO: edit to show different buttons according to whether the user is logged in or not.*/
 export const TopNavBar: React.FC = () => {
   const dispatch = useDispatch();
-  const { isAuth } = useSelector<RootState, UserState>(state => state.user);
+  const { isAuth, user} = useSelector<RootState, UserState>(state => state.user);
 
   const userLogout = () => {
     dispatch(logout());
@@ -56,7 +56,7 @@ export const TopNavBar: React.FC = () => {
   return (
     <div className={"topNavBar"}>
       <Navbar>
-        <NavbarBrand href="/">Logo will go here</NavbarBrand>
+        <NavbarBrand href="/userHome">{!isAuth ? "logo" : `Welcome ${user.fullName}!`}</NavbarBrand>
         <Nav>{isAuth ? authLinks : guestLinks}</Nav>
       </Navbar>
     </div>
