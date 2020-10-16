@@ -56,7 +56,7 @@ export const TopNavBar: React.FC = () => {
   return (
     <div className={"topNavBar"}>
       <Navbar>
-        <NavbarBrand href="/userHome">{!isAuth ? "logo" : `Welcome ${user.fullName}!`}</NavbarBrand>
+        <NavbarBrand href="/">{!isAuth ? "logo" : `Welcome ${user.fullName}!`}</NavbarBrand>
         <Nav>{isAuth ? authLinks : guestLinks}</Nav>
       </Navbar>
     </div>
