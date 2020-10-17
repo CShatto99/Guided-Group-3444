@@ -30,11 +30,11 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const { profile, loading } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
-  const { user } = useSelector<RootState, UserState>(state => state.user);
+  const { user, isAuth } = useSelector<RootState, UserState>(
+    state => state.user
+  );
   const { msg } = useSelector<RootState, AlertState>(state => state.alert);
 
-  const [userProfile, setUserProfile] = useState({});
-  const [sendUpdate, setSendUpdate] = useState(false);
   //state variables for address
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -42,26 +42,21 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const [zip, setZip] = useState("");
 
   //state variables for weekday preferences
-  const [rideDays, setRideDays] = useState(new Array(7).fill(0));
+  const [rideDays, setRideDays] = useState<string[]>([]);
 
   useEffect(() => {
     if (!loading && profile) {
-      setUserProfile(profile);
       setAddress(profile.address);
       setCity(profile.city);
       setState(profile.state);
       setZip(profile.zip);
+      setRideDays(profile.rideDays.split(""));
     }
-
-    if (sendUpdate) {
-      dispatch(updateProfile(userProfile));
-      setSendUpdate(false);
-    }
-  }, [loading, sendUpdate]);
+  }, [loading]);
 
   const handleRideDays = (index: number) => {
     const newRideDays = [...rideDays];
-    newRideDays[index] = newRideDays[index] === 1 ? 0 : 1;
+    newRideDays[index] = newRideDays[index] === "1" ? "0" : "1";
     setRideDays(newRideDays);
   };
 
@@ -78,11 +73,8 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
       rideDays: rideDays.join(""),
     };
 
-    setUserProfile(newUserProfile);
-    setSendUpdate(true);
+    dispatch(updateProfile(newUserProfile));
   };
-
-  if (!localStorage.getItem("isAuth")) return <Redirect to="/login" />;
 
   //render the form
   return (
@@ -173,14 +165,18 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
-                  className={rideDays[0] === 0 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[0] === "0" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(0)}
                 >
                   Not Riding
                 </Button>
                 <Button
                   type="button"
-                  className={rideDays[0] === 1 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[0] === "1" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(0)}
                 >
                   Riding
@@ -196,14 +192,18 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
-                  className={rideDays[1] === 0 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[1] === "0" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(1)}
                 >
                   Not Riding
                 </Button>
                 <Button
                   type="button"
-                  className={rideDays[1] === 1 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[1] === "1" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(1)}
                 >
                   Riding
@@ -219,14 +219,18 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
-                  className={rideDays[2] === 0 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[2] === "0" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(2)}
                 >
                   Not Riding
                 </Button>
                 <Button
                   type="button"
-                  className={rideDays[2] === 1 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[2] === "1" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(2)}
                 >
                   Riding
@@ -242,14 +246,18 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
-                  className={rideDays[3] === 0 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[3] === "0" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(3)}
                 >
                   Not Riding
                 </Button>
                 <Button
                   type="button"
-                  className={rideDays[3] === 1 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[3] === "1" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(3)}
                 >
                   Riding
@@ -265,14 +273,18 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
-                  className={rideDays[4] === 0 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[4] === "0" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(4)}
                 >
                   Not Riding
                 </Button>
                 <Button
                   type="button"
-                  className={rideDays[4] === 1 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[4] === "1" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(4)}
                 >
                   Riding
@@ -288,14 +300,18 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
-                  className={rideDays[5] === 0 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[5] === "0" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(5)}
                 >
                   Not Riding
                 </Button>
                 <Button
                   type="button"
-                  className={rideDays[5] === 1 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[5] === "1" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(5)}
                 >
                   Riding
@@ -311,14 +327,18 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
               <ButtonGroup color="danger" style={{ width: "100%" }}>
                 <Button
                   type="button"
-                  className={rideDays[6] === 0 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[6] === "0" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(6)}
                 >
                   Not Riding
                 </Button>
                 <Button
                   type="button"
-                  className={rideDays[6] === 1 ? "ride-btn-active" : "ride-btn"}
+                  className={
+                    rideDays[6] === "1" ? "ride-btn-active" : "ride-btn"
+                  }
                   onClick={() => handleRideDays(6)}
                 >
                   Riding

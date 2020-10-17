@@ -34,8 +34,9 @@ export default alert.reducer;
 const { set_alert, clear_alert } = alert.actions;
 
 export const setAlert = (msg: string, status: number) => (
-  dispatch: (set_alert: ISetAlert) => void
+  dispatch: (set_alert: any) => void
 ) => {
+  setTimeout(() => dispatch(clear_alert()), 5000)
   dispatch(set_alert({ msg, status }));
 };
 

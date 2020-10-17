@@ -111,14 +111,14 @@ router.post("/updateProfile", authToken, async (req, res) => {
 
       await updateProfile(newProfile);
 
-      return res.json(newProfile);
+      return res.json({ profile: newProfile });
     }
 
     // If the profile does not exist, create it
     const profile = { ...req.body, ...{ userID: req.user.ID.id } };
     const newProfile = await insertProfile(profile);
 
-    res.json(newProfile);
+    res.json({ profile: newProfile });
   } catch (error) {
     res.status(500).json({ msg: "Internal server error" });
   }

@@ -52,7 +52,7 @@ export const loadProfile = () => async (
   try {
     const { data } = await axios.get("/profile");
     /* data should contain profile information */
-    console.log(data)
+    
     dispatch(load_profile(data));
   } catch (error) {
     console.log(error.response);
@@ -69,8 +69,8 @@ export const updateProfile = (profile: any) => async (
   };
   
   try {
-    const { data } = await axios.post("/profile", profile, config);
-    // data should contain updated profile information
+    const { data } = await axios.post("/profile/updateProfile", profile, config);
+    console.log(data)
     dispatch(setAlert("Profile updated", 200))
     dispatch(load_profile(data));
   } catch (error) {
