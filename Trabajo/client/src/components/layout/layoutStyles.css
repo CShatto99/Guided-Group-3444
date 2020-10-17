@@ -2,10 +2,40 @@
 .topNavBar {
   height: 8vh;
 }
+
+.navbar {
+  background-color: #2d545e;
+  z-index: 1;
+  padding: 0.2rem 1rem !important;
+}
+
+.nav-icon {
+  cursor: pointer !important;
+  color: #e1b382;
+}
+
+.fa-suitcase {
+  font-size: 2.5rem;
+  -webkit-text-stroke: 1px #1a202c;
+  color: #e1b382;
+  margin-right: 0.5rem;
+}
+
+.nav-logo {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.navbar-brand {
+  color: #f0f8ff !important;
+}
+
 .navButton {
   background-color: #2d545e !important;
-  color: white !important;
-  border: 1px solid black !important;
+  color: #f0f8ff !important;
+  /*border: 1px solid black !important;*/
+  border: none !important;
   margin: 5px 5px;
 }
 
@@ -30,18 +60,6 @@
 .footerLink {
   stroke: white;
   color: white;
-}
-
-/* Main content area */
-.mainContentArea {
-  min-height: 82vh;
-  background-color: #2d545e;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
 }
 
 /* Landing Page */
@@ -89,7 +107,7 @@
   /* border: solid 2px #12343b;
   border-radius: 50px; */
   border: none;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07),
     0 4px 8px rgba(0, 0, 0, 0.07), 0 8px 16px rgba(0, 0, 0, 0.07),
     0 16px 32px rgba(0, 0, 0, 0.07), 0 32px 64px rgba(0, 0, 0, 0.07);
@@ -100,7 +118,7 @@
 .submitButton {
   background-color: #2d545e !important;
   color: white !important;
-  border: 1px solid black !important;
+  /*border: 1px solid black !important;*/
   margin: 5px 5px;
   width: 50%;
 }
@@ -162,4 +180,14 @@
   height: 50%;
   border: solid 2px black;
   background-color: #e1b382;
+}
+
+@media (min-width: 768px) {
+  .nav-icon {
+    display: none !important;
+  }
+
+  .navButton {
+    display: block !important;
+  }
 }

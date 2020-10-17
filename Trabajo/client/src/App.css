@@ -1,14 +1,14 @@
 .globalSettings {
-  background-color: #2d545e;
+  background-color: #f0f8ff;
+  /* background-color: #2d545e; */
   font-family: Georgia, serif;
 }
-
-
 
 /* Main content area */
 .mainContentArea {
   min-height: 82vh;
-  background-color: #2d545e;
+  /* background-color: #2d545e; */
+  background-color: #f0f8ff;
   color: white;
   display: flex;
   flex-direction: column;
