@@ -158,12 +158,10 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
                   />
                 </Col>
               </FormGroup>
-              <FormGroup row>
-                <Col>
-                  <Button className={"submitButton"} type="submit">
-                    Register
-                  </Button>
-                </Col>
+              <FormGroup row style={{alignItems: "center", justifyContent: "center"}}>
+                <Button className={"submitButton"} type="submit">
+                  Register
+                </Button>
               </FormGroup>
             </Form>
           </div>

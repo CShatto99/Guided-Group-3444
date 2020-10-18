@@ -24,16 +24,27 @@ export const UserHome: React.FC = () => {
     }
   }, [loading]);
 
+  const companyDiv = () => {
+    return (
+      <div className={"userHomeMap"}>
+        <h4>{profile.companyID}</h4>
+        <div>map map REPLACE ME WITH GOOGLE MAP map map</div>
+      </div>
+    )
+  };
+
   return !localStorage.getItem("isAuth") ? (
     <Redirect to="/login" />
   ) : redirect ? (
     <Redirect to="/userHome/updateProfile" />
   ) : (
     <div className={"userHomeContainer"}>
+      {profile.companyID ? companyDiv : 
       <div className={"userHomeMap"}>
-        <h4>company name</h4>
-        <div>map map map</div>
-      </div>
+        <h2>You Have Not Selected a Company</h2>
+        <h3>Click the Link Below to Select Your Company</h3>
+        <Button href="/userHome/updateUserCompany" className={"submitButton"}>Select Company</Button>
+      </div>}
       <div className={"userHomeChat"}>
         <div className={"chatBox"}>
           <p>person: message</p>
