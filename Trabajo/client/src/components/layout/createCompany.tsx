@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Alert, Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
 import "./layoutStyles.css";
 import states from "../../json/states.json";
-import Axios from "axios";
-
+import { createCompany } from "../../store/company";
+import { RootState } from "../../store";
+import { AlertState } from "../../store/alert";
 // Interface for defining props for CreateCompany page
 interface createCompanyProps {}
 
@@ -12,6 +14,10 @@ interface createCompanyProps {}
  * create a new company.
  */
 export const CreateCompany: React.FC<createCompanyProps> = () => {
+  const dispatch = useDispatch();
+  const { msg, status } = useSelector<RootState, AlertState>(
+    state => state.alert
+  );
   //State variables
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -19,7 +25,7 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
   const [state, setState] = useState("Select State");
   const [zip, setZip] = useState("");
   const [code, setCode] = useState("");
-  const [checkCode, setCheckCode] = useState("");
+  const [confirmCode, setconfirmCode] = useState("");
   const [image, setImage] = useState("");
 
   /* Function:    handleFile
@@ -59,35 +65,28 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
   let handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    //create request object
-    let requestObject: Object = {
-      name: name,
-      address: address + "\n" + city + ", " + state + "  " + zip,
-      code: code,
-      codeCheck: checkCode,
-      image: image,
+    const company = {
+      name,
+      address,
+      city,
+      state,
+      zip,
+      code,
+      confirmCode,
+      image,
     };
 
-    //convert  object to json string
-    let requestJson: string = JSON.stringify(requestObject);
-
-    //TODO remove this once implemented
-    alert(`TODO, send form to api:\n${requestJson}`);
-
-    //make api call
-    Axios.post("localhost:5000/createCompany", requestJson)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    dispatch(createCompany(company));
   };
 
   //return html form
   return (
     <div>
       <div>
+        {msg && status === 200 && <Alert color="success">{msg}</Alert>}
+        {msg && status !== null && status !== 200 && (
+          <Alert color="danger">{msg}</Alert>
+        )}
         <div className={"registerContainer"}>
           <div className={"formContainer"}>
             <h1>Register New Company</h1>
@@ -106,7 +105,6 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
                     name="name"
                     id="name"
                     placeholder="My Excellent Company"
-                    required
                     value={name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setName(e.target.value)
@@ -125,7 +123,6 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
                     name="address"
                     id="address"
                     placeholder="Company Address"
-                    required
                     value={address}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setAddress(e.target.value)
@@ -144,7 +141,6 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
                     name="city"
                     id="city"
                     placeholder="Company City"
-                    required
                     value={city}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setCity(e.target.value)
@@ -166,7 +162,7 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
                     }
                     sm={1}
                   >
-                    {states.map((value) => {
+                    {states.map(value => {
                       return <option key={value}>{value}</option>;
                     })}
                   </Input>
@@ -182,7 +178,6 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
                     name="zip"
                     id="zip"
                     placeholder="00000"
-                    required
                     value={zip}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setZip(e.target.value)
@@ -201,7 +196,6 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
                     name="code"
                     id="company"
                     placeholder="************"
-                    required
                     value={code}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setCode(e.target.value)
@@ -211,19 +205,18 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
                 </Col>
               </FormGroup>
               <FormGroup row>
-                <Label for="checkCode" sm={3}>
+                <Label for="confirmCode" sm={3}>
                   Re-enter Code
                 </Label>
                 <Col>
                   <Input
                     type="password"
-                    name="checkCode"
-                    id="checkCode"
+                    name="confirmCode"
+                    id="confirmCode"
                     placeholder="************"
-                    required
-                    value={checkCode}
+                    value={confirmCode}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setCheckCode(e.target.value)
+                      setconfirmCode(e.target.value)
                     }
                     sm={9}
                   />
