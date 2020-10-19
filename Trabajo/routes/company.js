@@ -10,6 +10,14 @@ const {
   findCompanyByName,
 } = require("../mongodb/company");
 
+// @route POST /company
+// @desc Update a user company
+// @access Private
+
+// @route GET /company
+// @desc Get a user company
+// @access Private
+
 // @route GET /company/all
 // @desc Gets all company names and images
 // @access Private

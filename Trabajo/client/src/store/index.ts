@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import user from "./user";
 import alert from "./alert";
-import profile from "./profile"
+import profile from "./profile";
+import company from "./company";
 
 const reducer = combineReducers({
   user,
   alert,
-  profile
+  profile,
+  company,
 });
 
 const store = configureStore({ reducer });

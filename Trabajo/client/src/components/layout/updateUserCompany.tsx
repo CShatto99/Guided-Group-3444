@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import "./layoutStyles.css";
 import states from "../../json/states.json";
 import Axios from "axios";
 import { idText } from "typescript";
+import { CompanyState, getAllCompanies } from "../../store/company";
+import { RootState } from "../../store";
+import { UserState } from "../../store/user";
 
 // Interface for defining props for CreateCompany page
 interface updateUserCompanyProps {}
@@ -20,59 +24,26 @@ interface CompanyInfo {
  * create a new company.
  */
 export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
+  const dispatch = useDispatch();
+  const { loading } = useSelector<RootState, UserState>(state => state.user);
+  const { company, companies } = useSelector<RootState, CompanyState>(
+    state => state.company
+  );
   //State variables
   const [ID, setID] = useState("");
   const [name, setName] = useState("Select Company");
   const [code, setCode] = useState("");
   const [image, setImage] = useState("/images/defaultCompany.png");
-  const [companies, setCompanies] = useState<CompanyInfo[]>([]);
-  const [companiesLoaded, setCompaniesLoaded] = useState(false);
 
   useEffect(() => {
-    if (!companiesLoaded) {
-      setCompanies([
-        {
-          name: "Select Company",
-          address: "",
-          id: "",
-          image: "/images/defaultCompany.png",
-        },
-        {
-          name: "company1",
-          address: "111 test drive\ntest, ts  1",
-          id: "1234ABC",
-          image: "https://static.thenounproject.com/png/88781-200.png",
-        },
-        {
-          name: "company2",
-          address: "222 test drive\ntest, ts  2",
-          id: "2345BCD",
-          image:
-            "https://pngimage.net/wp-content/uploads/2018/06/firm-icon-png-8.png",
-        },
-        {
-          name: "company3",
-          address: "333 test drive\ntest, ts  3",
-          id: "3456CDE",
-          image:
-            "https://www.sgrsportsmanagement.com/wp-content/uploads/2019/12/company-d23ad282fb3350d9eab92ce12076a274.png",
-        },
-        {
-          name: "company4",
-          address: "444 test drive\ntest, ts  4",
-          id: "4567DEF",
-          image: "",
-        },
-      ]);
-      setCompaniesLoaded(true);
-    }
-    companies.forEach(company => {
-      if (company.name === name) {
-        setImage(company.image);
-        setID(company.id);
-      }
-    });
-  }, [name]);
+    if (!loading) dispatch(getAllCompanies());
+    // companies.forEach(company => {
+    //   if (company.name === name) {
+    //     setImage(company.image);
+    //     setID(company.id);
+    //   }
+    // });
+  }, [loading]);
 
   /* Function:    handleSubmit
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
@@ -92,17 +63,12 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
       id: ID,
       code: code,
     };
-
-    //convert  object to json string
-    let requestJson: string = JSON.stringify(requestObject);
-
-    //TODO remove this once implemented
-    alert(`TODO, send form to api:\n${requestJson}`);
   };
 
   //return html form
   return (
     <div>
+      <Button onClick={() => dispatch(getAllCompanies())}>Get companies</Button>
       <div
         style={{
           display: "flex",
@@ -133,9 +99,10 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
                     }
                     sm={9}
                   >
-                    {companies.map(val => {
-                      return <option key={val.name}>{val.name}</option>;
-                    })}
+                    {companies &&
+                      companies.map(val => {
+                        return <option key={val.name}>{val.name}</option>;
+                      })}
                   </Input>
                 </Col>
               </FormGroup>
@@ -158,7 +125,10 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
                   />
                 </Col>
               </FormGroup>
-              <FormGroup row style={{alignItems: "center", justifyContent: "center"}}>
+              <FormGroup
+                row
+                style={{ alignItems: "center", justifyContent: "center" }}
+              >
                 <Button className={"submitButton"} type="submit">
                   Register
                 </Button>
