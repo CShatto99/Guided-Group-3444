@@ -13,36 +13,31 @@ import { UserState } from "../../store/user";
 // Interface for defining props for CreateCompany page
 interface updateUserCompanyProps {}
 
-interface CompanyInfo {
-  name: string;
-  address: string;
-  id: string;
-  image: string;
-}
-
 /* The CreateCompany component is rendered when a user wants to
  * create a new company.
  */
 export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
+  //redux state variables
   const dispatch = useDispatch();
   const { loading } = useSelector<RootState, UserState>(state => state.user);
   const { company, companies } = useSelector<RootState, CompanyState>(
     state => state.company
   );
+
   //State variables
   const [ID, setID] = useState("");
   const [name, setName] = useState("Select Company");
   const [code, setCode] = useState("");
   const [image, setImage] = useState("/images/defaultCompany.png");
 
+  /* useEffect is called when the component loads or when any of the state
+   * variables in the array included at the end of the function is updated.
+   * We use it here to load the companies from the API and populate the
+   * form.
+   */
   useEffect(() => {
+    //if the redux state is done loading get the companies from the API.
     if (!loading) dispatch(getAllCompanies());
-    // companies.forEach(company => {
-    //   if (company.name === name) {
-    //     setImage(company.image);
-    //     setID(company.id);
-    //   }
-    // });
   }, [loading]);
 
   /* Function:    handleSubmit
@@ -56,6 +51,7 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
    *              the user is informed.
    */
   let handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    //prevent standard form behavior
     e.preventDefault();
 
     //create request object
@@ -63,6 +59,8 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
       id: ID,
       code: code,
     };
+
+    //TODO: send form to Redux to send to API
   };
 
   //return html form

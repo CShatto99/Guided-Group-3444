@@ -100,7 +100,7 @@
   max-height: 100%;
 }
 
-/* Login and Registration */
+/* Form pages - registration, login, create company, select company, etc. */
 /* Lumped together due to similar layout */
 .formContainer {
   background-color: #e1b382;
@@ -141,6 +141,7 @@
   text-align: center;
 }
 
+/* company picture and information */
 .companyInfoPic {
   max-width: 100%;
   max-height: 100%;

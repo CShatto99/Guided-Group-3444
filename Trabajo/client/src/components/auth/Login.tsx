@@ -14,6 +14,7 @@ interface LoginProps {}
  * application. This is the first step to gain access to the rest of our system.
  */
 export const Login: React.FC<LoginProps> = () => {
+  //state variables
   const dispatch = useDispatch();
   const { isAuth } = useSelector<RootState, UserState>(state => state.user);
   const { msg } = useSelector<RootState, AlertState>(state => state.alert);
@@ -31,13 +32,16 @@ export const Login: React.FC<LoginProps> = () => {
    *              the user is informed.
    */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    //prevent standard form behavior
     e.preventDefault();
 
+    //create the object to login with
     const user = {
       email,
       password,
     };
 
+    //send the login request to redux
     dispatch(login(user));
   };
 

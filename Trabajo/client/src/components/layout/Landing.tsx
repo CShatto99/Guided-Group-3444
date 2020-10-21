@@ -9,12 +9,13 @@ import "./layoutStyles.css";
 interface LandingProps {}
 
 /* The landing page is the site home page - this is what displays when users visit
-    our website.  
+    our website.  It provides generic info about our application.
     */
 export const Landing: React.FC<LandingProps> = () => {
-
+  //redux state
   const { isAuth } = useSelector<RootState, UserState>(state => state.user);
 
+  //if the user is logged in then redirect to userHome, otherwise render the landing page
   return isAuth ? (
       <Redirect push to="/userHome" />
   ) : (

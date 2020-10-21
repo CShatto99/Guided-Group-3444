@@ -19,9 +19,11 @@ import { refresh } from "./store/user";
 import PrivateRoute from "./components/routing/PrivateRoute";
 
 /*  The App() function sole purpose in our app is to provide the standard layout
- *  for our application and to provide routing to our different components
+ *  for our application and to provide routing to our different components.
  *
- *  Valid endpoitns for users not authorized are:
+ *  Each <Route> below handles a different route for our web app.
+ *
+ *  Valid endpoints for users not authorized are:
  *    - /
  *    - /login
  *    - /register

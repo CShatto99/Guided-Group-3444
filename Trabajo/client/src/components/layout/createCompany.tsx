@@ -14,10 +14,12 @@ interface createCompanyProps {}
  * create a new company.
  */
 export const CreateCompany: React.FC<createCompanyProps> = () => {
+  //redux variables
   const dispatch = useDispatch();
   const { msg, status } = useSelector<RootState, AlertState>(
     state => state.alert
   );
+
   //State variables
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -42,7 +44,7 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
 
     //event listener that is called when file is read
     reader.addEventListener("load", function () {
-      // convert image file to base64 string
+      // convert image file to base64 string and set the state variable
       if (reader.result) {
         setImage(reader.result as string);
       }
@@ -63,8 +65,10 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
    *              the user is informed.
    */
   let handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    //prevent standard form behavior
     e.preventDefault();
 
+    //create object to send
     const company = {
       name,
       address,
@@ -76,10 +80,11 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
       image,
     };
 
+    //send object to redux to request company creation
     dispatch(createCompany(company));
   };
 
-  //return html form
+  //Render the HTML form
   return (
     <div>
       <div>

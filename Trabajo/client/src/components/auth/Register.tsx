@@ -12,7 +12,8 @@ import { UserState } from "../../store/user";
  */
 interface RegisterProps {}
 
-/* The Register page is where users can sign up for using our application.
+/* The Register page is where users can sign up to use our application. Upon registering they are
+ * automatically logged in and redirected to the updateProfile page
  */
 export const Register: React.FC<RegisterProps> = () => {
   const dispatch = useDispatch();
@@ -35,8 +36,10 @@ export const Register: React.FC<RegisterProps> = () => {
    *              the user is informed.
    */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    //prevent standard form behavior
     e.preventDefault();
 
+    //create object to register with
     const user = {
       fullName,
       email,
@@ -44,13 +47,11 @@ export const Register: React.FC<RegisterProps> = () => {
       confirmPassword,
     };
 
+    //send object to redux to perform register request
     dispatch(register(user));
-
-    //this will value will be updated in the fetch
-    //setRegisterSuccess(true);
   };
 
-  //render the form
+  //render the form, but if successful register occurs redirect to the user home page
   return isAuth ? (
     <Redirect to="/userHome" />
   ) : (

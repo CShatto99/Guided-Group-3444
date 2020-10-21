@@ -27,8 +27,10 @@ export const ChangeCompanyCode: React.FC<ChangeCompanyCodeProps> = () => {
    *              the user is informed.
    */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    //prevent standard form behavior
     e.preventDefault();
 
+    //TODO this isa placeholder until we implement this functionality in redux
     let msg = "send form to API: \n";
     msg += `original code: ${originalCode}\n`;
     msg += `new code: ${newCode}\n`;

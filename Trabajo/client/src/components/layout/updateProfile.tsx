@@ -26,6 +26,7 @@ interface updateProfileProps {}
  * profile information, they are first redirected to this page on login.
  */
 export const UpdateProfile: React.FC<updateProfileProps> = () => {
+  //redux state variables
   const dispatch = useDispatch();
   const { profile, loading } = useSelector<RootState, ProfileState>(
     state => state.profile
@@ -44,7 +45,14 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   //state variables for weekday preferences
   const [rideDays, setRideDays] = useState<string[]>([]);
 
+  /* useEffect is called when the page is first loaded and when the variables
+   * in the array included at the end of the function are changed.  We use it 
+   * here to dynamically load the profile of the user into the fields so that
+   * the user sees their current profile.  It will load the profile once the
+   * profile is done loading from redux.
+   */
   useEffect(() => {
+    //if the profile is done loading and actually exists populate the state variables
     if (!loading && profile) {
       setAddress(profile.address);
       setCity(profile.city);
@@ -54,15 +62,37 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
     }
   }, [loading]);
 
+  /* Function:    handleRideDays
+   * Parameters:  index: number - the index that is changing in the rideDays array
+   * Return:      void
+   * Puprose:     Handles when a user updates the days they need a ride for.  If
+   *              the day they are updating is set to true, it simply sets it to 
+   *              false and vice versa.
+   */
   const handleRideDays = (index: number) => {
+    //get the current state
     const newRideDays = [...rideDays];
+
+    //update the index that was switched
     newRideDays[index] = newRideDays[index] === "1" ? "0" : "1";
+
+    //set the new state
     setRideDays(newRideDays);
   };
 
+  /* Function:    handleSubmit
+   * Parameters:  e: React.FormEvent<HTMLFormElement> - event that is triggered by form submission
+   * Return:      void
+   * Puprose:     Handles the submit action when a user selects the update profile
+   *              option.  It builds the object to be sent to be updated, then calls
+   *              the redux function to send the form to the API.  The response is handled
+   *              with the redux alert variable above.
+   */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    //prevent standard form behavior
     e.preventDefault();
 
+    //build object to send to API
     const newUserProfile = {
       name: user.fullName,
       email: user.email,
@@ -73,6 +103,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
       rideDays: rideDays.join(""),
     };
 
+    //Send object to redux, which will make the profile update request
     dispatch(updateProfile(newUserProfile));
   };
 
