@@ -5,6 +5,7 @@ const router = express.Router();
 const genAccessToken = require("../utils/genAccessToken");
 const genRefreshToken = require("../utils/genRefreshToken");
 const { insertUser, findUserByEmail } = require("../mongodb/user");
+const { onlyNumbers, onlyLetters } = require("../utils/passChecker");
 
 /* Function Name: router.post("/login")
  * Parameters: "/login", async (req, res)
@@ -81,8 +82,17 @@ router.post("/register", async (req, res) => {
     return res.status(400).json({ msg: "Passwords do not match." });
 
   if (password.length < 6)
-    // hash user password
-    const salt = await bcrypt.genSalt();
+    return res
+      .status(400)
+      .json({ msg: "Password must be at least 6 characters." });
+
+  if (onlyNumbers(password) || onlyLetters(password))
+    return res
+      .status(400)
+      .json({ msg: "Password must not contain only letters or numbers." });
+
+  // hash user password
+  const salt = await bcrypt.genSalt();
   const hashedPass = await bcrypt.hash(password, salt);
 
   // create and store new user
