@@ -43,7 +43,7 @@ export const UserHome: React.FC = () => {
         <h4>{profile.companyID}</h4>
         <div>map map REPLACE ME WITH GOOGLE MAP map map</div>
       </div>
-    )
+    );
   };
 
   //if the user is authorized and logged in and has a profile then render the page
@@ -53,12 +53,17 @@ export const UserHome: React.FC = () => {
     <Redirect to="/userHome/updateProfile" />
   ) : (
     <div className={"userHomeContainer"}>
-      {profile.companyID ? companyDiv : 
-      <div className={"userHomeMap"}>
-        <h2>You Have Not Selected a Company</h2>
-        <h3>Click the Link Below to Select Your Company</h3>
-        <Button href="/userHome/updateUserCompany" className={"submitButton"}>Select Company</Button>
-      </div>}
+      {profile && profile.companyID ? (
+        companyDiv
+      ) : (
+        <div className={"userHomeMap"}>
+          <h2>You Have Not Selected a Company</h2>
+          <h3>Click the Link Below to Select Your Company</h3>
+          <Button href="/userHome/updateUserCompany" className={"submitButton"}>
+            Select Company
+          </Button>
+        </div>
+      )}
       <div className={"userHomeChat"}>
         <div className={"chatBox"}>
           <p>person: message</p>
@@ -67,12 +72,14 @@ export const UserHome: React.FC = () => {
         </div>
         <Form>
           <Row>
-            <Input type="text"/>
-            <Button type="submit" size="sm">Send</Button>
+            <Input type="text" />
+            <Button type="submit" size="sm">
+              Send
+            </Button>
           </Row>
         </Form>
         <Button href="/userHome/newRide">Make a New Ride</Button>
       </div>
     </div>
-  )
+  );
 };
