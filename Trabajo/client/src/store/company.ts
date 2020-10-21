@@ -2,6 +2,7 @@ import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setAlert } from "./alert";
 
+//Interface for Company objects
 export interface Company {
   name: string;
   address: string;
@@ -13,12 +14,21 @@ export interface Company {
   image: any;
 }
 
+//Interface for CompanyState objects
 export interface CompanyState {
   company: Company;
   companies: Company[] | null;
   loading: boolean;
 }
 
+/* Function:    createlice
+ * Parameters:  An object containing the name, initial state, and reducers object of the company slice.
+ * Return:      Slice object.
+ * Purpose:     This function is used to generate action creators and action types for
+ *              the company reducer and state given a name, initial state, and reducers
+ *              object. This function will inject all company data received from the API
+ *              into the React application state.
+ */
 const company = createSlice({
   name: "company",
   initialState: {
@@ -42,6 +52,12 @@ export default company.reducer;
 
 const { load_company, load_companies } = company.actions;
 
+/* Function:    getCompany
+ * Parameters:  No parameters.
+ * Return:      Void
+ * Purpose:     This function fetches a user company from the database through the API
+ *              and insert it into the company slice state
+ */
 export const getCompany = () => async (dispatch: (setAlert: any) => void) => {
   try {
     /* TODO
@@ -54,6 +70,12 @@ export const getCompany = () => async (dispatch: (setAlert: any) => void) => {
   }
 };
 
+/* Function:    getAllCompanies
+ * Parameters:  No parameters.
+ * Return:      Void
+ * Purpose:     This function fetches all companies from the database through the API
+ *              and insert it into the company slice state
+ */
 export const getAllCompanies = () => async (
   dispatch: (setAlert: any) => void
 ) => {
@@ -66,6 +88,12 @@ export const getAllCompanies = () => async (
   }
 };
 
+/* Function:    updateCompany
+ * Parameters:  A Company object.
+ * Return:      Void
+ * Purpose:     This function sends a Company object to the API, receives an updated
+ *              company document from the API, and inserts it into the company slice state
+ */
 export const updateCompany = (company: Company) => async (
   dispatch: (setAlert: any) => void
 ) => {
@@ -86,6 +114,12 @@ export const updateCompany = (company: Company) => async (
   }
 };
 
+/* Function:    createCompany
+ * Parameters:  A Company object.
+ * Return:      Void
+ * Purpose:     This function sends a Company object to the API, receives a new
+ *              company document from the API, and inserts it into the company slice state
+ */
 export const createCompany = (company: Company) => async (
   dispatch: (setAlert: any) => void
 ) => {
