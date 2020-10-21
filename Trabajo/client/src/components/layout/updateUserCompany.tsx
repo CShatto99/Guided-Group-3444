@@ -9,6 +9,7 @@ import { idText } from "typescript";
 import { CompanyState, getAllCompanies } from "../../store/company";
 import { RootState } from "../../store";
 import { UserState } from "../../store/user";
+import { ProfileState } from "../../store/profile";
 
 // Interface for defining props for CreateCompany page
 interface updateUserCompanyProps {}
@@ -20,6 +21,9 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
   //redux state variables
   const dispatch = useDispatch();
   const { loading } = useSelector<RootState, UserState>(state => state.user);
+  const profileState = useSelector<RootState, ProfileState>(
+    state => state.profile
+  );
   const { company, companies } = useSelector<RootState, CompanyState>(
     state => state.company
   );
@@ -37,9 +41,21 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
    */
   useEffect(() => {
     //if the redux state is done loading get the companies from the API.
-    if (!loading) dispatch(getAllCompanies());
+    if (!loading) {
+      dispatch(getAllCompanies());
+    }
+
+    // if (profile) {
+    //   setName(profile.company);
+    //   setCode(profile.companyID);
+    // }
   }, [loading]);
 
+  useEffect(() => {
+    const { profile } = profileState;
+    setName(profile.company);
+    setCode(profile.companyCode);
+  }, [profileState.loading]);
   /* Function:    handleSubmit
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
    * Return:      void
@@ -62,6 +78,10 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
 
     //TODO: send form to Redux to send to API
   };
+
+  console.log(profileState);
+
+  console.log(name, code);
 
   //return html form
   return (

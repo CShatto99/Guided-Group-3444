@@ -52,24 +52,6 @@ export default company.reducer;
 
 const { load_company, load_companies } = company.actions;
 
-/* Function:    getCompany
- * Parameters:  No parameters.
- * Return:      Void
- * Purpose:     This function fetches a user company from the database through the API
- *              and insert it into the company slice state
- */
-export const getCompany = () => async (dispatch: (setAlert: any) => void) => {
-  try {
-    /* TODO
-        const { data } = await axios.get('/company');
-        
-        dispatch(load_company(data));
-     */
-  } catch (error) {
-    dispatch(setAlert(error.response.data.msg, error.response.status));
-  }
-};
-
 /* Function:    getAllCompanies
  * Parameters:  No parameters.
  * Return:      Void

@@ -4,11 +4,13 @@ import { setAlert } from "./alert";
 import setAuthToken from "../utils/setAuthToken";
 import { loadProfile } from "./profile";
 
+//Interface for LoginData object
 interface LoginData {
   email: string;
   password: string;
 }
 
+//Interface for RegisterData object
 interface RegisterData {
   fullName: string;
   email: string;
@@ -16,6 +18,7 @@ interface RegisterData {
   confirmPassword: string;
 }
 
+//Interface for UserState object
 export interface UserState {
   isAuth: boolean;
   user: {
@@ -25,6 +28,14 @@ export interface UserState {
   loading: boolean;
 }
 
+/* Function:    createlice
+ * Parameters:  An object containing the name, initial state, and reducers object of the user slice.
+ * Return:      Slice object.
+ * Purpose:     This function is used to generate action creators and action types for
+ *              the user reducer and state given a name, initial state, and reducers
+ *              object. This function will inject all user data received from the API
+ *              into the React application state.
+ */
 const user = createSlice({
   name: "user",
   initialState: {
@@ -52,6 +63,12 @@ export default user.reducer;
 
 const { login_user, logout_user } = user.actions;
 
+/* Function:    loadUser
+ * Parameters:  No parameters.
+ * Return:      Void
+ * Purpose:     This function fetches a user from the database and stores it in
+ *              the user slice state.
+ */
 export const loadUser = () => async (dispatch: (setAlert: any) => void) => {
   try {
     const { data } = await axios.get("/auth/user");
@@ -62,6 +79,13 @@ export const loadUser = () => async (dispatch: (setAlert: any) => void) => {
   }
 };
 
+/* Function:    login
+ * Parameters:  A User object.
+ * Return:      Void
+ * Purpose:     This function sends a user object to the API, receives a new user
+ *              document and access token, and stores the user document in the user
+ *              slice state.
+ */
 export const login = (user: LoginData) => async (
   dispatch: (setAlert: any) => void
 ) => {
@@ -84,6 +108,13 @@ export const login = (user: LoginData) => async (
   }
 };
 
+/* Function:    register
+ * Parameters:  A User object.
+ * Return:      Void
+ * Purpose:     This function sends a user object to the API, receives a new user
+ *              document and access token, and stores the user document in the user
+ *              slice state.
+ */
 export const register = (user: RegisterData) => async (
   dispatch: (setAlert: any) => void
 ) => {
@@ -105,6 +136,14 @@ export const register = (user: RegisterData) => async (
   }
 };
 
+/* Function:    refresh
+ * Parameters:  No parameters.
+ * Return:      Void
+ * Purpose:     This function fetches an access token and stores it in the request
+ *              headers. This function also fetches the current user and the profile
+ *              associated with the current user and inserts this data into
+ *              the Redux store.
+ */
 export const refresh = () => async (dispatch: (set_alert: any) => void) => {
   try {
     const { data } = await axios.get("/auth/token");
@@ -122,6 +161,12 @@ export const refresh = () => async (dispatch: (set_alert: any) => void) => {
   }
 };
 
+/* Function:    logout
+ * Parameters:  No parameters.
+ * Return:      Void
+ * Purpose:     This function clears all Redux state and authentication information
+ *              for the user.
+ */
 export const logout = () => async (dispatch: (set_alert: any) => void) => {
   try {
     dispatch(logout_user());

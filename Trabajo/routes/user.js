@@ -6,9 +6,11 @@ const genAccessToken = require("../utils/genAccessToken");
 const genRefreshToken = require("../utils/genRefreshToken");
 const { insertUser, findUserByEmail } = require("../mongodb/user");
 
-// @route POST /user/login
-// @desc Login a user
-// @access Public
+/* Function Name: router.post("/login")
+ * Parameters: "/login", async (req, res)
+ * Return:
+ * Purpose:
+ */
 router.post("/login", async (req, res) => {
   // pull body from request
   const { email, password } = req.body;

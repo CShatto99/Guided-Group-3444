@@ -21,7 +21,8 @@ export interface Profile {
   rides?: [Ride];
   admin: string | null;
   rideDays: string;
-  companyID: number;
+  company: string;
+  companyCode: string;
 }
 
 //Interface for ProfileState objects
@@ -60,14 +61,14 @@ const { load_profile } = profile.actions;
 /* Function:    loadProfile
  * Parameters:  No parameters.
  * Return:      Void
- * Purpose:     This function fetches a user profile from the database
+ * Purpose:     This function fetches a user profile from the database and stores it in
+ *              the profile slice state.
  */
 export const loadProfile = () => async (
   dispatch: (load_profile: PayloadAction<ProfileState>) => void
 ) => {
   try {
     const { data } = await axios.get("/profile");
-    /* data should contain profile information */
 
     dispatch(load_profile(data));
   } catch (error) {
@@ -75,6 +76,12 @@ export const loadProfile = () => async (
   }
 };
 
+/* Function:    updateProfile
+ * Parameters:  A Profile object.
+ * Return:      Void
+ * Purpose:     This function sends a profile object to the API, receives an updated user
+ *              profile, and inserts it into the profile slice state.
+ */
 export const updateProfile = (profile: any) => async (
   dispatch: (setAlert: any) => void
 ) => {
@@ -85,11 +92,7 @@ export const updateProfile = (profile: any) => async (
   };
 
   try {
-    const { data } = await axios.post(
-      "/profile/updateProfile",
-      profile,
-      config
-    );
+    const { data } = await axios.post("/profile", profile, config);
     console.log(data);
     dispatch(setAlert("Profile updated", 200));
     dispatch(load_profile(data));
@@ -98,6 +101,12 @@ export const updateProfile = (profile: any) => async (
   }
 };
 
+/* Function:    updateProfile
+ * Parameters:  No parameters.
+ * Return:      Void
+ * Purpose:     This function makes a call to the API to delete a profile and clears the
+ *              profile slice state.
+ */
 export const deleteProfile = () => async (dispatch: () => void) => {
   try {
   } catch (error) {
