@@ -55,7 +55,8 @@ const { login_user, logout_user } = user.actions;
 export const loadUser = () => async (dispatch: (setAlert: any) => void) => {
   try {
     const { data } = await axios.get("/auth/user");
-    dispatch(login_user(data));
+    console.log(data);
+    dispatch(login_user(data.user));
   } catch (error) {
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
@@ -77,7 +78,7 @@ export const login = (user: LoginData) => async (
     // set the x-auth-token header for all routes
     setAuthToken(data.accessToken);
 
-    dispatch(login_user(data));
+    dispatch(login_user(data.user));
   } catch (error) {
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }

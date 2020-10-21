@@ -76,7 +76,7 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
       >
         <div className={"registerContainer"}>
           <div className={"formContainer"}>
-            <h1>Register New Company</h1>
+            <h1>Join A New Company</h1>
             <Form
               onSubmit={(e: React.ChangeEvent<HTMLFormElement>) =>
                 handleSubmit(e)
