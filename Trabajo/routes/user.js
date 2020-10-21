@@ -8,8 +8,9 @@ const { insertUser, findUserByEmail } = require("../mongodb/user");
 
 /* Function Name: router.post("/login")
  * Parameters: "/login", async (req, res)
- * Return:
- * Purpose:
+ * Return: user object with access token
+ * Purpose: This post route allows the user to login with an email and password, checks if the inputs are valid,
+ * and generates an access token allowing the user to login to Trabajo
  */
 router.post("/login", async (req, res) => {
   // pull body from request
@@ -23,11 +24,13 @@ router.post("/login", async (req, res) => {
   const lowercaseEmail = email.toLowerCase();
   const user = await findUserByEmail(lowercaseEmail);
 
+  // if user doesn't exist, notify user of invalid credentials
   if (!user) return res.status(400).json({ msg: "Invalid credentials" });
 
   // check if password is correct
   const match = await bcrypt.compare(password, user.password);
 
+  // if passwords don't match, notify user as such
   if (!match) return res.status(400).json({ msg: "Invalid credentials" });
 
   // generate access tokens
@@ -51,9 +54,12 @@ router.post("/login", async (req, res) => {
   });
 });
 
-// @route POST /user/register
-// @desc Register a user
-// @access Public
+/* Function Name: router.post("/register")
+ * Parameters: "/register", async (req, res)
+ * Return: user object with access token
+ * Purpose: This post route will allow a user to register with Trabajo by ensuring valid information is entered in and that
+ * there is no email reusage.
+ */
 router.post("/register", async (req, res) => {
   // pull body from request
   const { fullName, email, password, confirmPassword } = req.body;
@@ -64,17 +70,19 @@ router.post("/register", async (req, res) => {
       .status(400)
       .json({ msg: "Please enter all required information." });
 
-  // check if user email already exists
+  // check if user email already exists by casting email to lowercase
   const lowercaseEmail = email.toLowerCase();
   const userFound = await findUserByEmail(lowercaseEmail);
+  // if email already exists, notify user as such
   if (userFound) return res.status(400).json({ msg: "Email already exists." });
 
   // Check if passwords match
   if (password !== confirmPassword)
     return res.status(400).json({ msg: "Passwords do not match." });
 
-  // hash user password
-  const salt = await bcrypt.genSalt();
+  if (password.length < 6)
+    // hash user password
+    const salt = await bcrypt.genSalt();
   const hashedPass = await bcrypt.hash(password, salt);
 
   // create and store new user

@@ -10,21 +10,28 @@ const {
   findCompanyByName,
 } = require("../mongodb/company");
 
-// @route GET /company/all
-// @desc Gets all company names and images
-// @access Private
+/* Function Name: router.get("/all")
+ * Parameters: "/all", authToken, async (req, res)
+ * Return: json containing all the companies registered with Trabajo
+ * Purpose: This get route will assign an array of company objects and return a json containing that array
+ */
 router.get("/all", authToken, async (req, res) => {
+  // Try/catch block to ensure any errors are caught when trying to assign the return value of findAllCompanies to companies
   try {
     const companies = await findAllCompanies();
+    // json is returned containing the companies variable
     return res.json(companies);
   } catch (error) {
+    // if there's an error, there will be a 500 status describing an interal server error
     return res.status(500).json({ msg: "Internal Server error" });
   }
 });
 
-// @route POST /company/create
-// @desc create a company
-// @access Private
+/* Function Name: router.post("/create")
+ * Parameters: "/create", authToken, async (req, res)
+ * Return: json with a newly inserted company
+ * Purpose: This post route will verify company information when creating a new company to register with Trabajo.
+ */
 router.post("/create", authToken, async (req, res) => {
   // pull body from request
   const {
@@ -42,9 +49,10 @@ router.post("/create", authToken, async (req, res) => {
   if (!name || !address || !city || !state || !zip || !code || !confirmCode)
     return res.status(400).json({ msg: "Please enter all required fields" });
 
-  // check if company already exists
+  // check if company already exists by casting the company name to lowercase
   const lowercaseName = name.toLowerCase();
   const companyFound = await findCompanyByName(lowercaseName);
+  // if the company is found, the creator will be notified as such
   if (companyFound)
     return res.status(400).json({ msg: "Company already exists." });
 
@@ -67,10 +75,14 @@ router.post("/create", authToken, async (req, res) => {
       hashedCode,
       image,
     };
+
+    // company will contain the return value of insertCompany with the newCompany object
     const company = await insertCompany(newCompany);
 
+    // returns a response json containing company
     return res.json(company);
   } catch (error) {
+    // if there's an error, there will be a 500 status describing an interal server error
     return res.status(500).json({ msg: "Internal Server error" });
   }
 });
