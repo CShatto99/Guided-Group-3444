@@ -20,23 +20,18 @@ const profile = require("../mongodb/profile");
  *          and the the company name already exists in the database.
  */
 router.post("/company", authToken, async (req, res) => {
-  const { name, code } = req.body;
-
-  let prevProfile = {
-    company: name,
-    companyCode: code,
-  };
+  const { company, companyCode } = req.body;
 
   // Try/catch block to ensure any errors when updating a user's company name and code are caught
 
   try {
     // if the input fields for name and code are empty, user will be notified as such
-    if (!name || !code)
+    if (!company || !companyCode)
       return res.status(400).json({ msg: "Please enter all required fields." });
 
     // findCompany will await the return of the findCompanyByName function, which will attempt to find the company with
     // the user's inputted company name
-    const findCompany = await findCompanyByName(name);
+    const findCompany = await findCompanyByName(company);
 
     // if the company name doesn't exist, the user will be notified as such
     if (!findCompany)
@@ -47,7 +42,7 @@ router.post("/company", authToken, async (req, res) => {
 
     const findProfile = await findProfileByUser(req.user.ID.id);
 
-    const updatedProfile = { ...findProfile, ...prevProfile };
+    const updatedProfile = { ...findProfile, ...req.body };
 
     // updateProfile will then update the user profile with updatedProfile and return a json with an object containing updatedProfile
 

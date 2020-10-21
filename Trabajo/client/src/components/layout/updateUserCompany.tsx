@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import { Button, Col, Form, FormGroup, Input, Label, Alert } from "reactstrap";
 import "./layoutStyles.css";
-import states from "../../json/states.json";
-import Axios from "axios";
-import { idText } from "typescript";
 import { CompanyState, getAllCompanies } from "../../store/company";
 import { RootState } from "../../store";
 import { UserState } from "../../store/user";
-import { ProfileState } from "../../store/profile";
+import { ProfileState, updateProfileCompany } from "../../store/profile";
+import { AlertState } from "../../store/alert";
 
 // Interface for defining props for CreateCompany page
 interface updateUserCompanyProps {}
@@ -21,11 +18,14 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
   //redux state variables
   const dispatch = useDispatch();
   const { loading } = useSelector<RootState, UserState>(state => state.user);
-  const profileState = useSelector<RootState, ProfileState>(
+  const { profile } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
-  const { company, companies } = useSelector<RootState, CompanyState>(
+  const { companies } = useSelector<RootState, CompanyState>(
     state => state.company
+  );
+  const { msg, status } = useSelector<RootState, AlertState>(
+    state => state.alert
   );
 
   //State variables
@@ -44,18 +44,15 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
     if (!loading) {
       dispatch(getAllCompanies());
     }
-
-    // if (profile) {
-    //   setName(profile.company);
-    //   setCode(profile.companyID);
-    // }
   }, [loading]);
 
   useEffect(() => {
-    const { profile } = profileState;
-    setName(profile.company);
-    setCode(profile.companyCode);
-  }, [profileState.loading]);
+    if (profile) {
+      setName(profile.company);
+      setCode(profile.companyCode);
+    }
+  }, [profile]);
+
   /* Function:    handleSubmit
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
    * Return:      void
@@ -70,23 +67,12 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
     //prevent standard form behavior
     e.preventDefault();
 
-    //create request object
-    let requestObject: Object = {
-      id: ID,
-      code: code,
-    };
-
-    //TODO: send form to Redux to send to API
+    dispatch(updateProfileCompany(name, code));
   };
-
-  console.log(profileState);
-
-  console.log(name, code);
 
   //return html form
   return (
     <div>
-      <Button onClick={() => dispatch(getAllCompanies())}>Get companies</Button>
       <div
         style={{
           display: "flex",
@@ -94,6 +80,8 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
           alignItems: "center",
         }}
       >
+        {msg && status === 200 && <Alert color="success">{msg}</Alert>}
+        {msg && status && status !== 200 && <Alert color="danger">{msg}</Alert>}
         <div className={"registerContainer"}>
           <div className={"formContainer"}>
             <h1>Join A New Company</h1>

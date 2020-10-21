@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
@@ -13,7 +12,7 @@ import {
 } from "reactstrap";
 import states from "../../json/states.json";
 import { RootState } from "../../store";
-import { Profile, ProfileState, updateProfile } from "../../store/profile";
+import { ProfileState, updateProfile } from "../../store/profile";
 import { UserState } from "../../store/user";
 import { AlertState } from "../../store/alert";
 import "../../css/updateProfile.css";
@@ -31,10 +30,10 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const { profile, loading } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
-  const { user, isAuth } = useSelector<RootState, UserState>(
-    state => state.user
+  const { user } = useSelector<RootState, UserState>(state => state.user);
+  const { msg, status } = useSelector<RootState, AlertState>(
+    state => state.alert
   );
-  const { msg } = useSelector<RootState, AlertState>(state => state.alert);
 
   //state variables for address
   const [address, setAddress] = useState("");
@@ -46,7 +45,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const [rideDays, setRideDays] = useState<string[]>([]);
 
   /* useEffect is called when the page is first loaded and when the variables
-   * in the array included at the end of the function are changed.  We use it 
+   * in the array included at the end of the function are changed.  We use it
    * here to dynamically load the profile of the user into the fields so that
    * the user sees their current profile.  It will load the profile once the
    * profile is done loading from redux.
@@ -66,7 +65,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
    * Parameters:  index: number - the index that is changing in the rideDays array
    * Return:      void
    * Puprose:     Handles when a user updates the days they need a ride for.  If
-   *              the day they are updating is set to true, it simply sets it to 
+   *              the day they are updating is set to true, it simply sets it to
    *              false and vice versa.
    */
   const handleRideDays = (index: number) => {
@@ -114,7 +113,8 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
         className={"formContainer"}
         style={{ width: "80%", maxWidth: "72rem" }}
       >
-        {msg && <Alert color="success">{msg}</Alert>}
+        {msg && status === 200 && <Alert color="success">{msg}</Alert>}
+        {msg && status && status !== 200 && <Alert color="danger">{msg}</Alert>}
         <h1>Update Address</h1>
         <Form onSubmit={e => handleSubmit(e)}>
           <FormGroup row>

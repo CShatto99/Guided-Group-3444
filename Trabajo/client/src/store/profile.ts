@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setAlert } from "./alert";
+import { SSL_OP_CISCO_ANYCONNECT } from "constants";
 
 //Interface for Ride objects
 interface Ride {
@@ -27,7 +28,7 @@ export interface Profile {
 
 //Interface for ProfileState objects
 export interface ProfileState {
-  profile: Profile;
+  profile: Profile | null;
   loading: boolean;
 }
 
@@ -51,12 +52,16 @@ const profile = createSlice({
       state.profile = action.payload.profile;
       state.loading = false;
     },
+    clear_profile(state) {
+      state.profile = null;
+      state.loading = true;
+    },
   },
 });
 
 export default profile.reducer;
 
-const { load_profile } = profile.actions;
+const { load_profile, clear_profile } = profile.actions;
 
 /* Function:    loadProfile
  * Parameters:  No parameters.
@@ -73,6 +78,30 @@ export const loadProfile = () => async (
     dispatch(load_profile(data));
   } catch (error) {
     console.log(error.response);
+  }
+};
+
+export const updateProfileCompany = (
+  company: string,
+  companyCode: string
+) => async (dispatch: (setAlert: any) => void) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const { data } = await axios.post(
+      "/profile/company",
+      { company, companyCode },
+      config
+    );
+
+    dispatch(setAlert("Company status updated!", 200));
+    dispatch(load_profile(data));
+  } catch (error) {
+    dispatch(setAlert(error.response.data.msg, error.response.status));
   }
 };
 
@@ -93,12 +122,23 @@ export const updateProfile = (profile: any) => async (
 
   try {
     const { data } = await axios.post("/profile", profile, config);
-    console.log(data);
+
     dispatch(setAlert("Profile updated", 200));
     dispatch(load_profile(data));
   } catch (error) {
-    console.log(error.response);
+    dispatch(setAlert(error.response.data.msg, error.response.status));
   }
+};
+
+/* Function:    clearProfile
+ * Parameters:  No parameters.
+ * Return:      Void
+ * Purpose:     This function clears the profile slice state.
+ */
+export const clearProfile = () => async (
+  dispatch: (clear_profile: any) => void
+) => {
+  dispatch(clear_profile());
 };
 
 /* Function:    updateProfile

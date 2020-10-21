@@ -1,8 +1,8 @@
 import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { setAlert } from "./alert";
+import { setAlert, clearAlert } from "./alert";
 import setAuthToken from "../utils/setAuthToken";
-import { loadProfile } from "./profile";
+import { loadProfile, clearProfile } from "./profile";
 
 //Interface for LoginData object
 interface LoginData {
@@ -45,7 +45,7 @@ const user = createSlice({
   } as UserState,
   reducers: {
     login_user(state, action: PayloadAction<UserState["user"]>) {
-      localStorage.setItem("isAuth", "true"); // will persist user data
+      localStorage.setItem("isAuth", "true");
       state.isAuth = true;
       state.user = action.payload;
       state.loading = false;
@@ -72,7 +72,7 @@ const { login_user, logout_user } = user.actions;
 export const loadUser = () => async (dispatch: (setAlert: any) => void) => {
   try {
     const { data } = await axios.get("/auth/user");
-    console.log(data);
+
     dispatch(login_user(data.user));
   } catch (error) {
     dispatch(setAlert(error.response.data.msg, error.response.status));
@@ -170,6 +170,8 @@ export const refresh = () => async (dispatch: (set_alert: any) => void) => {
 export const logout = () => async (dispatch: (set_alert: any) => void) => {
   try {
     dispatch(logout_user());
+    dispatch(clearProfile());
+    dispatch(clearAlert());
     await axios.post("/auth/logout");
   } catch (error) {
     dispatch(setAlert(error.response.data.msg, error.response.status));
