@@ -148,6 +148,8 @@ export const refresh = () => async (dispatch: (set_alert: any) => void) => {
   try {
     const { data } = await axios.get("/auth/token");
 
+    console.log(data);
+
     setAuthToken(data.accessToken);
 
     if (data.accessToken) {

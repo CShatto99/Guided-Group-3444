@@ -49,9 +49,11 @@ router.post("/create", authToken, async (req, res) => {
   if (!name || !address || !city || !state || !zip || !code || !confirmCode)
     return res.status(400).json({ msg: "Please enter all required fields" });
 
+  console.log("made it here");
   // check if company already exists by casting the company name to lowercase
   const lowercaseName = name.toLowerCase();
   const companyFound = await findCompanyByName(lowercaseName);
+
   // if the company is found, the creator will be notified as such
   if (companyFound)
     return res.status(400).json({ msg: "Company already exists." });
@@ -82,6 +84,7 @@ router.post("/create", authToken, async (req, res) => {
     // returns a response json containing company
     return res.json(company);
   } catch (error) {
+    console.log(error);
     // if there's an error, there will be a 500 status describing an interal server error
     return res.status(500).json({ msg: "Internal Server error" });
   }

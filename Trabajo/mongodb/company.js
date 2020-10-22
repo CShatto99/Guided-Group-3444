@@ -49,6 +49,7 @@ const insertCompany = async company => {
 const findCompanyByName = async name => {
   try {
     const collection = db.collection("company");
+    console.log(name);
 
     const companyFound = await collection.find({ name }).toArray();
 
