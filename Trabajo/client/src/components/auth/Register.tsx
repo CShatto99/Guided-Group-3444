@@ -1,21 +1,27 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { DefaultRootState, useDispatch, useSelector } from "react-redux";
-import { Button, Col, Form, FormGroup, Input, Label, Alert } from "reactstrap";
+import {
+  Button,
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  Alert,
+} from "reactstrap";
 import states from "../../json/states.json";
 import { register } from "../../store/user";
 import { RootState } from "../../store/index";
 import { AlertState } from "../../store/alert";
 import { UserState } from "../../store/user";
-
-/* Interface for defining props for Register page
- */
-interface RegisterProps {}
+import "../../css/authForm.css";
 
 /* The Register page is where users can sign up to use our application. Upon registering they are
  * automatically logged in and redirected to the updateProfile page
  */
-export const Register: React.FC<RegisterProps> = () => {
+export const Register: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const { isAuth } = useSelector<RootState, UserState>(state => state.user);
   const { msg } = useSelector<RootState, AlertState>(state => state.alert);
@@ -23,7 +29,6 @@ export const Register: React.FC<RegisterProps> = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [registerSuccess, setRegisterSuccess] = useState(false);
 
   /* Function:    handleSubmit
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
@@ -55,100 +60,82 @@ export const Register: React.FC<RegisterProps> = () => {
   return isAuth ? (
     <Redirect to="/userHome" />
   ) : (
-    <div>
-      <div className={"formContainer"}>
-        <h1>Register</h1>
+    <Row className="auth-container">
+      <Col xs="1"></Col>
+      <Col xs="10" className="auth-container-content">
         <Form
+          className="auth-form"
           onSubmit={(e: React.ChangeEvent<HTMLFormElement>) => handleSubmit(e)}
         >
-          {msg && (
-            <FormGroup row>
-              <Col>
-                <Alert color="danger">{msg}</Alert>
-              </Col>
-            </FormGroup>
-          )}
+          {msg && <Alert color="danger">{msg}</Alert>}
+          <h1>Register for an account</h1>
           <FormGroup row>
-            <Label for="fullName" sm={3}>
-              Full Name
-            </Label>
-            <Col>
-              <Input
-                type="text"
-                name="fullName"
-                id="fullName"
-                placeholder="Bobby Bobberson"
-                value={fullName}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setFullName(e.target.value)
-                }
-                sm={9}
-              />
-            </Col>
+            <Label for="fullName">Full Name</Label>
+            <Input
+              type="text"
+              name="fullName"
+              id="fullName"
+              placeholder="Bobby Bobberson"
+              value={fullName}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setFullName(e.target.value)
+              }
+              sm={9}
+            />
           </FormGroup>
           <FormGroup row>
-            <Label for="email" sm={3}>
-              Email
-            </Label>
-            <Col>
-              <Input
-                type="email"
-                name="email"
-                id="email"
-                placeholder="example@example.com"
-                value={email}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setEmail(e.target.value)
-                }
-                sm={9}
-              />
-            </Col>
+            <Label for="email">Email</Label>
+            <Input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="example@example.com"
+              value={email}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setEmail(e.target.value)
+              }
+              sm={9}
+            />
           </FormGroup>
           <FormGroup row>
-            <Label for="password" sm={3}>
-              Password
-            </Label>
-            <Col>
-              <Input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="myPassword123!"
-                value={password}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setPassword(e.target.value)
-                }
-                sm={9}
-              />
-            </Col>
+            <Label for="password">Password</Label>
+            <Input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="myPassword123!"
+              value={password}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setPassword(e.target.value)
+              }
+              sm={9}
+            />
           </FormGroup>
           <FormGroup row>
-            <Label for="confirmPassword" sm={3}>
-              Confirm Password
-            </Label>
-            <Col>
-              <Input
-                type="password"
-                name="confirmPassword"
-                id="confirmPassword"
-                placeholder="myPassword123!"
-                value={confirmPassword}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setConfirmPassword(e.target.value)
-                }
-                sm={9}
-              />
-            </Col>
+            <Label for="confirmPassword">Confirm Password</Label>
+            <Input
+              type="password"
+              name="confirmPassword"
+              id="confirmPassword"
+              placeholder="myPassword123!"
+              value={confirmPassword}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setConfirmPassword(e.target.value)
+              }
+              sm={9}
+            />
           </FormGroup>
-          <FormGroup row>
-            <Col>
-              <Button className={"submitButton"} type="submit">
-                Register
-              </Button>
-            </Col>
-          </FormGroup>
+          <Col>
+            <Button className={"submitButton"} type="submit">
+              Register
+            </Button>
+          </Col>
+          <p>
+            Already have an account? <Link to="/login">Login</Link>
+          </p>
         </Form>
-      </div>
-    </div>
+      </Col>
+      <Col xs="1"></Col>
+    </Row>
   );
 };
