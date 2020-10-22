@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
-import profile from "../../store/profile";
+import { RootState } from "../../store";
+import { UserState } from "../../store/user";
 
 // Interface for defining props for ChangeCompanyCode page
 interface ChangeCompanyCodeProps {}
@@ -11,6 +12,7 @@ interface ChangeCompanyCodeProps {}
  * they need to change the code for whatever reason
  */
 export const ChangeCompanyCode: React.FC<ChangeCompanyCodeProps> = () => {
+  const { isAuth } = useSelector<RootState, UserState>(state => state.user);
   //state variables
   const [originalCode, setOriginalCode] = useState("");
   const [newCode, setNewCode] = useState("");
@@ -41,11 +43,13 @@ export const ChangeCompanyCode: React.FC<ChangeCompanyCodeProps> = () => {
   };
 
   //render the form
-  return (
+  return !isAuth ? (
+    <Redirect push to="/login" />
+  ) : (
     <div>
       <div className={"formContainer"}>
         <h1>Change Company Code</h1>
-        <Form onSubmit={(e) => handleSubmit(e)}>
+        <Form onSubmit={e => handleSubmit(e)}>
           <FormGroup row>
             <Label for="originalCode" sm={3}>
               Original Code

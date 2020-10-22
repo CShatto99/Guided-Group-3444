@@ -47,7 +47,7 @@ export const UserHome: React.FC = () => {
   };
 
   //if the user is authorized and logged in and has a profile then render the page
-  return !localStorage.getItem("isAuth") ? (
+  return !isAuth ? (
     <Redirect to="/login" />
   ) : redirect ? (
     <Redirect to="/userHome/updateProfile" />

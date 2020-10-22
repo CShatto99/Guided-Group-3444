@@ -7,6 +7,7 @@ import { RootState } from "../../store";
 import { UserState } from "../../store/user";
 import { ProfileState, updateProfileCompany } from "../../store/profile";
 import { AlertState } from "../../store/alert";
+import { Redirect } from "react-router-dom";
 
 // Interface for defining props for CreateCompany page
 interface updateUserCompanyProps {}
@@ -17,7 +18,9 @@ interface updateUserCompanyProps {}
 export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
   //redux state variables
   const dispatch = useDispatch();
-  const { loading } = useSelector<RootState, UserState>(state => state.user);
+  const { isAuth, loading } = useSelector<RootState, UserState>(
+    state => state.user
+  );
   const { profile } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
@@ -71,8 +74,12 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
   };
 
   //return html form
-  return (
+  return !isAuth ? (
+    <Redirect push to="/login" />
+  ) : (
     <div>
+      {msg && status === 200 && <Alert color="success">{msg}</Alert>}
+      {msg && status && status !== 200 && <Alert color="danger">{msg}</Alert>}
       <div
         style={{
           display: "flex",
@@ -80,8 +87,6 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
           alignItems: "center",
         }}
       >
-        {msg && status === 200 && <Alert color="success">{msg}</Alert>}
-        {msg && status && status !== 200 && <Alert color="danger">{msg}</Alert>}
         <div className={"registerContainer"}>
           <div className={"formContainer"}>
             <h1>Join A New Company</h1>

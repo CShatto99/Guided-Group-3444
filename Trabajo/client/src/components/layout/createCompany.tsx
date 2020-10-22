@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
 import "./layoutStyles.css";
@@ -7,6 +7,7 @@ import states from "../../json/states.json";
 import { createCompany } from "../../store/company";
 import { RootState } from "../../store";
 import { AlertState } from "../../store/alert";
+import { UserState } from "../../store/user";
 // Interface for defining props for CreateCompany page
 interface createCompanyProps {}
 
@@ -16,6 +17,7 @@ interface createCompanyProps {}
 export const CreateCompany: React.FC<createCompanyProps> = () => {
   //redux variables
   const dispatch = useDispatch();
+  const { isAuth } = useSelector<RootState, UserState>(state => state.user);
   const { msg, status } = useSelector<RootState, AlertState>(
     state => state.alert
   );
@@ -85,7 +87,9 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
   };
 
   //Render the HTML form
-  return (
+  return !isAuth ? (
+    <Redirect push to="/login" />
+  ) : (
     <div>
       <div>
         {msg && status === 200 && <Alert color="success">{msg}</Alert>}

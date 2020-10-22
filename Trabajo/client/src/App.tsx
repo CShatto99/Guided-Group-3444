@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import {} from "react-redux";
 import { Provider } from "react-redux";
 import "./App.css";
 import { TopNavBar } from "./components/layout/TopNavBar";
