@@ -4,7 +4,7 @@ import {} from "react-redux";
 import { Provider } from "react-redux";
 import "./App.css";
 import { TopNavBar } from "./components/layout/TopNavBar";
-import { Landing } from "./components/layout/Landing";
+import Landing from "./components/layout/Landing";
 import Login from "./components/auth/Login";
 import { Register } from "./components/auth/Register";
 import { NotFound } from "./components/layout/NotFound";
