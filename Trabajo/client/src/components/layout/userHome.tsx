@@ -40,7 +40,7 @@ export const UserHome: React.FC = () => {
   const companyDiv = () => {
     return (
       <div className={"userHomeMap"}>
-        <h4>{profile.companyID}</h4>
+        <h4>{profile && profile.companyCode}</h4>
         <div>map map REPLACE ME WITH GOOGLE MAP map map</div>
       </div>
     );
@@ -53,7 +53,7 @@ export const UserHome: React.FC = () => {
     <Redirect to="/userHome/updateProfile" />
   ) : (
     <div className={"userHomeContainer"}>
-      {profile && profile.companyID ? (
+      {profile && profile.companyCode ? (
         companyDiv
       ) : (
         <div className={"userHomeMap"}>
