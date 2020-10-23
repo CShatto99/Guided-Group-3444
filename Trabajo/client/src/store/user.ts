@@ -103,6 +103,7 @@ export const login = (user: LoginData) => async (
     setAuthToken(data.accessToken);
 
     dispatch(login_user(data.user));
+    dispatch(loadProfile());
   } catch (error) {
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
@@ -131,6 +132,7 @@ export const register = (user: RegisterData) => async (
     setAuthToken(data.accessToken);
 
     dispatch(login_user(data.user));
+    dispatch(loadProfile());
   } catch (error) {
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
@@ -148,14 +150,12 @@ export const refresh = () => async (dispatch: (set_alert: any) => void) => {
   try {
     const { data } = await axios.get("/auth/token");
 
-    console.log(data);
-
     setAuthToken(data.accessToken);
 
+    // TODO: make the token route fetch the current user
     if (data.accessToken) {
       const res = await axios.get("/auth/user");
-      dispatch(login_user(res.data));
-      dispatch(loadUser());
+      dispatch(login_user(res.data.user));
       dispatch(loadProfile());
     }
   } catch (err) {

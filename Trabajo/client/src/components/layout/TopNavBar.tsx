@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Navbar,
@@ -17,7 +17,7 @@ import { logout, UserState } from "../../store/user";
 interface TopNavBarProps {}
 
 /* This function is the top navigation bar shown on all web pages.
- * The buttons that are shown depend on if the user is logged in or not. 
+ * The buttons that are shown depend on if the user is logged in or not.
  */
 export const TopNavBar: React.FC = () => {
   //redux state variables
@@ -28,6 +28,11 @@ export const TopNavBar: React.FC = () => {
 
   //component state variables
   const [isOpen, setIsOpen] = useState(false);
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    setName(user.fullName);
+  }, [isAuth]);
 
   /* Function: userLogout
    * Parameters: void
@@ -83,6 +88,8 @@ export const TopNavBar: React.FC = () => {
     </>
   );
 
+  console.log(user);
+
   //return the html objects depending on if the user is logged in or not.
   //collapsable - if isOpen is true then it is collapsed, otherwise it is not.
   return (
@@ -90,7 +97,7 @@ export const TopNavBar: React.FC = () => {
       <Navbar expand="md">
         <NavbarBrand href="/" className="nav-logo">
           <i className="fa fa-suitcase" aria-hidden="true"></i>
-          {isAuth && `Welcome ${user.fullName}!`}
+          {`Welcome ${user.fullName}!`}
         </NavbarBrand>
         {isOpen ? (
           <i

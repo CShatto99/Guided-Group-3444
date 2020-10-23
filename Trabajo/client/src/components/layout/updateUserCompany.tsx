@@ -74,7 +74,7 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
   };
 
   //return html form
-  return !isAuth ? (
+  return !isAuth && !loading ? (
     <Redirect push to="/login" />
   ) : (
     <div>

@@ -110,7 +110,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   };
 
   //render the form
-  return !isAuth ? (
+  return !isAuth && !loading ? (
     <Redirect push to="/login" />
   ) : (
     <div className={"registerContainer"}>
