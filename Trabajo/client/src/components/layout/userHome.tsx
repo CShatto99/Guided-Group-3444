@@ -8,6 +8,7 @@ import { ProfileState } from "../../store/profile";
 import { addResponseMessage, Widget } from "react-chat-widget";
 import "react-chat-widget/lib/styles.css";
 import "../../css/userHome.css";
+import UserHomeMap from "./UserHomeMap";
 
 /* UserHome is where the user will land once they are logged in and
  * have created a profile.  If the user is affiliated with a company,
@@ -58,7 +59,7 @@ export const UserHome: React.FC = () => {
       {profile ? (
         <Row className="align-items-center">
           <Col xs={12} md={6} className="map-container">
-            GOOGLE MAP SECTION
+            <UserHomeMap />
           </Col>
           <Col xs={12} md={6} className="justify-content-center mt-4">
             <Widget
