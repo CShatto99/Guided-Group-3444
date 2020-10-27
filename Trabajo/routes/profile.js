@@ -12,6 +12,7 @@ const {
 const { findUserByEmail } = require("../mongodb/user");
 const { findCompanyByName } = require("../mongodb/company");
 const profile = require("../mongodb/profile");
+const NodeGeocoder = require('node-geocoder');
 
 /* Function Name: router.post("/company")
  * Parameters: "/company", authToken, async (req, res)
@@ -100,6 +101,25 @@ router.post("/", authToken, async (req, res) => {
       // newProfile contains the object from the profileFound and request body
       const newProfile = { ...profileFound, ...req.body };
 
+      //check to see if lat/long needs to be updated
+      if( profileFound.address != newProfile.address || profileFound.city != newProfile.city || profileFound.state != newProfile.state || profileFound.zip != newProfile.zip) {
+        const options = {
+          provider: 'google',
+         
+          // Optional depending on the providers
+          //fetch: customFetchImplementation,
+          apiKey: process.env.GOOGLE_MAPS_API_SECRET, // for Mapquest, OpenCage, Google Premier
+          formatter: null // 'gpx', 'string', ...
+        };
+         
+        const geocoder = NodeGeocoder(options);
+
+        const gres = await geocoder.geocode(address + " " + city + " " + state + " " + zip);
+
+        newProfile.lat = gres[0].latitude;
+        newProfile.long = gres[0].longitude;
+      }
+
       // updatedProfile function is called with newProfile
       await updateProfile(newProfile);
 
@@ -109,6 +129,21 @@ router.post("/", authToken, async (req, res) => {
 
     // If the profile does not exist, create it and insert it
     const profile = { ...req.body, ...{ userID: req.user.ID.id } };
+
+    //get lat/long
+    const options = {
+      provider: 'google',
+     
+      // Optional depending on the providers
+      //fetch: customFetchImplementation,
+      apiKey: process.env.GOOGLE_MAPS_API_SECRET, // for Mapquest, OpenCage, Google Premier
+      formatter: null // 'gpx', 'string', ...
+    };
+    const geocoder = NodeGeocoder(options);
+    const gres = await geocoder.geocode(address + " " + city + " " + state + " " + zip);
+
+    profile.lat = gres[0].latitude;
+    profile.long = gres[0].longitude;
     const newProfile = await insertProfile(profile);
 
     // response is returned with an object containing newProfile
