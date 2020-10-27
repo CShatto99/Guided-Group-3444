@@ -59,7 +59,7 @@ export const UserHome: React.FC = () => {
       {profile ? (
         <Row className="align-items-center">
           <Col xs={12} md={6} className="map-container">
-            <UserHomeMap />
+            <UserHomeMap users={[]} />
           </Col>
           <Col xs={12} md={6} className="justify-content-center mt-4">
             <Widget

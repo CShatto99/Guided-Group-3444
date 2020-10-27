@@ -1,4 +1,4 @@
-import { Map, GoogleApiWrapper } from "google-maps-react";
+import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import React from "react";
 
 export class UserHomeMap extends React.Component {
@@ -9,7 +9,20 @@ export class UserHomeMap extends React.Component {
         zoom={12}
         style={{ width: "100%", height: "100%" }}
         initialCenter={{ lat: 33.254311, lng: -97.151867 }}
-      />
+      >
+        {this.props.users
+          ? this.props.users.map((user, index) => {
+              return (
+                <Marker
+                  key={index}
+                  id={index}
+                  position={{ lat: user.lat, lng: user.long }}
+                  label={user.name}
+                />
+              );
+            })
+          : null}
+      </Map>
     );
   }
 }
