@@ -97,7 +97,7 @@ export const TopNavBar: React.FC = () => {
       <Navbar expand="md">
         <NavbarBrand href="/" className="nav-logo">
           <i className="fa fa-suitcase" aria-hidden="true"></i>
-          {`Welcome ${user.fullName}!`}
+          {isAuth ? `Welcome ${user.fullName}!` : `Welcome!`}
         </NavbarBrand>
         {isOpen ? (
           <i
