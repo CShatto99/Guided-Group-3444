@@ -6,12 +6,16 @@
 }
 
 .map-container {
-  height: 55vh;
-  background-color: #f0f8ff;
-  padding: 1.5rem 2rem;
+  height: 60vh;
   border-radius: 0.3rem;
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
     0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+}
+
+.chat-container {
+  height: 60vh;
+  width: 50%;
+  display: flex;
 }
 
 .rcw-conversation-container > .rcw-header {
@@ -36,11 +40,16 @@
   position: relative;
   width: 100%;
   max-width: 100%;
+  margin: 0;
 }
 
 .rcw-launcher {
   /* background-color: #e1b382; */
   background-color: #2d545e;
+}
+
+.g-map-style {
+  position: static !important;
 }
 
 @media screen and (max-width: 800px) {

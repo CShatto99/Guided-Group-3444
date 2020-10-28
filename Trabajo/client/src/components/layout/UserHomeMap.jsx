@@ -1,5 +1,6 @@
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import React from "react";
+import "../../css/userHome.css";
 
 export class UserHomeMap extends React.Component {
   render() {
@@ -7,8 +8,8 @@ export class UserHomeMap extends React.Component {
       <Map
         google={this.props.google}
         zoom={12}
-        style={{ width: "100%", height: "100%" }}
         initialCenter={{ lat: 33.254311, lng: -97.151867 }}
+        className="g-map-style"
       >
         {this.props.users
           ? this.props.users.map((user, index) => {
