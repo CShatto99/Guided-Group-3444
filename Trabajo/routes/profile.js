@@ -12,7 +12,7 @@ const {
 const { findUserByEmail } = require("../mongodb/user");
 const { findCompanyByName } = require("../mongodb/company");
 const profile = require("../mongodb/profile");
-const NodeGeocoder = require('node-geocoder');
+const NodeGeocoder = require("node-geocoder");
 
 /* Function Name: router.post("/company")
  * Parameters: "/company", authToken, async (req, res)
@@ -102,19 +102,26 @@ router.post("/", authToken, async (req, res) => {
       const newProfile = { ...profileFound, ...req.body };
 
       //check to see if lat/long needs to be updated
-      if( profileFound.address != newProfile.address || profileFound.city != newProfile.city || profileFound.state != newProfile.state || profileFound.zip != newProfile.zip) {
+      if (
+        profileFound.address != newProfile.address ||
+        profileFound.city != newProfile.city ||
+        profileFound.state != newProfile.state ||
+        profileFound.zip != newProfile.zip
+      ) {
         const options = {
-          provider: 'google',
-         
+          provider: "google",
+
           // Optional depending on the providers
           //fetch: customFetchImplementation,
           apiKey: process.env.GOOGLE_MAPS_API_SECRET, // for Mapquest, OpenCage, Google Premier
-          formatter: null // 'gpx', 'string', ...
+          formatter: null, // 'gpx', 'string', ...
         };
-         
+
         const geocoder = NodeGeocoder(options);
 
-        const gres = await geocoder.geocode(address + " " + city + " " + state + " " + zip);
+        const gres = await geocoder.geocode(
+          address + " " + city + " " + state + " " + zip
+        );
 
         newProfile.lat = gres[0].latitude;
         newProfile.long = gres[0].longitude;
@@ -132,15 +139,17 @@ router.post("/", authToken, async (req, res) => {
 
     //get lat/long
     const options = {
-      provider: 'google',
-     
+      provider: "google",
+
       // Optional depending on the providers
       //fetch: customFetchImplementation,
       apiKey: process.env.GOOGLE_MAPS_API_SECRET, // for Mapquest, OpenCage, Google Premier
-      formatter: null // 'gpx', 'string', ...
+      formatter: null, // 'gpx', 'string', ...
     };
     const geocoder = NodeGeocoder(options);
-    const gres = await geocoder.geocode(address + " " + city + " " + state + " " + zip);
+    const gres = await geocoder.geocode(
+      address + " " + city + " " + state + " " + zip
+    );
 
     profile.lat = gres[0].latitude;
     profile.long = gres[0].longitude;
@@ -151,6 +160,7 @@ router.post("/", authToken, async (req, res) => {
   } catch (error) {
     // if there's an error, this route will return a 500 status describing an internal server error
     res.status(500).json({ msg: "Internal server error" });
+    console.log(error.message);
   }
 });
 

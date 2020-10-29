@@ -9,12 +9,12 @@ const {
   findAllCompanies,
   findCompanyByName,
 } = require("../mongodb/company");
-const { findProfileByCompanyID } = require("../mongodb/profile");
+const { findProfileBycompanyCode } = require("../mongodb/profile");
 
 router.get("/coordinates", authToken, async (req, res) => {
-  const { companyID } = req.body;
+  const { companyCode } = req.body;
   try {
-    const profiles = await findProfileByCompanyID(companyID);
+    const profiles = await findProfileBycompanyCode(companyCode);
 
     res.json(profiles);
   } catch (error) {
