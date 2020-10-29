@@ -13,10 +13,13 @@ export class UserHomeMap extends React.Component {
       >
         {this.props.users
           ? this.props.users.map((user, index) => {
+              console.log(user);
               return (
                 <Marker
                   key={index}
                   id={index}
+                  title={user.name}
+                  name={user.name}
                   position={{ lat: user.lat, lng: user.long }}
                   label={user.name}
                 />

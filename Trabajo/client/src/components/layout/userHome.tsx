@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Button, Col, Form, Input, Row, Spinner } from "reactstrap";
 import { RootState } from "../../store/index";
 import { UserState } from "../../store/user";
@@ -9,6 +9,7 @@ import { addResponseMessage, Widget } from "react-chat-widget";
 import "react-chat-widget/lib/styles.css";
 import "../../css/userHome.css";
 import UserHomeMap from "./UserHomeMap";
+import { CompanyState, getCompanyMembers } from "../../store/company";
 
 /* UserHome is where the user will land once they are logged in and
  * have created a profile.  If the user is affiliated with a company,
@@ -16,12 +17,16 @@ import UserHomeMap from "./UserHomeMap";
  * for that company will be rendered.
  */
 export const UserHome: React.FC = () => {
+  const dispatch = useDispatch();
   //redux state variables
   const { isAuth, user } = useSelector<RootState, UserState>(
     state => state.user
   );
   const { profile, loading } = useSelector<RootState, ProfileState>(
     state => state.profile
+  );
+  const { members } = useSelector<RootState, CompanyState>(
+    state => state.company
   );
 
   //state variables
@@ -39,6 +44,9 @@ export const UserHome: React.FC = () => {
       setRedirect(true);
     }
 
+    if (profile && profile.companyCode)
+      dispatch(getCompanyMembers(profile.companyCode));
+
     launcher && launcher.click();
   }, [loading]);
 
@@ -46,8 +54,6 @@ export const UserHome: React.FC = () => {
   const handleNewUserMessage = (newMessage: string) => {
     console.log(`New message incoming ${newMessage}`);
   };
-
-  console.log(profile);
 
   //if the user is authorized and logged in and has a profile then render the page
   return !isAuth ? (
@@ -59,7 +65,7 @@ export const UserHome: React.FC = () => {
       {profile ? (
         <Row className="align-items-center">
           <Col xs={12} md={6} className="map-container">
-            <UserHomeMap users={[]} />
+            <UserHomeMap users={members} />
           </Col>
           <Col xs={12} md={6} className="chat-container">
             <Widget
