@@ -58,6 +58,18 @@ const findProfileByUser = async userID => {
   }
 };
 
+const findProfileByCompanyID = async companyID => {
+  try {
+    const collection = db.collection("profile");
+
+    const profiles = collection.find({ companyID }).toArray();
+
+    return profiles;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 /* Function:    updateProfile
  * Parameters:  A profile object.
  * Return:      An updated profile document.
@@ -85,5 +97,6 @@ const updateProfile = async profile => {
 module.exports = {
   insertProfile,
   findProfileByUser,
+  findProfileByCompanyID,
   updateProfile,
 };

@@ -9,6 +9,18 @@ const {
   findAllCompanies,
   findCompanyByName,
 } = require("../mongodb/company");
+const { findProfileByCompanyID } = require("../mongodb/profile");
+
+router.get("/coordinates", authToken, async (req, res) => {
+  const { companyID } = req.body;
+  try {
+    const profiles = await findProfileByCompanyID(companyID);
+
+    res.json(profiles);
+  } catch (error) {
+    res.status(500).json({ msg: "Internal Server error" });
+  }
+});
 
 /* Function Name: router.get("/all")
  * Parameters: "/all", authToken, async (req, res)
