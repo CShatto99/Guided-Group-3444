@@ -1,3 +1,4 @@
+import { Profile } from "./profile";
 import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setAlert } from "./alert";
@@ -17,6 +18,7 @@ export interface Company {
 //Interface for CompanyState objects
 export interface CompanyState {
   company: Company;
+  members: [Profile] | [];
   companies: Company[] | null;
   loading: boolean;
 }
@@ -33,6 +35,7 @@ const company = createSlice({
   name: "company",
   initialState: {
     company: {},
+    members: [],
     companies: null,
     loading: true,
   } as CompanyState,
@@ -45,12 +48,38 @@ const company = createSlice({
       state.companies = action.payload;
       state.loading = false;
     },
+    load_members(state, action: PayloadAction<[Profile]>) {
+      state.members = action.payload;
+      state.loading = false;
+    },
   },
 });
 
 export default company.reducer;
 
-const { load_company, load_companies } = company.actions;
+const { load_company, load_companies, load_members } = company.actions;
+
+export const getCompanyMembers = (companyCode: string) => async (
+  dispatch: (setAlert: any) => void
+) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const { data } = await axios.post(
+      "/company/coordinates",
+      { companyCode },
+      config
+    );
+
+    dispatch(load_members(data));
+  } catch (error) {
+    dispatch(setAlert(error.response.data.msg, error.response.status));
+  }
+};
 
 /* Function:    getAllCompanies
  * Parameters:  No parameters.

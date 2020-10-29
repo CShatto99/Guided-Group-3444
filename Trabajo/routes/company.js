@@ -11,7 +11,7 @@ const {
 } = require("../mongodb/company");
 const { findProfileBycompanyCode } = require("../mongodb/profile");
 
-router.get("/coordinates", authToken, async (req, res) => {
+router.post("/coordinates", authToken, async (req, res) => {
   const { companyCode } = req.body;
   try {
     const profiles = await findProfileBycompanyCode(companyCode);
