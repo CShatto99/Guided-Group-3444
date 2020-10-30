@@ -45,7 +45,15 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const [zip, setZip] = useState("");
 
   //state variables for weekday preferences
-  const [rideDays, setRideDays] = useState<string[]>(["0","0","0","0","0","0","0"]);
+  const [rideDays, setRideDays] = useState<string[]>([
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+  ]);
 
   /* useEffect is called when the page is first loaded and when the variables
    * in the array included at the end of the function are changed.  We use it
