@@ -17,7 +17,9 @@ interface createCompanyProps {}
 export const CreateCompany: React.FC<createCompanyProps> = () => {
   //redux variables
   const dispatch = useDispatch();
-  const { isAuth } = useSelector<RootState, UserState>(state => state.user);
+  const { isAuth, loading } = useSelector<RootState, UserState>(
+    state => state.user
+  );
   const { msg, status } = useSelector<RootState, AlertState>(
     state => state.alert
   );
@@ -87,7 +89,7 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
   };
 
   //Render the HTML form
-  return !isAuth ? (
+  return !isAuth && !loading ? (
     <Redirect push to="/login" />
   ) : (
     <div>
