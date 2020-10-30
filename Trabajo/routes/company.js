@@ -10,6 +10,7 @@ const {
   findCompanyByName,
 } = require("../mongodb/company");
 const { findProfileBycompanyCode } = require("../mongodb/profile");
+const NodeGeocoder = require("node-geocoder");
 
 router.post("/coordinates", authToken, async (req, res) => {
   const { companyCode } = req.body;
@@ -79,6 +80,21 @@ router.post("/create", authToken, async (req, res) => {
     const salt = await bcrypt.genSalt();
     const hashedCode = await bcrypt.hash(code, salt);
 
+    //get lat/long
+    const options = {
+      provider: "google",
+
+      // Optional depending on the providers
+      //fetch: customFetchImplementation,
+      apiKey: process.env.GOOGLE_MAPS_API_SECRET, // for Mapquest, OpenCage, Google Premier
+      formatter: null, // 'gpx', 'string', ...
+    };
+    const geocoder = NodeGeocoder(options);
+    const gres = await geocoder.geocode(
+      address + " " + city + " " + state + " " + zip
+    );
+
+
     // create and store new user
     const newCompany = {
       name: lowercaseName,
@@ -86,6 +102,8 @@ router.post("/create", authToken, async (req, res) => {
       city,
       state,
       zip,
+      lat: gres[0].latitude,
+      long: gres[0].longitude,
       hashedCode,
       image,
     };
