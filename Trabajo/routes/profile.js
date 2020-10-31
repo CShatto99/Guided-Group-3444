@@ -34,6 +34,10 @@ router.post("/company", authToken, async (req, res) => {
     // the user's inputted company name
     const findCompany = await findCompanyByName(company);
 
+    const match = await bcrypt.compare(companyCode, findCompany.hashedCode);
+
+    if (!match) return res.status(400).json({ msg: "Invalid company code." });
+
     // if the company name doesn't exist, the user will be notified as such
     if (!findCompany)
       return res.status(400).json({ msg: "Company does not exist." });
@@ -43,7 +47,10 @@ router.post("/company", authToken, async (req, res) => {
 
     const findProfile = await findProfileByUser(req.user.ID.id);
 
-    const updatedProfile = { ...findProfile, ...req.body };
+    const updatedProfile = {
+      ...findProfile,
+      ...{ company, companyID: findCompany._id },
+    };
 
     // updateProfile will then update the user profile with updatedProfile and return a json with an object containing updatedProfile
 
