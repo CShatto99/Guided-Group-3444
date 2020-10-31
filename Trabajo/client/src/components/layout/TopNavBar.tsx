@@ -87,8 +87,6 @@ export const TopNavBar: React.FC = () => {
     </>
   );
 
-  console.log(user);
-
   //return the html objects depending on if the user is logged in or not.
   //collapsable - if isOpen is true then it is collapsed, otherwise it is not.
   return (

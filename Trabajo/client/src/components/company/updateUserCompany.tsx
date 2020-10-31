@@ -7,6 +7,7 @@ import { UserState } from "../../store/user";
 import { ProfileState, updateProfileCompany } from "../../store/profile";
 import { AlertState } from "../../store/alert";
 import { Redirect } from "react-router-dom";
+import "../../css/layoutStyles.css";
 
 // Interface for defining props for CreateCompany page
 interface updateUserCompanyProps {}
@@ -65,12 +66,14 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
    *              that will inform the user of the errors.  If the result is a success
    *              the user is informed.
    */
-  let handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     //prevent standard form behavior
     e.preventDefault();
 
     dispatch(updateProfileCompany(name, code));
   };
+
+  console.log(image);
 
   //return html form
   return !isAuth && !loading ? (
@@ -104,9 +107,13 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
                     name="companies"
                     id="companies"
                     value={name}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setName(e.target.value)
-                    }
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setName(e.target.value);
+                      companies &&
+                        companies.forEach(c => {
+                          if (c.name === e.target.value) setImage(c.image);
+                        });
+                    }}
                     sm={9}
                   >
                     {companies &&
@@ -155,9 +162,8 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
               }}
             >
               <img
-                src={image === "" ? "/images/defaultCompany.png" : image}
+                src={image}
                 alt="companyPhoto"
-                className={"companyInfoPic"}
                 style={{ minHeight: "50vh" }}
               />
             </div>
