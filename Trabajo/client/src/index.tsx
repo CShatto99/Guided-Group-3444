@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css";
+import "./css/layoutStyles.css";
 
 //this handles the entry point of the application and attaches it to the HTML page.
 ReactDOM.render(<App />, document.getElementById("root"));

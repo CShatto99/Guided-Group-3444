@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import "./layoutStyles.css";
 
 // Interface for defining props for landing page
 interface NotFoundProps {}

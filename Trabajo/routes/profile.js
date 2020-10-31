@@ -167,7 +167,6 @@ router.post("/", authToken, async (req, res) => {
   } catch (error) {
     // if there's an error, this route will return a 500 status describing an internal server error
     res.status(500).json({ msg: "Internal server error" });
-    console.log(error.message);
   }
 });
 

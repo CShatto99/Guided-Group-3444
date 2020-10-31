@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
-import "./layoutStyles.css";
 import states from "../../json/states.json";
 import { createCompany } from "../../store/company";
 import { RootState } from "../../store";
@@ -252,9 +251,9 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
                   justifyContent: "center",
                 }}
               >
-                <Label for="image">
+                <Label for="image" style={{ textAlign: "center" }}>
                   Upload Image of Company - This Will Help Users Know They are
-                  Signing Up for the Right Company
+                  Signing Up for the Right Company (Max image size of 16 MB).
                 </Label>
                 <Input
                   style={{ border: "solid 1px black" }}

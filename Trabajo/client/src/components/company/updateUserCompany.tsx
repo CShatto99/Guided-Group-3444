@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Col, Form, FormGroup, Input, Label, Alert } from "reactstrap";
-import "./layoutStyles.css";
 import { CompanyState, getAllCompanies } from "../../store/company";
 import { RootState } from "../../store";
 import { UserState } from "../../store/user";

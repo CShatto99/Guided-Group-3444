@@ -9,7 +9,6 @@ import {
   NavItem,
   Nav,
 } from "reactstrap";
-import "./layoutStyles.css";
 import { RootState } from "../../store";
 import { logout, UserState } from "../../store/user";
 

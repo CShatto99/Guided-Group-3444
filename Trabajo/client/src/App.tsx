@@ -9,11 +9,11 @@ import { Register } from "./components/auth/Register";
 import { NotFound } from "./components/layout/NotFound";
 import { FooterBar } from "./components/layout/FooterBar";
 import store from "./store";
-import { CreateCompany } from "./components/layout/createCompany";
-import { UserHome } from "./components/layout/userHome";
-import { UpdateProfile } from "./components/layout/updateProfile";
-import { ChangeCompanyCode } from "./components/layout/changeCompanyCode";
-import { UpdateUserCompany } from "./components/layout/updateUserCompany";
+import { CreateCompany } from "./components/company/createCompany";
+import { UserHome } from "./components/user/userHome";
+import { UpdateProfile } from "./components/user/updateProfile";
+import { ChangeCompanyCode } from "./components/company/changeCompanyCode";
+import { UpdateUserCompany } from "./components/company/updateUserCompany";
 import { refresh } from "./store/user";
 import PrivateRoute from "./components/routing/PrivateRoute";
 
