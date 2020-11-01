@@ -7,6 +7,7 @@ import { createCompany } from "../../store/company";
 import { RootState } from "../../store";
 import { AlertState } from "../../store/alert";
 import { UserState } from "../../store/user";
+import { ProfileState } from "../../store/profile";
 // Interface for defining props for CreateCompany page
 interface createCompanyProps {}
 
@@ -22,6 +23,9 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
   const { msg, status } = useSelector<RootState, AlertState>(
     state => state.alert
   );
+  const { profile } = useSelector<RootState, ProfileState>(
+    state => state.profile
+  )
 
   //State variables
   const [name, setName] = useState("");
@@ -81,6 +85,7 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
       code,
       confirmCode,
       image,
+      email: profile?.email
     };
 
     //send object to redux to request company creation

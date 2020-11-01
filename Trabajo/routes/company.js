@@ -9,6 +9,11 @@ const {
   findAllCompanies,
   findCompanyByName,
 } = require("../mongodb/company");
+const {
+  findProfileByEmail,
+  updateProfile,
+} = require("../mongodb/profile");
+const { findUserByEmail } = require("../mongodb/user");
 const { findProfileBycompanyCode } = require("../mongodb/profile");
 const NodeGeocoder = require("node-geocoder");
 
@@ -56,6 +61,7 @@ router.post("/create", authToken, async (req, res) => {
     code,
     confirmCode,
     image,
+    email
   } = req.body;
 
   // check if any fields are empty
@@ -110,6 +116,14 @@ router.post("/create", authToken, async (req, res) => {
 
     // company will contain the return value of insertCompany with the newCompany object
     const company = await insertCompany(newCompany);
+
+    //pull user profile and update their company and admin
+    const profile = await findProfileByEmail(email);
+    profile.company = company.name;
+    profile.companyID = company._id;
+    profile.admin = company._id;
+
+    await updateProfile(profile);
 
     // returns a response json containing company
     return res.json(company);

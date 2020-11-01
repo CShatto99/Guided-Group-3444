@@ -58,6 +58,24 @@ const findProfileByUser = async userID => {
   }
 };
 
+/* Function:    findProfileByEmail
+ * Parameters:  A user email.
+ * Return:      A profile document.
+ * Purpose:     This function queries the profile collection by user email and returns the
+ *              user profile associated with the given user email.
+ */
+const findProfileByEmail = async email => {
+  try {
+    const collection = db.collection("profile");
+
+    const profileFound = await collection.find({ email }).toArray();
+
+    return profileFound[0];
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 const findProfileBycompanyCode = async companyCode => {
   try {
     const collection = db.collection("profile");
@@ -97,6 +115,7 @@ const updateProfile = async profile => {
 module.exports = {
   insertProfile,
   findProfileByUser,
+  findProfileByEmail,
   findProfileBycompanyCode,
   updateProfile,
 };
