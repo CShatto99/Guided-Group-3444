@@ -59,7 +59,7 @@ export default company.reducer;
 
 const { load_company, load_companies, load_members } = company.actions;
 
-export const getCompanyMembers = (companyCode: string) => async (
+export const getCompanyMembers = (companyID: string) => async (
   dispatch: (setAlert: any) => void
 ) => {
   const config = {
@@ -71,7 +71,7 @@ export const getCompanyMembers = (companyCode: string) => async (
   try {
     const { data } = await axios.post(
       "/company/coordinates",
-      { companyCode },
+      { companyID },
       config
     );
 

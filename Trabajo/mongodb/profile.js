@@ -76,12 +76,11 @@ const findProfileByEmail = async email => {
   }
 };
 
-const findProfileBycompanyCode = async companyCode => {
+const findProfileBycompanyID = async companyID => {
   try {
     const collection = db.collection("profile");
 
-    const profiles = collection.find({ companyCode }).toArray();
-
+    const profiles = collection.find({ companyID }).toArray();
     return profiles;
   } catch (error) {
     console.log(error.message);
@@ -116,6 +115,6 @@ module.exports = {
   insertProfile,
   findProfileByUser,
   findProfileByEmail,
-  findProfileBycompanyCode,
+  findProfileBycompanyID,
   updateProfile,
 };

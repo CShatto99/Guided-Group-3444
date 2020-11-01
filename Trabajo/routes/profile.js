@@ -49,7 +49,7 @@ router.post("/company", authToken, async (req, res) => {
 
     const updatedProfile = {
       ...findProfile,
-      ...{ company, companyID: findCompany._id, admin: null },
+      ...{ company, companyID: findCompany._id.toString(), admin: null },
     };
 
     // updateProfile will then update the user profile with updatedProfile and return a json with an object containing updatedProfile

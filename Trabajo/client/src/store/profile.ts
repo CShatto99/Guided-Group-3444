@@ -23,7 +23,7 @@ export interface Profile {
   admin: string | null;
   rideDays: string;
   company: string;
-  companyCode: string;
+  companyID: string;
 }
 
 //Interface for ProfileState objects

@@ -14,14 +14,16 @@ const {
   updateProfile,
 } = require("../mongodb/profile");
 const { findUserByEmail } = require("../mongodb/user");
-const { findProfileBycompanyCode } = require("../mongodb/profile");
+const { findProfileBycompanyID } = require("../mongodb/profile");
 const NodeGeocoder = require("node-geocoder");
 
 router.post("/coordinates", authToken, async (req, res) => {
-  const { companyCode } = req.body;
+  const { companyID } = req.body;
+  console.log(companyID);
   try {
-    const profiles = await findProfileBycompanyCode(companyCode);
+    const profiles = await findProfileBycompanyID(companyID);
 
+    console.log(JSON.stringify(profiles));
     res.json(profiles);
   } catch (error) {
     res.status(500).json({ msg: "Internal Server error" });
@@ -120,8 +122,8 @@ router.post("/create", authToken, async (req, res) => {
     //pull user profile and update their company and admin
     const profile = await findProfileByEmail(email);
     profile.company = company.name;
-    profile.companyID = company._id;
-    profile.admin = company._id;
+    profile.companyID = company._id.toString();
+    profile.admin = company._id.toString();
 
     await updateProfile(profile);
 

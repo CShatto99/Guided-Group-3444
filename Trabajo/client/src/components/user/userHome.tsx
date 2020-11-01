@@ -40,12 +40,12 @@ export const UserHome: React.FC = () => {
    */
   useEffect(() => {
     if (!loading && !profile) {
-      console.log("setting redirect");
       setRedirect(true);
     }
 
-    if (profile && profile.companyCode)
-      dispatch(getCompanyMembers(profile.companyCode));
+    if (profile && profile.companyID) {
+      dispatch(getCompanyMembers(profile.companyID));
+    }
 
     launcher && launcher.click();
   }, [loading]);

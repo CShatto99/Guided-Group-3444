@@ -52,7 +52,6 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
   useEffect(() => {
     if (profile) {
       setName(profile.company);
-      setCode(profile.companyCode);
     }
   }, [profile]);
 
