@@ -48,11 +48,24 @@ export const UserHome: React.FC = () => {
 
     if (profile && profile.companyID) {
       dispatch(getCompanyMembers(profile.companyID));
+      //this opens the websocket connection
       client.onopen = () => {
         console.log('WebSocket Client Connected');
       };
+      //this handles messages received from the server for the chatbox
       client.onmessage = (message) => {
-        console.log(message);
+        //parse the message received
+        const messageStr = String(message.data);
+        console.log(messageStr);
+        const dividedMsg = messageStr.split(':');
+        //if the company id's match
+        if(dividedMsg[0] === profile.companyID) {
+          //if the name is not the same as the current user (meaning if this user didn't send this message)
+          if(dividedMsg[1] !== profile.name) {
+            //show who sent the message and their message
+            addResponseMessage(`${dividedMsg[1]}: ${dividedMsg[2]}`);
+          }
+        }
       };
     }
 
@@ -61,8 +74,10 @@ export const UserHome: React.FC = () => {
 
   //this function will send the messages to the back end
   const handleNewUserMessage = (newMessage: string) => {
-    client.send(newMessage);
-    console.log(`New message incoming ${newMessage}`);
+    if(profile?.companyID != undefined) {
+      const message = `${profile.companyID}:${profile.name}:${newMessage}`;
+      client.send(message);
+    }
   };
 
   //if the user is authorized and logged in and has a profile then render the page
