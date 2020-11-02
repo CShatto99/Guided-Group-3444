@@ -271,7 +271,11 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
           </Form>
         </Col>
         <Col xs={12} lg={6} className="company-img">
-          {imageErr && <Alert color="danger">{imageErr}</Alert>}
+          {imageErr && (
+            <Alert color="danger" style={{ width: "100%" }}>
+              {imageErr}
+            </Alert>
+          )}
           {image === "" ? (
             <div className="img-in-container">
               <p>
