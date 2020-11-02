@@ -18,6 +18,25 @@ app.use((_, res, next) => {
   next();
 });
 
+//web sockets
+const WebSocket = require("ws");
+
+const wss = new WebSocket.Server({port: 8080});
+
+wss.on("connection", function connection(ws) {
+  ws.on("message", function incoming(message) {
+    wss.clients.forEach(function each(client) {
+      if(client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    })
+    console.log(`received: ${message}`);
+  });
+
+  ws.send("Connected to the chat!");
+
+});
+
 //the following are higher level endpoints, eg. http://localhost.com:5000/<higherlevel>/<lowerlevel>
 //the higher level routes are defined in the /routes folder
 app.use("/user", require("./routes/user"));
