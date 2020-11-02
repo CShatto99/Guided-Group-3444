@@ -297,16 +297,17 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
                 alt="companyPhoto"
                 className={"companyInfoPic"}
               />
-              <Label for="image">Choose a different picture</Label>
-              <Input
-                style={{ border: "solid 1px black" }}
-                type="file"
-                name="image"
-                id="image"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleFile(e)
-                }
-              />
+              <Label for="image" className="image-input mt-3">
+                Choose a different picture
+                <Input
+                  type="file"
+                  name="image"
+                  id="image"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleFile(e)
+                  }
+                />
+              </Label>
             </div>
           )}
         </Col>

@@ -64,10 +64,10 @@ export const UserHome: React.FC = () => {
     <div className="home-container">
       {profile ? (
         <Row className="align-items-center">
-          <Col xs={12} md={6} className="map-container">
+          <Col xs={12} lg={6} className="map-container">
             <UserHomeMap users={members} />
           </Col>
-          <Col xs={12} md={6} className="chat-container">
+          <Col xs={12} lg={6} className="chat-container">
             <Widget
               handleNewUserMessage={handleNewUserMessage}
               title={profile.company}

@@ -1,0 +1,33 @@
+.update-comp-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  max-width: 100rem;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+}
+
+.crt-company-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.2rem;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+}
+
+.crt-cmp-container {
+  padding-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1000px) {
+  .img-container {
+    padding-top: 2rem;
+  }
+}

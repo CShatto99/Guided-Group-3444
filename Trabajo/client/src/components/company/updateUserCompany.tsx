@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Col, Form, FormGroup, Input, Label, Alert } from "reactstrap";
+import {
+  Button,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  Alert,
+  Row,
+} from "reactstrap";
 import { CompanyState, getAllCompanies } from "../../store/company";
 import { RootState } from "../../store";
 import { UserState } from "../../store/user";
@@ -8,6 +17,7 @@ import { ProfileState, updateProfileCompany } from "../../store/profile";
 import { AlertState } from "../../store/alert";
 import { Redirect } from "react-router-dom";
 import "../../css/layoutStyles.css";
+import "../../css/updateUserCompany.css";
 
 // Interface for defining props for CreateCompany page
 interface updateUserCompanyProps {}
@@ -78,116 +88,73 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
   return !isAuth && !loading ? (
     <Redirect push to="/login" />
   ) : (
-    <div>
+    <>
       {msg && status === 200 && <Alert color="success">{msg}</Alert>}
       {msg && status && status !== 200 && <Alert color="danger">{msg}</Alert>}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <div className={"registerContainer"}>
-          <div className={"formContainer"}>
-            <h1>Join A New Company</h1>
-            <Form
-              onSubmit={(e: React.ChangeEvent<HTMLFormElement>) =>
-                handleSubmit(e)
-              }
-            >
-              <FormGroup row>
-                <Label for="companies" sm={3}>
-                  Select Company
-                </Label>
-                <Col>
-                  <Input
-                    type="select"
-                    name="companies"
-                    id="companies"
-                    value={name}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      setName(e.target.value);
-                      companies &&
-                        companies.forEach(c => {
-                          if (c.name === e.target.value) setImage(c.image);
-                        });
-                    }}
-                    sm={9}
-                  >
-                    {companies &&
-                      companies.map(val => {
-                        return <option key={val.name}>{val.name}</option>;
-                      })}
-                  </Input>
-                </Col>
-              </FormGroup>
-              <FormGroup row>
-                <Label for="code" sm={3}>
-                  Company Code
-                </Label>
-                <Col>
-                  <Input
-                    type="password"
-                    name="code"
-                    id="company"
-                    placeholder="************"
-                    required
-                    value={code}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setCode(e.target.value)
-                    }
-                    sm={9}
-                  />
-                </Col>
-              </FormGroup>
-              <FormGroup
-                row
-                style={{ alignItems: "center", justifyContent: "center" }}
+      <Row className="update-comp-container">
+        <Col xs={12} lg={6} className="gen-container">
+          <h1>Join A New Company</h1>
+          <Form
+            onSubmit={(e: React.ChangeEvent<HTMLFormElement>) =>
+              handleSubmit(e)
+            }
+            className="p-3"
+          >
+            <FormGroup row>
+              <Label for="companies">Select Company</Label>
+              <Input
+                type="select"
+                name="companies"
+                id="companies"
+                value={name}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setName(e.target.value);
+                  companies &&
+                    companies.forEach(c => {
+                      if (c.name === e.target.value) setImage(c.image);
+                    });
+                }}
               >
-                <Button className={"submitButton"} type="submit">
-                  Register
-                </Button>
-              </FormGroup>
-            </Form>
-          </div>
-          <div className={"companyInfo"}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignContent: "center",
-                justifyContent: "center",
-              }}
-            >
-              <img
-                src={image}
-                alt="companyPhoto"
-                style={{ minHeight: "50vh" }}
+                {companies &&
+                  companies.map(val => {
+                    return <option key={val.name}>{val.name}</option>;
+                  })}
+              </Input>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="code">Company Code</Label>
+              <Input
+                type="password"
+                name="code"
+                id="company"
+                placeholder="************"
+                required
+                value={code}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setCode(e.target.value)
+                }
               />
-            </div>
-          </div>
-        </div>
-        <div
-          className={"formContainer"}
-          style={{
-            display: "flex",
-            width: "auto",
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: "25px",
-          }}
-        >
+            </FormGroup>
+            <Button className={"submitButton"} type="submit">
+              Register
+            </Button>
+          </Form>
+        </Col>
+        <Col xs={12} lg={6} className="img-container">
+          <img src={image} alt="companyPhoto" className="crt-company-img" />
+        </Col>
+        <Col xs={12} className="crt-cmp-container">
           <h3>Is your company not listed? Create it here:</h3>
           <Button
+            type="button"
             style={{ marginLeft: "15px" }}
             className={"navButton"}
             href="/userHome/createCompany"
           >
             Create Company
           </Button>
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </>
   );
 };

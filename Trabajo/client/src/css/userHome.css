@@ -52,7 +52,7 @@
   position: static !important;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1000px) {
   .map-container {
     margin-bottom: 3rem;
   }
