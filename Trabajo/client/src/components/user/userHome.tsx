@@ -10,6 +10,9 @@ import "react-chat-widget/lib/styles.css";
 import "../../css/userHome.css";
 import UserHomeMap from "./UserHomeMap";
 import { CompanyState, getCompanyMembers } from "../../store/company";
+import { w3cwebsocket as WS } from "websocket";
+
+const client = new WS('ws://localhost:8080');
 
 /* UserHome is where the user will land once they are logged in and
  * have created a profile.  If the user is affiliated with a company,
@@ -45,6 +48,12 @@ export const UserHome: React.FC = () => {
 
     if (profile && profile.companyID) {
       dispatch(getCompanyMembers(profile.companyID));
+      client.onopen = () => {
+        console.log('WebSocket Client Connected');
+      };
+      client.onmessage = (message) => {
+        console.log(message);
+      };
     }
 
     launcher && launcher.click();
@@ -52,6 +61,7 @@ export const UserHome: React.FC = () => {
 
   //this function will send the messages to the back end
   const handleNewUserMessage = (newMessage: string) => {
+    client.send(newMessage);
     console.log(`New message incoming ${newMessage}`);
   };
 

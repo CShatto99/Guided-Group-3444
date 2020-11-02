@@ -25,22 +25,32 @@ const WebSocket = require("ws");
 const wss = new WebSocket.Server({
   port: 8080,
   verifyClient: (info, cb) => {
-      const token = info.req.headers["x-auth-token"];
-      if (!token) {
-        console.log("failed attempt")
-        cb(false, 401, "Logged out due to inactivity, refresh the page and try again")
-      } else {
-      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-        if (err) {
-          console.log("failed attempt after verify")
-          cb(false, 401, 'unauthorized');
-        } else {
-          info.req.user = decoded;
-          cb(true);
+    console.log("cookie ", info.req.headers.cookie);
+    const authTok = info.req.headers.cookie.split("=");
+
+    if (!authTok[1]) {
+      console.log("failed attempt");
+      cb(
+        false,
+        401,
+        "Logged out due to inactivity, refresh the page and try again"
+      );
+    } else {
+      jwt.verify(
+        authTok[1],
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, decoded) => {
+          if (err) {
+            console.log("failed attempt after verify");
+            cb(false, 401, "unauthorized");
+          } else {
+            info.req.user = decoded;
+            cb(true);
+          }
         }
-      });
+      );
     }
-  }
+  },
 });
 
 wss.on("connection", (conn) => {
