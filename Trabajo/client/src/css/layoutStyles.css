@@ -96,6 +96,17 @@
   max-height: 100%;
 }
 
+.gen-container {
+  max-width: 100rem;
+  background-color: #e1b382;
+  border-radius: 0.5rem;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  padding: 20px;
+  margin-bottom: 1rem;
+  color: #12343b;
+}
+
 /* Form pages - registration, login, create company, select company, etc. */
 /* Lumped together due to similar layout */
 .formContainer {
@@ -107,7 +118,7 @@
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
     0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   width: 35vw;
-  padding: 20px;
+  padding: 1.5rem 2rem;
   color: #12343b;
 }
 .submitButton {
