@@ -17,8 +17,6 @@ import { RootState } from "../../store";
 import { AlertState } from "../../store/alert";
 import { UserState } from "../../store/user";
 import { ProfileState } from "../../store/profile";
-import "../../css/createCompany.css";
-
 // Interface for defining props for CreateCompany page
 interface createCompanyProps {}
 
@@ -47,7 +45,6 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
   const [code, setCode] = useState("");
   const [confirmCode, setconfirmCode] = useState("");
   const [image, setImage] = useState("");
-  const [imageErr, setImageErr] = useState("");
 
   /* Function:    handleFile
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
@@ -58,32 +55,19 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
    *              of the image.
    */
   let handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && !isFileImage(e.target.files[0])) {
-      setImageErr("Image must be of type .png or .jpg.");
-      setTimeout(() => {
-        setImageErr("");
-      }, 4000);
-    } else {
-      //reader is needed for reading the file
-      const reader = new FileReader();
+    //reader is needed for reading the file
+    const reader = new FileReader();
 
-      //event listener that is called when file is read
-      reader.addEventListener("load", function () {
-        // convert image file to base64 string and set the state variable
-        if (reader.result) {
-          setImage(reader.result as string);
-        }
-      });
+    //event listener that is called when file is read
+    reader.addEventListener("load", function () {
+      // convert image file to base64 string and set the state variable
+      if (reader.result) {
+        setImage(reader.result as string);
+      }
+    });
 
-      //read the file
-      reader.readAsDataURL(e.target.files![0]);
-    }
-  };
-
-  const isFileImage = (file: File) => {
-    const validTypes = ["image/png", "image/jpeg", "image/jpg"];
-
-    return file && validTypes.includes(file.type);
+    //read the file
+    reader.readAsDataURL(e.target.files![0]);
   };
 
   /* Function:    handleSubmit
@@ -126,8 +110,8 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
       {msg && status !== null && status !== 200 && (
         <Alert color="danger">{msg}</Alert>
       )}
-      <Row className="p-5">
-        <Col xs={12} lg={6} className="gen-container mb-5">
+      <Row className={"registerContainer"}>
+        <Col xs={12} lg={6} className={"formContainer"}>
           <h1>Register New Company</h1>
           <Form
             onSubmit={(e: React.ChangeEvent<HTMLFormElement>) =>
@@ -270,28 +254,39 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
             </FormGroup>
           </Form>
         </Col>
-        <Col xs={12} lg={6} className="company-img">
-          {imageErr && <Alert color="danger">{imageErr}</Alert>}
+        <Col xs={12} lg={6} className={"companyInfo"}>
           {image === "" ? (
-            <div className="img-in-container">
-              <p>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignContent: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Label for="image" style={{ textAlign: "center" }}>
                 Upload Image of Company - This Will Help Users Know They are
                 Signing Up for the Right Company (Max image size of 16 MB).
-              </p>
-              <Label for="image" className="image-input">
-                Upload
-                <Input
-                  type="file"
-                  name="image"
-                  id="image"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleFile(e)
-                  }
-                />
               </Label>
+              <Input
+                style={{ border: "solid 1px black" }}
+                type="file"
+                name="image"
+                id="image"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleFile(e)
+                }
+              />
             </div>
           ) : (
-            <div className="img-in-container">
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignContent: "center",
+                justifyContent: "center",
+              }}
+            >
               <img
                 src={image}
                 alt="companyPhoto"
