@@ -86,8 +86,53 @@ const findAllCompanies = async () => {
   }
 };
 
+/* Function:    saveMessageToDB
+ * Parameters:  message.
+ * Return:      null
+ * Purpose:     Adds message to company's messages
+ */
+const saveMessageToDB = async (message) => {
+  try {
+    const collection = db. collection("company");
+
+    const messageParts = message.split(':');
+
+    //get the company object
+    const companies = await collection.find({_id: ObjectId(messageParts[0])}).toArray();
+    foundCompany = companies[0];
+
+    //if this is the first message create the messages member
+    if(foundCompany.messages === undefined) {
+      foundCompany.messages = [`${messageParts[1]}: ${messageParts[2]}`];
+    }
+    //otherwise add it to the messages member 
+    else {
+      //if the number of max messages is already too large remove the oldest and add the new one
+      if(foundCompany.messages.length >= 25) {
+        foundCompany.messages.shift();
+        foundCompany.messages.push(`${messageParts[1]}: ${messageParts[2]}`)
+      } 
+      //otherwise simply add the message
+      else {
+        foundCompany.messages.push(`${messageParts[1]}: ${messageParts[2]}`)
+      }
+    }
+
+    const updatedCompany = await collection.findOneAndUpdate(
+      { _id: foundCompany._id },
+      {
+        $set: foundCompany,
+      },
+      { returnOriginal: false }
+    );
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 module.exports = {
   insertCompany,
   findCompanyByName,
   findAllCompanies,
+  saveMessageToDB
 };

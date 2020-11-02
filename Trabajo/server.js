@@ -3,6 +3,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
 const jwt = require("jsonwebtoken");
+const { saveMessageToDB } = require("./mongodb/company");
 
 //The following define settings to use for the server
 app.use(
@@ -23,8 +24,11 @@ app.use((_, res, next) => {
 const WebSocket = require("ws");
 const authToken = require("./middleware/authToken");
 
+//this sets up the web socket connection and make sure it is an authenticated user requesting
 const wss = new WebSocket.Server({
+  //port to use for websockets
   port: 8080,
+  //authentication method
   verifyClient: (info, cb) => {
     console.log("cookie ", info.req.headers.cookie);
     let authTok = [];
@@ -62,10 +66,13 @@ const wss = new WebSocket.Server({
   },
 });
 
+//this handles what happens when the web socket connects after authentication
+//and what happens with received messages
 wss.on("connection", (conn) => {
   conn.on("message", function incoming(message) {
     wss.clients.forEach(function each(client) {
       if(client.readyState === WebSocket.OPEN) {
+        saveMessageToDB(message);
         client.send(message);
       }
     })
