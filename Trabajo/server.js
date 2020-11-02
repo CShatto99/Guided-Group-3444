@@ -21,12 +21,21 @@ app.use((_, res, next) => {
 
 //web sockets
 const WebSocket = require("ws");
+const authToken = require("./middleware/authToken");
 
 const wss = new WebSocket.Server({
   port: 8080,
   verifyClient: (info, cb) => {
     console.log("cookie ", info.req.headers.cookie);
-    const authTok = info.req.headers.cookie.split("=");
+    let authTok = [];
+    if(info.req.headers.cookie != undefined) {
+      authTok = info.req.headers.cookie.split("=");
+    }
+
+    console.log(authToken);
+    if (authTok == []) {
+      cb(false, 401, "unauthorized");
+    }
 
     if (!authTok[1]) {
       console.log("failed attempt");
