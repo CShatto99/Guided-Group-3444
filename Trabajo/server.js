@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
+const jwt = require("jsonwebtoken");
 
 //The following define settings to use for the server
 app.use(
@@ -21,10 +22,29 @@ app.use((_, res, next) => {
 //web sockets
 const WebSocket = require("ws");
 
-const wss = new WebSocket.Server({port: 8080});
+const wss = new WebSocket.Server({
+  port: 8080,
+  verifyClient: (info, cb) => {
+      const token = info.req.headers["x-auth-token"];
+      if (!token) {
+        console.log("failed attempt")
+        cb(false, 401, "Logged out due to inactivity, refresh the page and try again")
+      } else {
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+          console.log("failed attempt after verify")
+          cb(false, 401, 'unauthorized');
+        } else {
+          info.req.user = decoded;
+          cb(true);
+        }
+      });
+    }
+  }
+});
 
-wss.on("connection", function connection(ws) {
-  ws.on("message", function incoming(message) {
+wss.on("connection", (conn) => {
+  conn.on("message", function incoming(message) {
     wss.clients.forEach(function each(client) {
       if(client.readyState === WebSocket.OPEN) {
         client.send(message);
@@ -33,7 +53,7 @@ wss.on("connection", function connection(ws) {
     console.log(`received: ${message}`);
   });
 
-  ws.send("Connected to the chat!");
+  conn.send("Connected to the chat!");
 
 });
 
