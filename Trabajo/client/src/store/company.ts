@@ -13,6 +13,7 @@ export interface Company {
   code: string;
   confirmCode: string;
   image: any;
+  messages: [string];
 }
 
 //Interface for CompanyState objects
@@ -58,6 +59,24 @@ const company = createSlice({
 export default company.reducer;
 
 const { load_company, load_companies, load_members } = company.actions;
+
+export const getCompany = (company: string) => async (
+  dispatch: (setAlert: any) => void
+) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const { data } = await axios.post("/company", { company }, config);
+
+    dispatch(load_company(data));
+  } catch (error) {
+    dispatch(setAlert(error.response.data.msg, error.response.status));
+  }
+};
 
 export const getCompanyMembers = (companyID: string) => async (
   dispatch: (setAlert: any) => void

@@ -12,10 +12,21 @@ const {
 const {
   findProfileByEmail,
   updateProfile,
+  findProfileBycompanyID,
 } = require("../mongodb/profile");
-const { findUserByEmail } = require("../mongodb/user");
-const { findProfileBycompanyID } = require("../mongodb/profile");
 const NodeGeocoder = require("node-geocoder");
+
+router.post("/", authToken, async (req, res) => {
+  const { company } = req.body;
+
+  try {
+    const companyFound = await findCompanyByName(company);
+
+    res.json(companyFound);
+  } catch (error) {
+    res.status(500).json({ msg: "Internal Server error" });
+  }
+});
 
 router.post("/coordinates", authToken, async (req, res) => {
   const { companyID } = req.body;
@@ -63,7 +74,7 @@ router.post("/create", authToken, async (req, res) => {
     code,
     confirmCode,
     image,
-    email
+    email,
   } = req.body;
 
   // check if any fields are empty
@@ -101,7 +112,6 @@ router.post("/create", authToken, async (req, res) => {
     const gres = await geocoder.geocode(
       address + " " + city + " " + state + " " + zip
     );
-
 
     // create and store new user
     const newCompany = {

@@ -5,14 +5,18 @@ import { Button, Col, Form, Input, Row, Spinner } from "reactstrap";
 import { RootState } from "../../store/index";
 import { UserState } from "../../store/user";
 import { ProfileState } from "../../store/profile";
-import { addResponseMessage, Widget } from "react-chat-widget";
+import { addResponseMessage, Widget, addUserMessage } from "react-chat-widget";
 import "react-chat-widget/lib/styles.css";
 import "../../css/userHome.css";
 import UserHomeMap from "./UserHomeMap";
-import { CompanyState, getCompanyMembers } from "../../store/company";
+import {
+  CompanyState,
+  getCompany,
+  getCompanyMembers,
+} from "../../store/company";
 import { w3cwebsocket as WS } from "websocket";
 
-const client = new WS('ws://localhost:8080');
+const client = new WS("ws://localhost:8080");
 
 /* UserHome is where the user will land once they are logged in and
  * have created a profile.  If the user is affiliated with a company,
@@ -28,7 +32,7 @@ export const UserHome: React.FC = () => {
   const { profile, loading } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
-  const { members } = useSelector<RootState, CompanyState>(
+  const { company, members } = useSelector<RootState, CompanyState>(
     state => state.company
   );
 
@@ -47,21 +51,22 @@ export const UserHome: React.FC = () => {
     }
 
     if (profile && profile.companyID) {
+      dispatch(getCompany(profile.company));
       dispatch(getCompanyMembers(profile.companyID));
       //this opens the websocket connection
       client.onopen = () => {
-        console.log('WebSocket Client Connected');
+        console.log("WebSocket Client Connected");
       };
       //this handles messages received from the server for the chatbox
-      client.onmessage = (message) => {
+      client.onmessage = message => {
         //parse the message received
         const messageStr = String(message.data);
         console.log(messageStr);
-        const dividedMsg = messageStr.split(':');
+        const dividedMsg = messageStr.split(":");
         //if the company id's match
-        if(dividedMsg[0] === profile.companyID) {
+        if (dividedMsg[0] === profile.companyID) {
           //if the name is not the same as the current user (meaning if this user didn't send this message)
-          if(dividedMsg[1] !== profile.name) {
+          if (dividedMsg[1] !== profile.name) {
             //show who sent the message and their message
             addResponseMessage(`${dividedMsg[1]}: ${dividedMsg[2]}`);
           }
@@ -72,9 +77,20 @@ export const UserHome: React.FC = () => {
     launcher && launcher.click();
   }, [loading]);
 
+  useEffect(() => {
+    profile &&
+      company.messages &&
+      company.messages.forEach(message => {
+        const dividedMsg = message.split(":");
+        console.log(dividedMsg[0], profile.name);
+        if (dividedMsg[0] === profile.name) addUserMessage(dividedMsg[1]);
+        else addResponseMessage(message);
+      });
+  }, [company]);
+
   //this function will send the messages to the back end
   const handleNewUserMessage = (newMessage: string) => {
-    if(profile?.companyID != undefined) {
+    if (profile?.companyID != undefined) {
       const message = `${profile.companyID}:${profile.name}:${newMessage}`;
       client.send(message);
     }
@@ -103,8 +119,6 @@ export const UserHome: React.FC = () => {
                   ref={button => setLauncher(button)}
                   onClick={() => {
                     handleToggle();
-
-                    addResponseMessage("Welcome to the chat!");
                   }}
                 ></button>
               )}
