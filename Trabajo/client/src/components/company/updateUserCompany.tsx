@@ -10,7 +10,7 @@ import {
   Alert,
   Row,
 } from "reactstrap";
-import { CompanyState, getAllCompanies } from "../../store/company";
+import { CompanyState, getAllCompanies, getCompany } from "../../store/company";
 import { RootState } from "../../store";
 import { UserState } from "../../store/user";
 import { ProfileState, updateProfileCompany } from "../../store/profile";
@@ -19,13 +19,10 @@ import { Redirect } from "react-router-dom";
 import "../../css/layoutStyles.css";
 import "../../css/updateUserCompany.css";
 
-// Interface for defining props for CreateCompany page
-interface updateUserCompanyProps {}
-
 /* The CreateCompany component is rendered when a user wants to
  * create a new company.
  */
-export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
+export const UpdateUserCompany: React.FC<{}> = () => {
   //redux state variables
   const dispatch = useDispatch();
   const { isAuth, loading } = useSelector<RootState, UserState>(
@@ -34,7 +31,7 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
   const { profile } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
-  const { companies } = useSelector<RootState, CompanyState>(
+  const { companies, company } = useSelector<RootState, CompanyState>(
     state => state.company
   );
   const { msg, status } = useSelector<RootState, AlertState>(
@@ -60,10 +57,20 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
   }, [loading]);
 
   useEffect(() => {
-    if (profile) {
+    if (isAuth && profile) {
       setName(profile.company);
+      companies?.map(c => {
+        if (c.name === profile.company) setImage(c.image);
+      });
     }
-  }, [profile]);
+  }, [profile, companies]);
+
+  // useEffect(() => {
+  //   companies &&
+  //     companies.forEach(c => {
+  //       if (c.name === e.target.value) setImage(c.image);
+  //     });
+  // }, [companies]);
 
   /* Function:    handleSubmit
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
@@ -81,8 +88,6 @@ export const UpdateUserCompany: React.FC<updateUserCompanyProps> = () => {
 
     dispatch(updateProfileCompany(name, code));
   };
-
-  console.log(image);
 
   //return html form
   return !isAuth && !loading ? (

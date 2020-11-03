@@ -1,3 +1,4 @@
+import { getCompany } from "./company";
 import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setAlert } from "./alert";
@@ -70,7 +71,7 @@ const { load_profile, clear_profile } = profile.actions;
  *              the profile slice state.
  */
 export const loadProfile = () => async (
-  dispatch: (load_profile: PayloadAction<ProfileState>) => void
+  dispatch: (load_profile: any) => void
 ) => {
   try {
     const { data } = await axios.get("/profile");
