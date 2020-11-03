@@ -124,7 +124,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
     <div className={"registerContainer"}>
       <div
         className={"formContainer"}
-        style={{ width: "80%", maxWidth: "72rem" }}
+        style={{ width: "100%", maxWidth: "72rem" }}
       >
         {msg && status === 200 && <Alert color="success">{msg}</Alert>}
         {msg && status && status !== 200 && <Alert color="danger">{msg}</Alert>}
