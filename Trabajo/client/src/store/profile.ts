@@ -13,6 +13,7 @@ interface Ride {
 
 //Interface for Profile objects
 export interface Profile {
+  _id: string;
   name: string;
   email: string;
   address: string;
@@ -25,6 +26,7 @@ export interface Profile {
   rideDays: string;
   company: string;
   companyID: string;
+  userID: string;
 }
 
 //Interface for ProfileState objects

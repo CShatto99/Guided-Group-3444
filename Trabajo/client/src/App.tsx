@@ -12,6 +12,7 @@ import store from "./store";
 import { CreateCompany } from "./components/company/createCompany";
 import { UserHome } from "./components/user/userHome";
 import { UpdateProfile } from "./components/user/updateProfile";
+import { CreateRides } from "./components/layout/CreateRides"
 import { ChangeCompanyCode } from "./components/company/changeCompanyCode";
 import { UpdateUserCompany } from "./components/company/updateUserCompany";
 import { refresh } from "./store/user";
@@ -65,6 +66,11 @@ const App = () => {
                 exact
                 path="/userHome/updateUserCompany"
                 component={UpdateUserCompany}
+              />
+              <PrivateRoute
+                exact
+                path="/userHome/createRides"
+                component={CreateRides}
               />
               <Route exact path="/404" component={NotFound} />
               <Redirect to="/404" />

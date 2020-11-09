@@ -16,6 +16,9 @@
   height: 60vh;
   display: flex;
   padding: 0 0 0 1rem !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .rcw-conversation-container > .rcw-header {

@@ -22,6 +22,7 @@ interface RegisterData {
 export interface UserState {
   isAuth: boolean;
   user: {
+    _id: string;
     fullName: string;
     email: string;
   };

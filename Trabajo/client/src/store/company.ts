@@ -19,7 +19,7 @@ export interface Company {
 //Interface for CompanyState objects
 export interface CompanyState {
   company: Company;
-  members: [Profile] | [];
+  members: [Profile] | null;
   companies: Company[] | null;
   loading: boolean;
 }
@@ -36,7 +36,7 @@ const company = createSlice({
   name: "company",
   initialState: {
     company: {},
-    members: [],
+    members: null,
     companies: null,
     loading: true,
   } as CompanyState,
