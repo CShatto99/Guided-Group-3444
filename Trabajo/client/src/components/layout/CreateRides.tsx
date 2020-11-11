@@ -94,6 +94,10 @@ export const CreateRides: React.FC = () => {
       });
   }, [company]);
 
+  useEffect(() => {
+    //do nothing page reload
+  }, [currentRiders]);
+
   //this function will send the messages to the back end
   const handleNewUserMessage = (newMessage: string) => {
     if (profile?.companyID != undefined) {
@@ -109,6 +113,13 @@ export const CreateRides: React.FC = () => {
     )
   }
 
+  const selectRiderMap = (rider: string) => {
+    setCurrentRiders(currentRiders.find(r => r === rider) ?
+      currentRiders.filter(r => r !== rider) :
+      currentRiders.concat(rider)
+    )
+  }
+
   console.log(currentRiders);
 
   //if the user is authorized and logged in and has a profile then render the page
@@ -117,7 +128,7 @@ export const CreateRides: React.FC = () => {
       {profile ? (
         <Row className="align-items-center">
           <Col xs={12} lg={6} className="map-container">
-            <UserHomeMap users={members} />
+            <UserHomeMap users={members} selectRider={selectRiderMap}/>
           </Col>
           <Col xs={12} lg={6}>
             <Form>
@@ -155,7 +166,7 @@ export const CreateRides: React.FC = () => {
                     <div style={{ backgroundColor: '#2d545e' }} onClick={() => handleRider("bob")}>bob</div>
                     <div style={{ backgroundColor: '#2d545e' }} onClick={() => handleRider("bob 2")}>bob 2</div>
                     {members && members.map((member: Profile) =>
-                      user._id !== member.userID && <div style={{ backgroundColor: '#2d545e' }} onClick={() => handleRider(member.name)}>{member.name}</div>
+                      user._id !== member.userID && <div style={currentRiders.indexOf(member.name) ? { backgroundColor: '#2d545e' } : {backgroundColor: 'gray'}} onClick={() => handleRider(member.name)}>{member.name}</div>
                     )}</div>
                 </>)}
               </FormGroup>
