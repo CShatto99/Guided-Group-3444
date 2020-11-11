@@ -144,13 +144,26 @@ export const updateCompany = (company: Company) => async (
   }
 };
 
+//interface for creating a company
+interface createNewCompany {
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  code: string;
+  confirmCode: string;
+  image: any;
+  email: string | undefined;
+}
+
 /* Function:    createCompany
  * Parameters:  A Company object.
  * Return:      Void
  * Purpose:     This function sends a Company object to the API, receives a new
  *              company document from the API, and inserts it into the company slice state
  */
-export const createCompany = (company: Company) => async (
+export const createCompany = (company: createNewCompany) => async (
   dispatch: (setAlert: any) => void
 ) => {
   const config = {

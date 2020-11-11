@@ -54,7 +54,7 @@ const user = createSlice({
     logout_user(state) {
       localStorage.removeItem("isAuth");
       state.isAuth = false;
-      state.user = { fullName: "", email: "" };
+      state.user = { _id: "", fullName: "", email: "" };
       state.loading = true;
     },
   },
