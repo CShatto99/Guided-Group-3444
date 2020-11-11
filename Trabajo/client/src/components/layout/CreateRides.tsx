@@ -44,6 +44,7 @@ export const CreateRides: React.FC = () => {
   const [rideDate, setRideDate] = useState("");
   const [chooseType, setChooseType] = useState(true);
   const [numRiders, setNumRiders] = useState("");
+  const [availableRiders, setAvailableRiders] = useState<Profile[]>([]);
 
 
   /* useEffect is called when the component loads or when any of the state
@@ -94,9 +95,39 @@ export const CreateRides: React.FC = () => {
       });
   }, [company]);
 
+  //this useEffect will update the users based off the weekday selected by user
   useEffect(() => {
-    //do nothing page reload
-  }, [currentRiders]);
+    let newRiders: Profile[] = [];
+
+    const weekday = new Date(rideDate).getDay();
+    //weekdays: 0 monday, 1 tuesday, 2 wednesday, 3 thursday, 4 friday, 5 saturday, 6 sunday
+
+    members?.forEach((member: Profile) => {
+
+      //first check to make sure userID doesnt match
+      if(member.userID !== user._id) {
+
+        //next check they need rides for the weekday selected
+        if(member.rideDays[weekday] === "1") {
+          
+          //next check to make sure they aren't already in a ride for the day selected
+          let alreadyRiding: boolean = false;
+          member.rides?.forEach((ride) => {
+            ride.dateOfRide === rideDate ? alreadyRiding = true : alreadyRiding = false;
+          })
+
+          //if all checks passed, add user to newriders array
+          if(!alreadyRiding) {
+            newRiders.push(member); 
+          }
+        }
+      }
+    });
+
+    //reset riders user may have already selected since new date has been selected
+    setCurrentRiders([]);
+    setAvailableRiders(newRiders);
+  }, [rideDate]);
 
   //this function will send the messages to the back end
   const handleNewUserMessage = (newMessage: string) => {
@@ -128,7 +159,7 @@ export const CreateRides: React.FC = () => {
       {profile ? (
         <Row className="align-items-center">
           <Col xs={12} lg={6} className="map-container">
-            <UserHomeMap users={members} selectRider={selectRiderMap}/>
+            <UserHomeMap users={availableRiders} selectRider={selectRiderMap}/>
           </Col>
           <Col xs={12} lg={6}>
             <Form>
@@ -165,8 +196,8 @@ export const CreateRides: React.FC = () => {
                   <div style={{ color: '#fff' }}>
                     <div style={{ backgroundColor: '#2d545e' }} onClick={() => handleRider("bob")}>bob</div>
                     <div style={{ backgroundColor: '#2d545e' }} onClick={() => handleRider("bob 2")}>bob 2</div>
-                    {members && members.map((member: Profile) =>
-                      user._id !== member.userID && <div style={currentRiders.indexOf(member.name) ? { backgroundColor: '#2d545e' } : {backgroundColor: 'gray'}} onClick={() => handleRider(member.name)}>{member.name}</div>
+                    {availableRiders.map((member: Profile) =>
+                      <div style={{ backgroundColor: '#2d545e' }} key={member.name} onClick={() => handleRider(member.name)}>{member.name}</div>
                     )}</div>
                 </>)}
               </FormGroup>
