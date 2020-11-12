@@ -20,7 +20,8 @@ export interface Profile {
   city: string;
   state: string;
   zip: string;
-  coordinates: [number, number];
+  lat: number;
+  long: number;
   rides?: [Ride];
   admin: string | null;
   rideDays: string;

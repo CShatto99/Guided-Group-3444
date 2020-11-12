@@ -43,8 +43,9 @@ export const CreateRides: React.FC = () => {
   const [currentRiders, setCurrentRiders] = useState<string[]>([]);
   const [rideDate, setRideDate] = useState("");
   const [chooseType, setChooseType] = useState(true);
-  const [numRiders, setNumRiders] = useState("");
+  const [numRiders, setNumRiders] = useState("0");
   const [availableRiders, setAvailableRiders] = useState<Profile[]>([]);
+  const [forceUpdate, setForceUpdate] = useState(0);
 
 
   /* useEffect is called when the component loads or when any of the state
@@ -129,6 +130,13 @@ export const CreateRides: React.FC = () => {
     setAvailableRiders(newRiders);
   }, [rideDate]);
 
+  //this use effect is called when 'automatically' is chosen
+  useEffect(() => {
+    if(!chooseType) {
+      autoPopulate();
+    }
+  },[chooseType]);
+
   //this function will send the messages to the back end
   const handleNewUserMessage = (newMessage: string) => {
     if (profile?.companyID != undefined) {
@@ -138,17 +146,72 @@ export const CreateRides: React.FC = () => {
   };
 
   const handleRider = (rider: string) => {
-    setCurrentRiders(currentRiders.find(r => r === rider) ?
-      currentRiders.filter(r => r !== rider) :
-      currentRiders.concat(rider)
-    )
+      if(currentRiders.length < parseInt(numRiders)) {
+        setCurrentRiders(currentRiders.find(r => r === rider) ?
+          currentRiders.filter(r => r !== rider) :
+          currentRiders.concat(rider)
+        )
+      } else {
+        if(currentRiders.indexOf(rider)) {
+          setCurrentRiders(currentRiders.filter(r => r !== rider));
+        }
+      }
   }
 
   const selectRiderMap = (rider: string) => {
-    setCurrentRiders(currentRiders.find(r => r === rider) ?
-      currentRiders.filter(r => r !== rider) :
-      currentRiders.concat(rider)
-    )
+    handleRider(rider);
+  }
+
+  //This function will automatically select riders until the number of riders chosen 
+  //is equal to the number of desired riders
+  const autoPopulate = () => {
+    let numCurrentRiders = currentRiders.length;
+    let numMaxRiders = parseInt(numRiders);
+    let newRiders = currentRiders;
+
+    if(numMaxRiders !== NaN) {
+      while(numCurrentRiders < numMaxRiders) {
+                
+        //var to hold min distance found and rider profile
+        var foundUser: Profile | null = profile;
+        var minDistance = Number.MAX_VALUE;
+  
+        //get closest rider
+        availableRiders.forEach((rider: Profile) => {
+          
+          //first check if rider is not current user
+          if(rider.userID !== user._id) {
+  
+            //next check to make sure user is not already in currentRiders
+            if(newRiders.indexOf(rider.name) === -1) {
+  
+              //then find distance to user
+              const x = (profile?.lat || 0) - rider.lat;
+              const y = (profile?.long || 0) - rider.long;
+              const currentDistance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+  
+              //if this is the closest user so far, update found var's
+              if(currentDistance < minDistance) {
+
+                minDistance = currentDistance;
+                foundUser = rider;
+              }
+            }
+          }
+        });
+  
+        //if a user was found update current users
+        if(foundUser && profile) {
+          if(foundUser.userID !== profile.userID) {
+            newRiders.push(foundUser.name);
+          }
+        }
+        numCurrentRiders++;
+      }
+    }
+    //set new currentRiders
+    setCurrentRiders(newRiders);
+    setForceUpdate(forceUpdate + 1);
   }
 
   console.log(currentRiders);
@@ -192,14 +255,14 @@ export const CreateRides: React.FC = () => {
               </FormGroup>
 
               <FormGroup>
-                {chooseType && (<><Label htmlFor="riders">Choose Riders</Label>
+                <>
+                  <Label htmlFor="riders">Choose Riders By Clicking Them on the Map</Label>
+                  <Label>Selected Riders Are Below</Label>
                   <div style={{ color: '#fff' }}>
-                    <div style={{ backgroundColor: '#2d545e' }} onClick={() => handleRider("bob")}>bob</div>
-                    <div style={{ backgroundColor: '#2d545e' }} onClick={() => handleRider("bob 2")}>bob 2</div>
-                    {availableRiders.map((member: Profile) =>
-                      <div style={{ backgroundColor: '#2d545e' }} key={member.name} onClick={() => handleRider(member.name)}>{member.name}</div>
+                    {currentRiders.map((member: string) =>
+                      <div style={{ marginTop: 5, backgroundColor: '#2d545e' }} key={member}>{member}</div>
                     )}</div>
-                </>)}
+                </>
               </FormGroup>
             </Form>
           </Col>
