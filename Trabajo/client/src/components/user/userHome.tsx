@@ -3,7 +3,6 @@ import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Col, Row } from "reactstrap";
 import { RootState } from "../../store/index";
-import { UserState } from "../../store/user";
 import { ProfileState } from "../../store/profile";
 import { addResponseMessage, Widget, addUserMessage } from "react-chat-widget";
 import "react-chat-widget/lib/styles.css";
@@ -67,7 +66,7 @@ export const UserHome: React.FC = () => {
     }
 
     launcher && launcher.click();
-  }, [loading]);
+  }, [loading, dispatch, launcher, profile]);
 
   useEffect(() => {
     profile &&
@@ -78,7 +77,7 @@ export const UserHome: React.FC = () => {
         if (dividedMsg[0] === profile.name) addUserMessage(dividedMsg[1]);
         else addResponseMessage(message);
       });
-  }, [company]);
+  }, [company, profile]);
 
   //this function will send the messages to the back end
   const handleNewUserMessage = (newMessage: string) => {

@@ -30,7 +30,7 @@ const LandingRef: React.FC<{}> = () => {
       <Col xs="12">
         <Row xs="12" className="landing-section justify-content-around">
           <Col xs="12" lg="5" className="left-child">
-            <img src={carpool} alt="Carpool image" />
+            <img src={carpool} alt="Carpool" />
           </Col>
           <Col xs="12" lg="5" className="landing-text">
             <div>
@@ -63,14 +63,14 @@ const LandingRef: React.FC<{}> = () => {
             </div>
           </Col>
           <Col xs="12" lg="5">
-            <img src={greenLeaf} alt="Green Leaf image" />
+            <img src={greenLeaf} alt="Green Leaf" />
           </Col>
         </Row>
       </Col>
       <Col xs="12">
         <Row xs="12" className="landing-section justify-content-around">
           <Col xs="12" lg="5" className="left-child">
-            <img src={calendar} alt="Green Leaf image" />
+            <img src={calendar} alt="Green Leaf" />
           </Col>
           <Col xs="12" lg="5" className="landing-text">
             <div>
@@ -103,7 +103,7 @@ const LandingRef: React.FC<{}> = () => {
             </div>
           </Col>
           <Col xs="12" lg="5">
-            <img src={mapMarker} alt="Green Leaf image" />
+            <img src={mapMarker} alt="Green Leaf" />
           </Col>
         </Row>
       </Col>

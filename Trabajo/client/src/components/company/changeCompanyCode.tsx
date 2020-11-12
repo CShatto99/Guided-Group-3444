@@ -1,18 +1,10 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
-import { RootState } from "../../store";
-import { UserState } from "../../store/user";
-
-// Interface for defining props for ChangeCompanyCode page
-interface ChangeCompanyCodeProps {}
 
 /* ChangeCompanyCode is rendered when a user is an admin of a company and
  * they need to change the code for whatever reason
  */
-export const ChangeCompanyCode: React.FC<ChangeCompanyCodeProps> = () => {
-  const { isAuth } = useSelector<RootState, UserState>(state => state.user);
+export const ChangeCompanyCode: React.FC = () => {
   //state variables
   const [originalCode, setOriginalCode] = useState("");
   const [newCode, setNewCode] = useState("");

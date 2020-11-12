@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Navbar,
   Button,
   NavbarBrand,
-  NavbarToggler,
   Collapse,
   NavItem,
   Nav,
 } from "reactstrap";
 import { RootState } from "../../store";
 import { logout, UserState } from "../../store/user";
-
-// Interface for defining props for landing page
-interface TopNavBarProps {}
 
 /* This function is the top navigation bar shown on all web pages.
  * The buttons that are shown depend on if the user is logged in or not.
@@ -27,11 +23,6 @@ export const TopNavBar: React.FC = () => {
 
   //component state variables
   const [isOpen, setIsOpen] = useState(false);
-  const [name, setName] = useState("");
-
-  useEffect(() => {
-    setName(user.fullName);
-  }, [isAuth]);
 
   /* Function: userLogout
    * Parameters: void

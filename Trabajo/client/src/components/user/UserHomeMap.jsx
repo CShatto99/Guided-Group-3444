@@ -3,14 +3,9 @@ import React from "react";
 import "../../css/userHome.css";
 
 export class UserHomeMap extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
   onMarkerClick = (props, marker, e) => {
     this.props.selectRider && this.props.selectRider(marker.name);
-  }
+  };
 
   render() {
     return (

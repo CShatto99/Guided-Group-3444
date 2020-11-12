@@ -16,7 +16,6 @@ import { ProfileState, updateProfile } from "../../store/profile";
 import { UserState } from "../../store/user";
 import { AlertState } from "../../store/alert";
 import "../../css/updateProfile.css";
-import { Redirect } from "react-router-dom";
 
 // Interface for defining the props for the UpdateProfile page
 interface updateProfileProps {}
@@ -31,9 +30,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   const { profile, loading } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
-  const { user, isAuth } = useSelector<RootState, UserState>(
-    state => state.user
-  );
+  const { user } = useSelector<RootState, UserState>(state => state.user);
   const { msg, status } = useSelector<RootState, AlertState>(
     state => state.alert
   );
@@ -70,7 +67,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
       setZip(profile.zip);
       setRideDays(profile.rideDays.split(""));
     }
-  }, [loading]);
+  }, [loading, profile]);
 
   /* Function:    handleRideDays
    * Parameters:  index: number - the index that is changing in the rideDays array

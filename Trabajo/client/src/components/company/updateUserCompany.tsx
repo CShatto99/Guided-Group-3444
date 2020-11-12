@@ -15,7 +15,6 @@ import { RootState } from "../../store";
 import { UserState } from "../../store/user";
 import { ProfileState, updateProfileCompany } from "../../store/profile";
 import { AlertState } from "../../store/alert";
-import { Redirect } from "react-router-dom";
 import "../../css/layoutStyles.css";
 import "../../css/updateUserCompany.css";
 
@@ -53,7 +52,7 @@ export const UpdateUserCompany: React.FC<{}> = () => {
     if (!loading) {
       dispatch(getAllCompanies());
     }
-  }, [loading]);
+  }, [loading, dispatch]);
 
   useEffect(() => {
     if (isAuth && profile) {
@@ -62,7 +61,7 @@ export const UpdateUserCompany: React.FC<{}> = () => {
         if (c.name === profile.company) setImage(c.image);
       });
     }
-  }, [profile, companies]);
+  }, [isAuth, profile, companies]);
 
   // useEffect(() => {
   //   companies &&
