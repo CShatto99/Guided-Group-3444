@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
-  ButtonGroup,
   Col,
   Form,
   Label,
@@ -25,7 +23,8 @@ import {
   getCompanyMembers,
 } from "../../store/company";
 import { w3cwebsocket as WS } from "websocket";
-import { unstable_renderSubtreeIntoContainer } from "react-dom";
+import "../../css/createRides.css";
+import { current } from "@reduxjs/toolkit";
 
 const client = new WS("ws://localhost:8080");
 
@@ -48,12 +47,11 @@ export const CreateRides: React.FC = () => {
   );
 
   //state variables
-  const [redirect, setRedirect] = useState(false);
   const [launcher, setLauncher] = useState<HTMLButtonElement | null>(null);
   const [currentRiders, setCurrentRiders] = useState<string[]>([]);
   const [rideDate, setRideDate] = useState("");
   const [chooseType, setChooseType] = useState(true);
-  const [numRiders, setNumRiders] = useState("0");
+  const [numRiders, setNumRiders] = useState("1");
   const [availableRiders, setAvailableRiders] = useState<Profile[]>([]);
   const [forceUpdate, setForceUpdate] = useState(0);
 
@@ -63,10 +61,6 @@ export const CreateRides: React.FC = () => {
    * are redirected to the updateProfile page.
    */
   useEffect(() => {
-    if (!loading && !profile) {
-      setRedirect(true);
-    }
-
     if (profile && profile.companyID) {
       dispatch(getCompany(profile.company));
       dispatch(getCompanyMembers(profile.companyID));
@@ -220,8 +214,6 @@ export const CreateRides: React.FC = () => {
     setForceUpdate(forceUpdate + 1);
   };
 
-  console.log(currentRiders);
-
   //if the user is authorized and logged in and has a profile then render the page
   return (
     <div className="home-container">
@@ -247,57 +239,48 @@ export const CreateRides: React.FC = () => {
                 <Input
                   type="text"
                   name="numRiders"
+                  value={numRiders}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setNumRiders(e.target.value);
                   }}
                 />
               </FormGroup>
-
-              <FormGroup tag="fieldset">
-                <FormGroup check>
-                  <Label check>
-                    <Input
-                      type="radio"
-                      name="radio1"
-                      checked={chooseType}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setChooseType(true)
-                      }
-                    />{" "}
-                    Choose Manually
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Label check>
-                    <Input
-                      type="radio"
-                      name="radio1"
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setChooseType(false)
-                      }
-                    />{" "}
-                    Choose Automatically
-                  </Label>
-                </FormGroup>
+              <p className="cr-btn-p">
+                Choose riders by clicking their map markers or click the 'Find
+                Riders' button to automatically find available riders.
+              </p>
+              <FormGroup className="cr-buttons">
+                <Button
+                  type="button"
+                  className="cr-btn"
+                  onClick={() => autoPopulate()}
+                  disabled={!rideDate}
+                >
+                  {" "}
+                  Find Riders
+                </Button>
+                <Button
+                  type="button"
+                  className="cr-btn-dgr"
+                  onClick={() => setCurrentRiders([])}
+                >
+                  Remove All Riders
+                </Button>
               </FormGroup>
 
               <FormGroup>
-                <>
-                  <Label htmlFor="riders">
-                    Choose Riders By Clicking Them on the Map.{" "}
-                  </Label>
-                  <Label>Selected Riders Are Below</Label>
-                  <div style={{ color: "#fff" }}>
+                {currentRiders.length > 0 ? (
+                  <div>
+                    <h4>Current Riders:</h4>
                     {currentRiders.map((member: string) => (
-                      <div
-                        style={{ marginTop: 5, backgroundColor: "#2d545e" }}
-                        key={member}
-                      >
+                      <div key={member} className="rider-div">
                         {member}
                       </div>
                     ))}
                   </div>
-                </>
+                ) : (
+                  <h4>No riders selected</h4>
+                )}
               </FormGroup>
             </Form>
           </Col>
