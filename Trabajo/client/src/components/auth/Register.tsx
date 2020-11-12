@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { DefaultRootState, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
   Row,
@@ -11,7 +11,6 @@ import {
   Label,
   Alert,
 } from "reactstrap";
-import states from "../../json/states.json";
 import { register } from "../../store/user";
 import { RootState } from "../../store/index";
 import { AlertState } from "../../store/alert";

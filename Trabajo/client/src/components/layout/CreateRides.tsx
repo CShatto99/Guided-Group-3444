@@ -1,7 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, ButtonGroup, Col, Form, Label, Input, Row, Spinner, FormGroup } from "reactstrap";
+import {
+  Button,
+  ButtonGroup,
+  Col,
+  Form,
+  Label,
+  Input,
+  Row,
+  Spinner,
+  FormGroup,
+} from "reactstrap";
 import { RootState } from "../../store/index";
 import { UserState } from "../../store/user";
 import { ProfileState, Profile } from "../../store/profile";
@@ -46,7 +56,6 @@ export const CreateRides: React.FC = () => {
   const [numRiders, setNumRiders] = useState("0");
   const [availableRiders, setAvailableRiders] = useState<Profile[]>([]);
   const [forceUpdate, setForceUpdate] = useState(0);
-
 
   /* useEffect is called when the component loads or when any of the state
    * variables in the array included at the end of the function is updated.
@@ -104,22 +113,21 @@ export const CreateRides: React.FC = () => {
     //weekdays: 0 monday, 1 tuesday, 2 wednesday, 3 thursday, 4 friday, 5 saturday, 6 sunday
 
     members?.forEach((member: Profile) => {
-
       //first check to make sure userID doesnt match
-      if(member.userID !== user._id) {
-
+      if (member.userID !== user._id) {
         //next check they need rides for the weekday selected
-        if(member.rideDays[weekday] === "1") {
-          
+        if (member.rideDays[weekday] === "1") {
           //next check to make sure they aren't already in a ride for the day selected
           let alreadyRiding: boolean = false;
-          member.rides?.forEach((ride) => {
-            ride.dateOfRide === rideDate ? alreadyRiding = true : alreadyRiding = false;
-          })
+          member.rides?.forEach(ride => {
+            ride.dateOfRide === rideDate
+              ? (alreadyRiding = true)
+              : (alreadyRiding = false);
+          });
 
           //if all checks passed, add user to newriders array
-          if(!alreadyRiding) {
-            newRiders.push(member); 
+          if (!alreadyRiding) {
+            newRiders.push(member);
           }
         }
       }
@@ -132,10 +140,10 @@ export const CreateRides: React.FC = () => {
 
   //this use effect is called when 'automatically' is chosen
   useEffect(() => {
-    if(!chooseType) {
+    if (!chooseType) {
       autoPopulate();
     }
-  },[chooseType]);
+  }, [chooseType]);
 
   //this function will send the messages to the back end
   const handleNewUserMessage = (newMessage: string) => {
@@ -146,63 +154,61 @@ export const CreateRides: React.FC = () => {
   };
 
   const handleRider = (rider: string) => {
-      if(currentRiders.length < parseInt(numRiders)) {
-        setCurrentRiders(currentRiders.find(r => r === rider) ?
-          currentRiders.filter(r => r !== rider) :
-          currentRiders.concat(rider)
-        )
-      } else {
-        if(currentRiders.indexOf(rider)) {
-          setCurrentRiders(currentRiders.filter(r => r !== rider));
-        }
+    if (currentRiders.length < parseInt(numRiders)) {
+      setCurrentRiders(
+        currentRiders.find(r => r === rider)
+          ? currentRiders.filter(r => r !== rider)
+          : currentRiders.concat(rider)
+      );
+    } else {
+      if (currentRiders.indexOf(rider)) {
+        setCurrentRiders(currentRiders.filter(r => r !== rider));
       }
-  }
+    }
+  };
 
   const selectRiderMap = (rider: string) => {
     handleRider(rider);
-  }
+  };
 
-  //This function will automatically select riders until the number of riders chosen 
+  //This function will automatically select riders until the number of riders chosen
   //is equal to the number of desired riders
   const autoPopulate = () => {
     let numCurrentRiders = currentRiders.length;
     let numMaxRiders = parseInt(numRiders);
     let newRiders = currentRiders;
 
-    if(numMaxRiders !== NaN) {
-      while(numCurrentRiders < numMaxRiders) {
-                
+    if (numMaxRiders !== NaN) {
+      while (numCurrentRiders < numMaxRiders) {
         //var to hold min distance found and rider profile
         var foundUser: Profile | null = profile;
         var minDistance = Number.MAX_VALUE;
-  
+
         //get closest rider
         availableRiders.forEach((rider: Profile) => {
-          
           //first check if rider is not current user
-          if(rider.userID !== user._id) {
-  
+          if (rider.userID !== user._id) {
             //next check to make sure user is not already in currentRiders
-            if(newRiders.indexOf(rider.name) === -1) {
-  
+            if (newRiders.indexOf(rider.name) === -1) {
               //then find distance to user
               const x = (profile?.lat || 0) - rider.lat;
               const y = (profile?.long || 0) - rider.long;
-              const currentDistance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-  
-              //if this is the closest user so far, update found var's
-              if(currentDistance < minDistance) {
+              const currentDistance = Math.sqrt(
+                Math.pow(x, 2) + Math.pow(y, 2)
+              );
 
+              //if this is the closest user so far, update found var's
+              if (currentDistance < minDistance) {
                 minDistance = currentDistance;
                 foundUser = rider;
               }
             }
           }
         });
-  
+
         //if a user was found update current users
-        if(foundUser && profile) {
-          if(foundUser.userID !== profile.userID) {
+        if (foundUser && profile) {
+          if (foundUser.userID !== profile.userID) {
             newRiders.push(foundUser.name);
           }
         }
@@ -212,7 +218,7 @@ export const CreateRides: React.FC = () => {
     //set new currentRiders
     setCurrentRiders(newRiders);
     setForceUpdate(forceUpdate + 1);
-  }
+  };
 
   console.log(currentRiders);
 
@@ -222,33 +228,54 @@ export const CreateRides: React.FC = () => {
       {profile ? (
         <Row className="align-items-center">
           <Col xs={12} lg={6} className="map-container">
-            <UserHomeMap users={availableRiders} selectRider={selectRiderMap}/>
+            <UserHomeMap users={availableRiders} selectRider={selectRiderMap} />
           </Col>
           <Col xs={12} lg={6}>
             <Form>
               <FormGroup>
                 <Label htmlFor="rideDate">Pick a Date</Label>
-                <Input type="date" onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setRideDate(e.target.value) }} />
+                <Input
+                  type="date"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setRideDate(e.target.value);
+                  }}
+                />
               </FormGroup>
 
               <FormGroup>
                 <Label>Choose Number of Riders</Label>
-                <Input type="text" name="numRiders" onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setNumRiders(e.target.value) }} />
+                <Input
+                  type="text"
+                  name="numRiders"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setNumRiders(e.target.value);
+                  }}
+                />
               </FormGroup>
 
               <FormGroup tag="fieldset">
                 <FormGroup check>
                   <Label check>
-                    <Input type="radio" name="radio1" checked={chooseType} onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setChooseType(true)
-                    } />{' '}
+                    <Input
+                      type="radio"
+                      name="radio1"
+                      checked={chooseType}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setChooseType(true)
+                      }
+                    />{" "}
                     Choose Manually
                   </Label>
                 </FormGroup>
                 <FormGroup check>
                   <Label check>
-                    <Input type="radio" name="radio1" onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setChooseType(false)} /> {' '}
+                    <Input
+                      type="radio"
+                      name="radio1"
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setChooseType(false)
+                      }
+                    />{" "}
                     Choose Automatically
                   </Label>
                 </FormGroup>
@@ -256,28 +283,34 @@ export const CreateRides: React.FC = () => {
 
               <FormGroup>
                 <>
-                  <Label htmlFor="riders">Choose Riders By Clicking Them on the Map</Label>
+                  <Label htmlFor="riders">
+                    Choose Riders By Clicking Them on the Map.{" "}
+                  </Label>
                   <Label>Selected Riders Are Below</Label>
-                  <div style={{ color: '#fff' }}>
-                    {currentRiders.map((member: string) =>
-                      <div style={{ marginTop: 5, backgroundColor: '#2d545e' }} key={member}>{member}</div>
-                    )}</div>
+                  <div style={{ color: "#fff" }}>
+                    {currentRiders.map((member: string) => (
+                      <div
+                        style={{ marginTop: 5, backgroundColor: "#2d545e" }}
+                        key={member}
+                      >
+                        {member}
+                      </div>
+                    ))}
+                  </div>
                 </>
               </FormGroup>
             </Form>
           </Col>
         </Row>
       ) : (
-          <div className={"userHomeMap"}>
-            <h2>You Have Not Selected a Company</h2>
-            <h3>Click the Link Below to Select Your Company</h3>
-            <Button href="/userHome/updateUserCompany" className={"submitButton"}>
-              Select Company
+        <div className={"userHomeMap"}>
+          <h2>You Have Not Selected a Company</h2>
+          <h3>Click the Link Below to Select Your Company</h3>
+          <Button href="/userHome/updateUserCompany" className={"submitButton"}>
+            Select Company
           </Button>
-          </div>
-        )
-      }
-    </div >
+        </div>
+      )}
+    </div>
   );
 };
-

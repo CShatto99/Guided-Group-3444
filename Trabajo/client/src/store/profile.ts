@@ -1,8 +1,6 @@
-import { getCompany } from "./company";
 import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setAlert } from "./alert";
-import { SSL_OP_CISCO_ANYCONNECT } from "constants";
 
 //Interface for Ride objects
 interface Ride {

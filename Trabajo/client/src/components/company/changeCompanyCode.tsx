@@ -43,9 +43,7 @@ export const ChangeCompanyCode: React.FC<ChangeCompanyCodeProps> = () => {
   };
 
   //render the form
-  return !isAuth ? (
-    <Redirect push to="/login" />
-  ) : (
+  return (
     <div>
       <div className={"formContainer"}>
         <h1>Change Company Code</h1>

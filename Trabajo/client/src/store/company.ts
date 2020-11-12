@@ -118,32 +118,6 @@ export const getAllCompanies = () => async (
   }
 };
 
-/* Function:    updateCompany
- * Parameters:  A Company object.
- * Return:      Void
- * Purpose:     This function sends a Company object to the API, receives an updated
- *              company document from the API, and inserts it into the company slice state
- */
-export const updateCompany = (company: Company) => async (
-  dispatch: (setAlert: any) => void
-) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  try {
-    /* TODO
-        const { data } = await axios.post('/company', company, config);
-        
-        dispatch(load_company(data));
-     */
-  } catch (error) {
-    dispatch(setAlert(error.response.data.msg, error.response.status));
-  }
-};
-
 //interface for creating a company
 interface createNewCompany {
   name: string;

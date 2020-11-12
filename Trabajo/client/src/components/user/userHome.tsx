@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Col, Form, Input, Row, Spinner } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import { RootState } from "../../store/index";
 import { UserState } from "../../store/user";
 import { ProfileState } from "../../store/profile";
@@ -26,9 +26,6 @@ const client = new WS("ws://localhost:8080");
 export const UserHome: React.FC = () => {
   const dispatch = useDispatch();
   //redux state variables
-  const { isAuth, user } = useSelector<RootState, UserState>(
-    state => state.user
-  );
   const { profile, loading } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
@@ -37,7 +34,6 @@ export const UserHome: React.FC = () => {
   );
 
   //state variables
-  const [redirect, setRedirect] = useState(false);
   const [launcher, setLauncher] = useState<HTMLButtonElement | null>(null);
 
   /* useEffect is called when the component loads or when any of the state
@@ -46,10 +42,6 @@ export const UserHome: React.FC = () => {
    * are redirected to the updateProfile page.
    */
   useEffect(() => {
-    if (!loading && !profile) {
-      setRedirect(true);
-    }
-
     if (profile && profile.companyID) {
       dispatch(getCompany(profile.company));
       dispatch(getCompanyMembers(profile.companyID));
@@ -90,16 +82,14 @@ export const UserHome: React.FC = () => {
 
   //this function will send the messages to the back end
   const handleNewUserMessage = (newMessage: string) => {
-    if (profile?.companyID != undefined) {
+    if (profile?.companyID !== undefined) {
       const message = `${profile.companyID}:${profile.name}:${newMessage}`;
       client.send(message);
     }
   };
 
   //if the user is authorized and logged in and has a profile then render the page
-  return !isAuth ? (
-    <Redirect to="/login" />
-  ) : redirect ? (
+  return !loading && !profile ? (
     <Redirect to="/userHome/updateProfile" />
   ) : (
     <div className="home-container">
@@ -109,7 +99,9 @@ export const UserHome: React.FC = () => {
             <UserHomeMap users={members} />
           </Col>
           <Col xs={12} lg={6} className="chat-container">
-            <Button className={"submitButton"} href="/userHome/createRides">Create Rides</Button>
+            <Button className={"submitButton"} href="/userHome/createRides">
+              Create Rides
+            </Button>
             <Widget
               handleNewUserMessage={handleNewUserMessage}
               title={profile.company}
