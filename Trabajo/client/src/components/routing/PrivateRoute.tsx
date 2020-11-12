@@ -19,6 +19,7 @@ const PrivateRoute = ({
   const { isAuth, loading } = useSelector<RootState, UserState>(
     state => state.user
   );
+
   return (
     <Route
       {...rest}
