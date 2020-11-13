@@ -230,36 +230,34 @@ export const CreateRides: React.FC = () => {
     const newRide = {
       dateOfRide: rideDate,
       driverName: user.fullName,
-      riders: currentRiders
-    }
+      riders: currentRiders,
+    };
 
     //call redux to send this to the api and save to the database and save to current user profile
 
-    
     //next create the url to open on a new tab
     let url = `http://google.com/maps/dir/?api=1&origin=${profile?.lat},${profile?.long}&destination=${company.lat},${company.long}&waypoints=`;
     //loop through users to get their lat long for waypoints
-    currentRiders.forEach((rider) => {
-      members?.forEach((member) => {
+    currentRiders.forEach(rider => {
+      members?.forEach(member => {
         if (rider === member.name) {
           url += `${member.lat},${member.long}|`;
         }
       });
     });
-    
+
     //remove last pipe
     url = url.slice(0, -1);
 
     window.open(url);
 
     setRedirectToRides(true);
-
-  }
+  };
 
   //if the user is authorized and logged in and has a profile then render the page
-  return redirectToRides ? 
-  <Redirect to="/userHome"/> : 
-  (
+  return redirectToRides ? (
+    <Redirect to="/userHome" />
+  ) : (
     <>
       <div>
         <Modal isOpen={modal} toggle={toggle}>
@@ -270,12 +268,16 @@ export const CreateRides: React.FC = () => {
             <div>{`Driver: ${user.fullName}`}</div>
             <div>Riders:</div>
             {currentRiders.map((rider: string) => {
-              return <div style={{marginLeft: "20px"}}>{rider}</div>;
+              return <div style={{ marginLeft: "20px" }}>{rider}</div>;
             })}
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={createRide}>Confirm</Button>{' '}
-            <Button color="secondary" onClick={toggle}>Cancel</Button>
+            <Button className="btn-confirm" onClick={createRide}>
+              Confirm
+            </Button>{" "}
+            <Button className="btn-cancel" onClick={toggle}>
+              Cancel
+            </Button>
           </ModalFooter>
         </Modal>
       </div>
@@ -283,7 +285,10 @@ export const CreateRides: React.FC = () => {
         {profile ? (
           <Row className="align-items-center">
             <Col xs={12} lg={6} className="map-container">
-              <UserHomeMap users={availableRiders} selectRider={selectRiderMap} />
+              <UserHomeMap
+                users={availableRiders}
+                selectRider={selectRiderMap}
+              />
             </Col>
             <Col xs={12} lg={6}>
               <Form>
@@ -309,8 +314,9 @@ export const CreateRides: React.FC = () => {
                   />
                 </FormGroup>
                 <p className="cr-btn-p">
-                  Finally choose riders by clicking their map markers or click the 'Find
-                  Riders' button to automatically find available riders.
+                  Finally choose riders by clicking their map markers or click
+                  the 'Find Riders' button to automatically find available
+                  riders.
                 </p>
                 <FormGroup className="cr-buttons">
                   <Button
@@ -355,7 +361,10 @@ export const CreateRides: React.FC = () => {
           <div className={"userHomeMap"}>
             <h2>You Have Not Selected a Company</h2>
             <h3>Click the Link Below to Select Your Company</h3>
-            <Button href="/userHome/updateUserCompany" className={"submitButton"}>
+            <Button
+              href="/userHome/updateUserCompany"
+              className={"submitButton"}
+            >
               Select Company
             </Button>
           </div>

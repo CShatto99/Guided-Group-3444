@@ -2,6 +2,23 @@
   display: flex;
 }
 
+.btn-confirm {
+  background-color: #2d545e !important;
+}
+
+.btn-confirm:hover {
+  background-color: #12343b !important;
+}
+
+.btn-cancel {
+  background-color: #c62535 !important;
+  border-color: #c62535 !important;
+}
+
+.btn-cancel:hover {
+  background-color: #a31422 !important;
+}
+
 .cr-btn {
   background-color: #2d545e !important;
   margin: 5px 5px;
