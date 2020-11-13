@@ -251,12 +251,26 @@ export const CreateRides: React.FC = () => {
 
     window.open(url);
 
+    let newMessage = `I just made a ride for ${rideDate} with riders `;
+    for(var i = 0; i < currentRiders.length; i++) {
+      if(i != currentRiders.length - 1) {
+        newMessage += currentRiders[i] + ", ";
+      } else {
+        newMessage += "and " + currentRiders[i] + "!";
+      }
+    }
+
+    if(profile) { 
+      const message = `${profile.companyID}:${profile.name}:${newMessage}`;
+      client.send(message);
+    }
+
     setRedirectToRides(true);
   };
 
   //if the user is authorized and logged in and has a profile then render the page
   return redirectToRides ? (
-    <Redirect to="/userHome" />
+    <Redirect to="/userHome/rides" />
   ) : (
     <>
       <div>
