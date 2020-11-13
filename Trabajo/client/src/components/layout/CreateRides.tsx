@@ -9,6 +9,10 @@ import {
   Row,
   Spinner,
   FormGroup,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
 } from "reactstrap";
 import { RootState } from "../../store/index";
 import { UserState } from "../../store/user";
@@ -25,6 +29,7 @@ import {
 import { w3cwebsocket as WS } from "websocket";
 import "../../css/createRides.css";
 import { current } from "@reduxjs/toolkit";
+import { Redirect } from "react-router-dom";
 
 const client = new WS("ws://localhost:8080");
 
@@ -54,6 +59,8 @@ export const CreateRides: React.FC = () => {
   const [numRiders, setNumRiders] = useState("1");
   const [availableRiders, setAvailableRiders] = useState<Profile[]>([]);
   const [forceUpdate, setForceUpdate] = useState(0);
+  const [modal, setModal] = useState(false);
+  const [redirectToRides, setRedirectToRides] = useState(false);
 
   /* useEffect is called when the component loads or when any of the state
    * variables in the array included at the end of the function is updated.
@@ -214,86 +221,146 @@ export const CreateRides: React.FC = () => {
     setForceUpdate(forceUpdate + 1);
   };
 
+  const toggle = () => setModal(!modal);
+
+  const createRide = () => {
+    setModal(!modal);
+
+    //new ride object
+    const newRide = {
+      dateOfRide: rideDate,
+      driverName: user.fullName,
+      riders: currentRiders
+    }
+
+    //call redux to send this to the api and save to the database and save to current user profile
+
+    
+    //next create the url to open on a new tab
+    let url = `http://google.com/maps/dir/?api=1&origin=${profile?.lat},${profile?.long}&destination=${company.lat},${company.long}&waypoints=`;
+    //loop through users to get their lat long for waypoints
+    currentRiders.forEach((rider) => {
+      members?.forEach((member) => {
+        if (rider === member.name) {
+          url += `${member.lat},${member.long}|`;
+        }
+      });
+    });
+    
+    //remove last pipe
+    url = url.slice(0, -1);
+
+    window.open(url);
+
+    setRedirectToRides(true);
+
+  }
+
   //if the user is authorized and logged in and has a profile then render the page
-  return (
-    <div className="home-container">
-      {profile ? (
-        <Row className="align-items-center">
-          <Col xs={12} lg={6} className="map-container">
-            <UserHomeMap users={availableRiders} selectRider={selectRiderMap} />
-          </Col>
-          <Col xs={12} lg={6}>
-            <Form>
-              <FormGroup>
-                <Label htmlFor="rideDate">First Pick a Date</Label>
-                <Input
-                  type="date"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setRideDate(e.target.value);
-                  }}
-                />
-              </FormGroup>
+  return redirectToRides ? 
+  <Redirect to="/userHome"/> : 
+  (
+    <>
+      <div>
+        <Modal isOpen={modal} toggle={toggle}>
+          <ModalHeader toggle={toggle}>Modal title</ModalHeader>
+          <ModalBody>
+            <div>Create the following ride:</div>
+            <div>{`Date: ${rideDate}`}</div>
+            <div>{`Driver: ${user.fullName}`}</div>
+            <div>Riders:</div>
+            {currentRiders.map((rider: string) => {
+              return <div style={{marginLeft: "20px"}}>{rider}</div>;
+            })}
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={createRide}>Confirm</Button>{' '}
+            <Button color="secondary" onClick={toggle}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+      </div>
+      <div className="home-container">
+        {profile ? (
+          <Row className="align-items-center">
+            <Col xs={12} lg={6} className="map-container">
+              <UserHomeMap users={availableRiders} selectRider={selectRiderMap} />
+            </Col>
+            <Col xs={12} lg={6}>
+              <Form>
+                <FormGroup>
+                  <Label htmlFor="rideDate">First Pick a Date</Label>
+                  <Input
+                    type="date"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setRideDate(e.target.value);
+                    }}
+                  />
+                </FormGroup>
 
-              <FormGroup>
-                <Label>Next Choose Number of Riders</Label>
-                <Input
-                  type="text"
-                  name="numRiders"
-                  value={numRiders}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setNumRiders(e.target.value);
-                  }}
-                />
-              </FormGroup>
-              <p className="cr-btn-p">
-                Finally choose riders by clicking their map markers or click the 'Find
-                Riders' button to automatically find available riders.
-              </p>
-              <FormGroup className="cr-buttons">
-                <Button
-                  type="button"
-                  className="cr-btn"
-                  onClick={() => autoPopulate()}
-                  disabled={!rideDate}
-                >
-                  {" "}
-                  Find Riders
-                </Button>
-                <Button
-                  type="button"
-                  className="cr-btn-dgr"
-                  onClick={() => setCurrentRiders([])}
-                >
-                  Remove All Riders
-                </Button>
-              </FormGroup>
+                <FormGroup>
+                  <Label>Next Choose Number of Riders</Label>
+                  <Input
+                    type="text"
+                    name="numRiders"
+                    value={numRiders}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setNumRiders(e.target.value);
+                    }}
+                  />
+                </FormGroup>
+                <p className="cr-btn-p">
+                  Finally choose riders by clicking their map markers or click the 'Find
+                  Riders' button to automatically find available riders.
+                </p>
+                <FormGroup className="cr-buttons">
+                  <Button
+                    type="button"
+                    className="cr-btn"
+                    onClick={() => autoPopulate()}
+                    disabled={!rideDate}
+                  >
+                    {" "}
+                    Find Riders
+                  </Button>
+                  <Button
+                    type="button"
+                    className="cr-btn-dgr"
+                    onClick={() => setCurrentRiders([])}
+                  >
+                    Remove All Riders
+                  </Button>
+                </FormGroup>
 
-              <FormGroup>
-                {currentRiders.length > 0 ? (
-                  <div>
-                    <h4>Current Riders:</h4>
-                    {currentRiders.map((member: string) => (
-                      <div key={member} className="rider-div">
-                        {member}
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <h4>No riders selected</h4>
-                )}
-              </FormGroup>
-            </Form>
-          </Col>
-        </Row>
-      ) : (
-        <div className={"userHomeMap"}>
-          <h2>You Have Not Selected a Company</h2>
-          <h3>Click the Link Below to Select Your Company</h3>
-          <Button href="/userHome/updateUserCompany" className={"submitButton"}>
-            Select Company
-          </Button>
-        </div>
-      )}
-    </div>
+                <FormGroup>
+                  {currentRiders.length > 0 ? (
+                    <div>
+                      <h4>Current Riders:</h4>
+                      {currentRiders.map((member: string) => (
+                        <div key={member} className="rider-div">
+                          {member}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <h4>No riders selected</h4>
+                  )}
+                </FormGroup>
+                <FormGroup>
+                  <Button onClick={toggle}>Submit Ride</Button>
+                </FormGroup>
+              </Form>
+            </Col>
+          </Row>
+        ) : (
+          <div className={"userHomeMap"}>
+            <h2>You Have Not Selected a Company</h2>
+            <h3>Click the Link Below to Select Your Company</h3>
+            <Button href="/userHome/updateUserCompany" className={"submitButton"}>
+              Select Company
+            </Button>
+          </div>
+        )}
+      </div>
+    </>
   );
 };

@@ -10,6 +10,8 @@ export interface Company {
   city: string;
   state: string;
   zip: string;
+  lat: number;
+  long: number;
   code: string;
   confirmCode: string;
   image: any;
