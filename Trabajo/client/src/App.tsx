@@ -17,6 +17,7 @@ import { ChangeCompanyCode } from "./components/company/changeCompanyCode";
 import { UpdateUserCompany } from "./components/company/updateUserCompany";
 import { refresh } from "./store/user";
 import PrivateRoute from "./components/routing/PrivateRoute";
+import { UserRides } from "./components/user/UserRides";
 
 /*  The App() function sole purpose in our app is to provide the standard layout
  *  for our application and to provide routing to our different components.
@@ -71,6 +72,11 @@ const App = () => {
                 exact
                 path="/userHome/createRides"
                 component={CreateRides}
+              />
+              <PrivateRoute 
+                exact
+                path="/userHome/rides"
+                component={UserRides}
               />
               <Route exact path="/404" component={NotFound} />
               <Redirect to="/404" />
