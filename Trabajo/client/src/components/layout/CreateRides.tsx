@@ -225,7 +225,7 @@ export const CreateRides: React.FC = () => {
           <Col xs={12} lg={6}>
             <Form>
               <FormGroup>
-                <Label htmlFor="rideDate">Pick a Date</Label>
+                <Label htmlFor="rideDate">First Pick a Date</Label>
                 <Input
                   type="date"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -235,7 +235,7 @@ export const CreateRides: React.FC = () => {
               </FormGroup>
 
               <FormGroup>
-                <Label>Choose Number of Riders</Label>
+                <Label>Next Choose Number of Riders</Label>
                 <Input
                   type="text"
                   name="numRiders"
@@ -246,7 +246,7 @@ export const CreateRides: React.FC = () => {
                 />
               </FormGroup>
               <p className="cr-btn-p">
-                Choose riders by clicking their map markers or click the 'Find
+                Finally choose riders by clicking their map markers or click the 'Find
                 Riders' button to automatically find available riders.
               </p>
               <FormGroup className="cr-buttons">

@@ -64,9 +64,11 @@ export const UserHome: React.FC = () => {
         }
       };
     }
+  }, [loading, dispatch, profile]);
 
+  useEffect(() => {
     launcher && launcher.click();
-  }, [loading, dispatch, launcher, profile]);
+  }, [launcher]);
 
   useEffect(() => {
     profile &&
@@ -106,7 +108,7 @@ export const UserHome: React.FC = () => {
               title={profile.company}
               subtitle="Say hi to your co-workers!"
               showTimeStamp={false}
-              /*launcher={(handleToggle: any) => (
+              launcher={(handleToggle: any) => (
                 <button
                   style={{ display: "none" }}
                   ref={button => setLauncher(button)}
@@ -114,7 +116,7 @@ export const UserHome: React.FC = () => {
                     handleToggle();
                   }}
                 ></button>
-              )}*/
+              )}
             />
           </Col>
         </Row>
