@@ -67,12 +67,12 @@ export const TopNavBar: React.FC = () => {
       </NavItem>
       <NavItem>
         <Button className={"navButton"} href="/userHome/updateProfile">
-          Update Profile
+          Profile
         </Button>
       </NavItem>
       <NavItem>
         <Button className={"navButton"} href="/userHome/updateUserCompany">
-          Update Company
+          Company
         </Button>
       </NavItem>
       <NavItem>
