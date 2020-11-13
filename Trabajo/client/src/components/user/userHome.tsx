@@ -105,7 +105,8 @@ export const UserHome: React.FC = () => {
               handleNewUserMessage={handleNewUserMessage}
               title={profile.company}
               subtitle="Say hi to your co-workers!"
-              launcher={(handleToggle: any) => (
+              showTimeStamp={false}
+              /*launcher={(handleToggle: any) => (
                 <button
                   style={{ display: "none" }}
                   ref={button => setLauncher(button)}
@@ -113,7 +114,7 @@ export const UserHome: React.FC = () => {
                     handleToggle();
                   }}
                 ></button>
-              )}
+              )}*/
             />
           </Col>
         </Row>
