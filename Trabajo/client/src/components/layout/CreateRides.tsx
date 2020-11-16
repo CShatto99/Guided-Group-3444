@@ -100,7 +100,7 @@ export const CreateRides: React.FC = () => {
       company.messages &&
       company.messages.forEach(message => {
         const dividedMsg = message.split(":");
-        console.log(dividedMsg[0], profile.name);
+
         if (dividedMsg[0] === profile.name) addUserMessage(dividedMsg[1]);
         else addResponseMessage(message);
       });
@@ -252,15 +252,15 @@ export const CreateRides: React.FC = () => {
     window.open(url);
 
     let newMessage = `I just made a ride for ${rideDate} with riders `;
-    for(var i = 0; i < currentRiders.length; i++) {
-      if(i != currentRiders.length - 1) {
+    for (var i = 0; i < currentRiders.length; i++) {
+      if (i != currentRiders.length - 1) {
         newMessage += currentRiders[i] + ", ";
       } else {
         newMessage += "and " + currentRiders[i] + "!";
       }
     }
 
-    if(profile) { 
+    if (profile) {
       const message = `${profile.companyID}:${profile.name}:${newMessage}`;
       client.send(message);
     }

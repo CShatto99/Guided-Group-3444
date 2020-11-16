@@ -13,7 +13,7 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(express.json({limit: "16mb"}));
+app.use(express.json({ limit: "16mb" }));
 app.use((_, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Content-Type");
@@ -30,19 +30,16 @@ const wss = new WebSocket.Server({
   port: 8080,
   //authentication method
   verifyClient: (info, cb) => {
-    console.log("cookie ", info.req.headers.cookie);
     let authTok = [];
-    if(info.req.headers.cookie != undefined) {
+    if (info.req.headers.cookie != undefined) {
       authTok = info.req.headers.cookie.split("=");
     }
 
-    console.log(authToken);
     if (authTok == []) {
       cb(false, 401, "unauthorized");
     }
 
     if (!authTok[1]) {
-      console.log("failed attempt");
       cb(
         false,
         401,
@@ -68,19 +65,18 @@ const wss = new WebSocket.Server({
 
 //this handles what happens when the web socket connects after authentication
 //and what happens with received messages
-wss.on("connection", (conn) => {
+wss.on("connection", conn => {
   conn.on("message", function incoming(message) {
     wss.clients.forEach(function each(client) {
-      if(client.readyState === WebSocket.OPEN) {
+      if (client.readyState === WebSocket.OPEN) {
         saveMessageToDB(message);
         client.send(message);
       }
-    })
+    });
     console.log(`received: ${message}`);
   });
 
   conn.send("Connected to the chat!");
-
 });
 
 //the following are higher level endpoints, eg. http://localhost.com:5000/<higherlevel>/<lowerlevel>
@@ -88,7 +84,7 @@ wss.on("connection", (conn) => {
 app.use("/user", require("./routes/user"));
 app.use("/auth", require("./routes/auth"));
 app.use("/profile", require("./routes/profile"));
-app.use("/company", require("./routes/company"))
+app.use("/company", require("./routes/company"));
 
 //the port to use
 const port = process.env.PORT || 5000;
