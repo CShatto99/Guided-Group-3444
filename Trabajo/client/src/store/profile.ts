@@ -1,13 +1,7 @@
 import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setAlert } from "./alert";
-
-//Interface for Ride objects
-export interface Ride {
-  dateOfRide: string;
-  driverName: string;
-  riders: [string];
-}
+import { Ride } from "./company";
 
 //Interface for Profile objects
 export interface Profile {
@@ -20,7 +14,7 @@ export interface Profile {
   zip: string;
   lat: number;
   long: number;
-  rides?: [Ride];
+  ride: Ride;
   admin: string | null;
   rideDays: string;
   company: string;
@@ -64,6 +58,24 @@ const profile = createSlice({
 export default profile.reducer;
 
 const { load_profile, clear_profile } = profile.actions;
+
+export const createCompanyRide = (ride: Ride) => async (
+  dispatch: (setAlert: any) => void
+) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const { data } = await axios.post("/profile/ride", { ride }, config);
+
+    dispatch(load_profile(data));
+  } catch (error) {
+    dispatch(setAlert(error.response.data.msg, error.response.status));
+  }
+};
 
 /* Function:    loadProfile
  * Parameters:  No parameters.

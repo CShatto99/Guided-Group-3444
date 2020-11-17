@@ -39,9 +39,9 @@ interface createNewCompany {
   email: string | undefined;
 }
 
-interface ride {
+export interface Ride {
   dateOfRide: string;
-  driverName: string;
+  driver: Profile | null;
   riders: Profile[];
 }
 
@@ -80,24 +80,6 @@ const company = createSlice({
 export default company.reducer;
 
 const { load_company, load_companies, load_members } = company.actions;
-
-export const createCompanyRide = (ride: ride) => async (
-  dispatch: (setAlert: any) => void
-) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  try {
-    const { data } = await axios.post("/company/ride", ride, config);
-
-    console.log(data);
-  } catch (error) {
-    dispatch(setAlert(error.response.data.msg, error.reponse.status));
-  }
-};
 
 export const getCompany = (company: string) => async (
   dispatch: (setAlert: any) => void

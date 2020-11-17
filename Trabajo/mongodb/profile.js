@@ -99,12 +99,14 @@ const updateProfile = async profile => {
     const collection = db.collection("profile");
 
     const updatedProfile = await collection.findOneAndUpdate(
-      { _id: profile._id },
+      { _id: ObjectId(profile._id) },
       {
         $set: profile,
       },
       { returnOriginal: false }
     );
+
+    console.log(updatedProfile);
 
     return updatedProfile.value;
   } catch (error) {

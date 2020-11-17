@@ -13,6 +13,27 @@ const { findUserByEmail } = require("../mongodb/user");
 const { findCompanyByName } = require("../mongodb/company");
 const profile = require("../mongodb/profile");
 const NodeGeocoder = require("node-geocoder");
+const { ObjectId } = require("mongodb");
+
+router.post("/ride", authToken, async (req, res) => {
+  const { ride } = req.body;
+
+  try {
+    const updatedProfile = await updateProfile({
+      ...ride.driver,
+      ...{ _id: ObjectId(ride.driver._id) },
+      ride,
+    });
+
+    ride.riders.map(async rider => {
+      await updateProfile({ ...rider, ...{ _id: ObjectId(rider._id) }, ride });
+    });
+
+    res.json({ profile: updatedProfile });
+  } catch (error) {
+    res.status(500).json({ msg: "Internal Server error" });
+  }
+});
 
 /* Function Name: router.post("/company")
  * Parameters: "/company", authToken, async (req, res)

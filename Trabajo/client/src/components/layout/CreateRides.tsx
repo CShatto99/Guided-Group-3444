@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
@@ -14,22 +15,20 @@ import {
   ModalFooter,
   ModalHeader,
 } from "reactstrap";
+import { addResponseMessage, addUserMessage } from "react-chat-widget";
+import { w3cwebsocket as WS } from "websocket";
 import { RootState } from "../../store/index";
 import { UserState } from "../../store/user";
-import { ProfileState, Profile } from "../../store/profile";
-import { addResponseMessage, addUserMessage } from "react-chat-widget";
-import "react-chat-widget/lib/styles.css";
-import "../../css/userHome.css";
+import { ProfileState, Profile, createCompanyRide } from "../../store/profile";
 import UserHomeMap from "../user/UserHomeMap";
 import {
   CompanyState,
   getCompany,
   getCompanyMembers,
-  createCompanyRide,
 } from "../../store/company";
-import { w3cwebsocket as WS } from "websocket";
+import "react-chat-widget/lib/styles.css";
+import "../../css/userHome.css";
 import "../../css/createRides.css";
-import { Redirect } from "react-router-dom";
 
 const client = new WS("ws://localhost:8080");
 
@@ -225,7 +224,7 @@ export const CreateRides: React.FC = () => {
     //new ride object
     const newRide = {
       dateOfRide: rideDate,
-      driverName: user.fullName,
+      driver: profile,
       riders: currentRiders,
     };
 
@@ -279,7 +278,11 @@ export const CreateRides: React.FC = () => {
             <div>{`Driver: ${user.fullName}`}</div>
             <div>Riders:</div>
             {currentRiders.map((rider: Profile) => {
-              return <div style={{ marginLeft: "20px" }}>{rider.name}</div>;
+              return (
+                <div key={rider.userID} style={{ marginLeft: "20px" }}>
+                  {rider.name}
+                </div>
+              );
             })}
           </ModalBody>
           <ModalFooter>
