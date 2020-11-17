@@ -26,6 +26,25 @@ export interface CompanyState {
   loading: boolean;
 }
 
+//interface for creating a company
+interface createNewCompany {
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  code: string;
+  confirmCode: string;
+  image: any;
+  email: string | undefined;
+}
+
+interface ride {
+  dateOfRide: string;
+  driverName: string;
+  riders: Profile[];
+}
+
 /* Function:    createlice
  * Parameters:  An object containing the name, initial state, and reducers object of the company slice.
  * Return:      Slice object.
@@ -61,6 +80,24 @@ const company = createSlice({
 export default company.reducer;
 
 const { load_company, load_companies, load_members } = company.actions;
+
+export const createCompanyRide = (ride: ride) => async (
+  dispatch: (setAlert: any) => void
+) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const { data } = await axios.post("/company/ride", ride, config);
+
+    console.log(data);
+  } catch (error) {
+    dispatch(setAlert(error.response.data.msg, error.reponse.status));
+  }
+};
 
 export const getCompany = (company: string) => async (
   dispatch: (setAlert: any) => void
@@ -119,19 +156,6 @@ export const getAllCompanies = () => async (
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
 };
-
-//interface for creating a company
-interface createNewCompany {
-  name: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  code: string;
-  confirmCode: string;
-  image: any;
-  email: string | undefined;
-}
 
 /* Function:    createCompany
  * Parameters:  A Company object.

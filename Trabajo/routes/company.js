@@ -30,11 +30,10 @@ router.post("/", authToken, async (req, res) => {
 
 router.post("/coordinates", authToken, async (req, res) => {
   const { companyID } = req.body;
-  console.log(companyID);
+
   try {
     const profiles = await findProfileBycompanyID(companyID);
 
-    console.log(JSON.stringify(profiles));
     res.json(profiles);
   } catch (error) {
     res.status(500).json({ msg: "Internal Server error" });

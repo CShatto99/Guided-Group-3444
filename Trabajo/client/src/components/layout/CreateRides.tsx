@@ -17,7 +17,7 @@ import {
 import { RootState } from "../../store/index";
 import { UserState } from "../../store/user";
 import { ProfileState, Profile } from "../../store/profile";
-import { addResponseMessage, Widget, addUserMessage } from "react-chat-widget";
+import { addResponseMessage, addUserMessage } from "react-chat-widget";
 import "react-chat-widget/lib/styles.css";
 import "../../css/userHome.css";
 import UserHomeMap from "../user/UserHomeMap";
@@ -25,10 +25,10 @@ import {
   CompanyState,
   getCompany,
   getCompanyMembers,
+  createCompanyRide,
 } from "../../store/company";
 import { w3cwebsocket as WS } from "websocket";
 import "../../css/createRides.css";
-import { current } from "@reduxjs/toolkit";
 import { Redirect } from "react-router-dom";
 
 const client = new WS("ws://localhost:8080");
@@ -230,6 +230,7 @@ export const CreateRides: React.FC = () => {
     };
 
     //call redux to send this to the api and save to the database and save to current user profile
+    dispatch(createCompanyRide(newRide));
 
     //next create the url to open on a new tab
     let url = `http://google.com/maps/dir/?api=1&origin=${profile?.lat},${profile?.long}&destination=${company.lat},${company.long}&waypoints=`;
