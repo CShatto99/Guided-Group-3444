@@ -60,6 +60,9 @@ export const UpdateUserCompany: React.FC<{}> = () => {
       companies?.map(c => {
         if (c.name === profile.company) setImage(c.image);
       });
+      if(companies) {
+        setName(companies[0].name);
+      }
     }
   }, [isAuth, profile, companies]);
 
