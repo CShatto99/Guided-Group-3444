@@ -14,7 +14,7 @@ export interface Profile {
   zip: string;
   lat: number;
   long: number;
-  ride: Ride;
+  rides: Ride;
   admin: string | null;
   rideDays: string;
   company: string;

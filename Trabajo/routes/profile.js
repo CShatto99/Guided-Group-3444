@@ -16,17 +16,17 @@ const NodeGeocoder = require("node-geocoder");
 const { ObjectId } = require("mongodb");
 
 router.post("/ride", authToken, async (req, res) => {
-  const { ride } = req.body;
+  const { rides } = req.body;
 
   try {
     const updatedProfile = await updateProfile({
-      ...ride.driver,
-      ...{ _id: ObjectId(ride.driver._id) },
-      ride,
+      ...rides.driver,
+      ...{ _id: ObjectId(rides.driver._id) },
+      rides,
     });
 
-    ride.riders.map(async rider => {
-      await updateProfile({ ...rider, ...{ _id: ObjectId(rider._id) }, ride });
+    rides.riders.map(async rider => {
+      await updateProfile({ ...rider, ...{ _id: ObjectId(rider._id) }, rides });
     });
 
     res.json({ profile: updatedProfile });

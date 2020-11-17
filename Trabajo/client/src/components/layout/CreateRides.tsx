@@ -29,6 +29,8 @@ import {
 import "react-chat-widget/lib/styles.css";
 import "../../css/userHome.css";
 import "../../css/createRides.css";
+import { Ride } from "../../store/company";
+import { format } from "path";
 
 const client = new WS("ws://localhost:8080");
 
@@ -119,7 +121,7 @@ export const CreateRides: React.FC = () => {
         if (member.rideDays[weekday] === "1") {
           //next check to make sure they aren't already in a ride for the day selected
           let alreadyRiding: boolean = false;
-          member.rides?.forEach(ride => {
+          member.rides?.forEach((ride: Ride) => {
             ride.dateOfRide === rideDate
               ? (alreadyRiding = true)
               : (alreadyRiding = false);
