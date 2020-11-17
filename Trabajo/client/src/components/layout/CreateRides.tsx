@@ -53,7 +53,7 @@ export const CreateRides: React.FC = () => {
 
   //state variables
   const [launcher, setLauncher] = useState<HTMLButtonElement | null>(null);
-  const [currentRiders, setCurrentRiders] = useState<string[]>([]);
+  const [currentRiders, setCurrentRiders] = useState<Profile[]>([]);
   const [rideDate, setRideDate] = useState("");
   const [chooseType, setChooseType] = useState(true);
   const [numRiders, setNumRiders] = useState("1");
@@ -154,22 +154,18 @@ export const CreateRides: React.FC = () => {
     }
   };
 
-  const handleRider = (rider: string) => {
+  const selectRiderMap = (rider: Profile) => {
     if (currentRiders.length < parseInt(numRiders)) {
       setCurrentRiders(
-        currentRiders.find(r => r === rider)
-          ? currentRiders.filter(r => r !== rider)
+        currentRiders.find(r => r.name === rider.name)
+          ? currentRiders.filter(r => r.name !== rider.name)
           : currentRiders.concat(rider)
       );
     } else {
       if (currentRiders.indexOf(rider)) {
-        setCurrentRiders(currentRiders.filter(r => r !== rider));
+        setCurrentRiders(currentRiders.filter(r => r.name !== rider.name));
       }
     }
-  };
-
-  const selectRiderMap = (rider: string) => {
-    handleRider(rider);
   };
 
   //This function will automatically select riders until the number of riders chosen
@@ -190,7 +186,7 @@ export const CreateRides: React.FC = () => {
           //first check if rider is not current user
           if (rider.userID !== user._id) {
             //next check to make sure user is not already in currentRiders
-            if (newRiders.indexOf(rider.name) === -1) {
+            if (newRiders.indexOf(rider) === -1) {
               //then find distance to user
               const x = (profile?.lat || 0) - rider.lat;
               const y = (profile?.long || 0) - rider.long;
@@ -210,7 +206,7 @@ export const CreateRides: React.FC = () => {
         //if a user was found update current users
         if (foundUser && profile) {
           if (foundUser.userID !== profile.userID) {
-            newRiders.push(foundUser.name);
+            newRiders.push(foundUser);
           }
         }
         numCurrentRiders++;
@@ -240,7 +236,7 @@ export const CreateRides: React.FC = () => {
     //loop through users to get their lat long for waypoints
     currentRiders.forEach(rider => {
       members?.forEach(member => {
-        if (rider === member.name) {
+        if (rider.name === member.name) {
           url += `${member.lat},${member.long}|`;
         }
       });
@@ -254,9 +250,9 @@ export const CreateRides: React.FC = () => {
     let newMessage = `I just made a ride for ${rideDate} with riders `;
     for (var i = 0; i < currentRiders.length; i++) {
       if (i != currentRiders.length - 1) {
-        newMessage += currentRiders[i] + ", ";
+        newMessage += currentRiders[i].name + ", ";
       } else {
-        newMessage += "and " + currentRiders[i] + "!";
+        newMessage += "and " + currentRiders[i].name + "!";
       }
     }
 
@@ -281,8 +277,8 @@ export const CreateRides: React.FC = () => {
             <div>{`Date: ${rideDate}`}</div>
             <div>{`Driver: ${user.fullName}`}</div>
             <div>Riders:</div>
-            {currentRiders.map((rider: string) => {
-              return <div style={{ marginLeft: "20px" }}>{rider}</div>;
+            {currentRiders.map((rider: Profile) => {
+              return <div style={{ marginLeft: "20px" }}>{rider.name}</div>;
             })}
           </ModalBody>
           <ModalFooter>
@@ -355,9 +351,9 @@ export const CreateRides: React.FC = () => {
                   {currentRiders.length > 0 ? (
                     <div>
                       <h4>Current Riders:</h4>
-                      {currentRiders.map((member: string) => (
-                        <div key={member} className="rider-div">
-                          {member}
+                      {currentRiders.map((member: Profile) => (
+                        <div key={member.name} className="rider-div">
+                          {member.name}
                         </div>
                       ))}
                     </div>
