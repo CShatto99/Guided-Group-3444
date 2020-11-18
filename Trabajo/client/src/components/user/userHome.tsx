@@ -97,31 +97,57 @@ export const UserHome: React.FC = () => {
   ) : (
     <div className="home-container">
       {profile ? (
-        <Row className="align-items-center">
-          <Col xs={12} lg={6} className="map-container">
+        <>
+          <div className="map-container">
             <UserHomeMap users={members} />
-          </Col>
-          <Col xs={12} lg={6} className="chat-container">
-            <Button className={"submitButton"} href="/userHome/createRides">
-              Create Rides
-            </Button>
-            <Widget
-              handleNewUserMessage={handleNewUserMessage}
-              title={profile.company}
-              subtitle="Say hi to your co-workers!"
-              showTimeStamp={false}
-              launcher={(handleToggle: any) => (
-                <button
-                  style={{ display: "none" }}
-                  ref={button => setLauncher(button)}
-                  onClick={() => {
-                    handleToggle();
-                  }}
-                ></button>
-              )}
-            />
-          </Col>
-        </Row>
+          </div>
+          <Button
+            className="submitButton crt-rides"
+            href="/userHome/createRides"
+          >
+            Create Rides
+          </Button>
+          <Widget
+            handleNewUserMessage={handleNewUserMessage}
+            title={profile.company}
+            subtitle="Say hi to your co-workers!"
+            showTimeStamp={false}
+            launcher={(handleToggle: any) => (
+              <button
+                style={{ display: "none" }}
+                ref={button => setLauncher(button)}
+                onClick={() => {
+                  handleToggle();
+                }}
+              ></button>
+            )}
+          />
+          {/* <Row className="align-items-center ">
+            <Col xs={12} xl={5} className="map-container">
+              <UserHomeMap users={members} />
+            </Col>
+            <Col xs={12} xl={5} className="chat-container">
+              <Button className={"submitButton"} href="/userHome/createRides">
+                Create Rides
+              </Button>
+              <Widget
+                handleNewUserMessage={handleNewUserMessage}
+                title={profile.company}
+                subtitle="Say hi to your co-workers!"
+                showTimeStamp={false}
+                launcher={(handleToggle: any) => (
+                  <button
+                    style={{ display: "none" }}
+                    ref={button => setLauncher(button)}
+                    onClick={() => {
+                      handleToggle();
+                    }}
+                  ></button>
+                )}
+              />
+            </Col>
+          </Row> */}
+        </>
       ) : (
         <div className={"userHomeMap"}>
           <h2>You Have Not Selected a Company</h2>

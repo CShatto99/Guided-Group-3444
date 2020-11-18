@@ -211,15 +211,15 @@ export const CreateRides: React.FC = () => {
 
     window.open(url);
 
-    let newMessage = `I just made a ride for *${rideDate}* with riders `;
+    let newMessage = `I just made a ride for **${rideDate}** with riders `;
     if (currentRiders.length === 1) {
-      newMessage += currentRiders[0].name;
+      newMessage += "**" + currentRiders[0].name + "**";
     } else {
       for (var i = 0; i < currentRiders.length; i++) {
         if (i !== currentRiders.length - 1) {
-          newMessage += currentRiders[i].name + ", ";
+          newMessage += "**" + currentRiders[i].name + "**, ";
         } else {
-          newMessage += "and " + currentRiders[i].name + "!";
+          newMessage += "and **" + currentRiders[i].name + "**!";
         }
       }
     }
