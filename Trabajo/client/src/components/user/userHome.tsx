@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Row, Spinner } from "reactstrap";
 import { RootState } from "../../store/index";
 import { ProfileState } from "../../store/profile";
 import { addResponseMessage, Widget, addUserMessage } from "react-chat-widget";
@@ -90,7 +90,9 @@ export const UserHome: React.FC = () => {
   };
 
   //if the user is authorized and logged in and has a profile then render the page
-  return !loading && !profile ? (
+  return loading ? (
+    <Spinner />
+  ) : !loading && !profile ? (
     <Redirect to="/userHome/updateProfile" />
   ) : (
     <div className="home-container">

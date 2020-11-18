@@ -9,6 +9,7 @@ import {
   Input,
   Label,
   Alert,
+  Spinner,
 } from "reactstrap";
 import states from "../../json/states.json";
 import { RootState } from "../../store";
@@ -115,7 +116,9 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   };
 
   //render the form
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <div className={"registerContainer"}>
       <div
         className={"formContainer"}

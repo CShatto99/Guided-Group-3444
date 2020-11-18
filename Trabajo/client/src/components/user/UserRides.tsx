@@ -1,26 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  Button,
-  ButtonGroup,
-  Col,
-  Form,
-  FormGroup,
-  Input,
-  Label,
-  Alert,
-  Row,
-} from "reactstrap";
-import states from "../../json/states.json";
+import { useSelector } from "react-redux";
+import { Col, Form, FormGroup, Input, Label, Row, Spinner } from "reactstrap";
 import { RootState } from "../../store";
-import {
-  ProfileState,
-  Ride,
-  Profile,
-  updateProfile,
-} from "../../store/profile";
-import { UserState } from "../../store/user";
-import { AlertState } from "../../store/alert";
+import { ProfileState, Ride, Profile } from "../../store/profile";
+
 import "../../css/updateProfile.css";
 
 /* The UpdateProfile page is where the user can update their profile
@@ -29,13 +12,8 @@ import "../../css/updateProfile.css";
  */
 export const UserRides: React.FC = () => {
   //redux state variables
-  const dispatch = useDispatch();
   const { profile, loading } = useSelector<RootState, ProfileState>(
     state => state.profile
-  );
-  const { user } = useSelector<RootState, UserState>(state => state.user);
-  const { msg, status } = useSelector<RootState, AlertState>(
-    state => state.alert
   );
 
   //state variables
@@ -43,7 +21,6 @@ export const UserRides: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedDriver, setSelectedDriver] = useState<Profile | null>(null);
   const [selectedRiders, setSelectedRiders] = useState<Profile[]>([]);
-  const [hasRides, setHasRides] = useState(false);
 
   useEffect(() => {
     //fill page with rides
@@ -56,7 +33,6 @@ export const UserRides: React.FC = () => {
       setSelectedDate(profile.rides[0].dateOfRide);
       setSelectedDriver(profile.rides[0].driver);
       setSelectedRiders(profile.rides[0].riders);
-      setHasRides(true);
     }
   }, [loading, profile]);
 
@@ -71,10 +47,13 @@ export const UserRides: React.FC = () => {
         });
       }
     }
-  }, [selectedDate]);
+  }, [selectedDate, profile]);
 
   //render the form
-  return !hasRides ? (
+
+  return loading ? (
+    <Spinner />
+  ) : profile && profile.rides.length < 0 ? (
     <div
       className={"formContainer"}
       style={{ width: "100%", maxWidth: "40rem" }}

@@ -9,6 +9,7 @@ import {
   Label,
   Alert,
   Row,
+  Spinner,
 } from "reactstrap";
 import { CompanyState, getAllCompanies } from "../../store/company";
 import { RootState } from "../../store";
@@ -24,10 +25,8 @@ import "../../css/updateUserCompany.css";
 export const UpdateUserCompany: React.FC<{}> = () => {
   //redux state variables
   const dispatch = useDispatch();
-  const { isAuth, loading } = useSelector<RootState, UserState>(
-    state => state.user
-  );
-  const { profile } = useSelector<RootState, ProfileState>(
+  const { isAuth } = useSelector<RootState, UserState>(state => state.user);
+  const { profile, loading } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
   const { companies } = useSelector<RootState, CompanyState>(
@@ -47,24 +46,20 @@ export const UpdateUserCompany: React.FC<{}> = () => {
    * We use it here to load the companies from the API and populate the
    * form.
    */
-  useEffect(() => {
-    //if the redux state is done loading get the companies from the API.
-    if (!loading) {
-      dispatch(getAllCompanies());
-    }
-  }, [loading, dispatch]);
 
   useEffect(() => {
-    if (isAuth && profile) {
+    if (isAuth) {
+      dispatch(getAllCompanies());
+    } else if (isAuth && profile) {
       setName(profile.company);
       companies?.map(c => {
         if (c.name === profile.company) setImage(c.image);
       });
-      if(companies) {
+      if (companies) {
         setName(companies[0].name);
       }
     }
-  }, [isAuth, profile, companies]);
+  }, [isAuth, profile, companies, dispatch]);
 
   // useEffect(() => {
   //   companies &&
@@ -91,7 +86,9 @@ export const UpdateUserCompany: React.FC<{}> = () => {
   };
 
   //return html form
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <Row className="update-comp-container">
       <Col xs={12} lg={6} className="gen-container">
         {msg && status === 200 && <Alert color="success">{msg}</Alert>}

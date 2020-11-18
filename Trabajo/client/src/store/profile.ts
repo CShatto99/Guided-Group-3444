@@ -4,7 +4,7 @@ import { setAlert } from "./alert";
 
 export interface Ride {
   dateOfRide: string;
-  driver: Profile;
+  driver: Profile | null;
   riders: Profile[];
 }
 

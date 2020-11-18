@@ -16,3 +16,10 @@
   align-items: center;
   text-align: center;
 }
+
+.spinner-border {
+  width: 10rem !important;
+  height: 10rem !important;
+  border: 0.25em solid #2d545e !important;
+  border-right-color: transparent !important;
+}

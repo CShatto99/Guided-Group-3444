@@ -110,7 +110,7 @@ export const TopNavBar: React.FC = () => {
 
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
-            {isAuth ? authLinks : guestLinks}
+            {localStorage.getItem("isAuth") ? authLinks : guestLinks}
           </Nav>
         </Collapse>
       </Navbar>

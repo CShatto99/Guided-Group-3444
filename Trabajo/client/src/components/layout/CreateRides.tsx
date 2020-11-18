@@ -8,7 +8,6 @@ import {
   Label,
   Input,
   Row,
-  Spinner,
   FormGroup,
   Modal,
   ModalBody,
@@ -19,7 +18,12 @@ import { addResponseMessage, addUserMessage } from "react-chat-widget";
 import { w3cwebsocket as WS } from "websocket";
 import { RootState } from "../../store/index";
 import { UserState } from "../../store/user";
-import { ProfileState, Profile, createCompanyRide } from "../../store/profile";
+import {
+  ProfileState,
+  Profile,
+  Ride,
+  createCompanyRide,
+} from "../../store/profile";
 import UserHomeMap from "../user/UserHomeMap";
 import {
   CompanyState,
@@ -29,8 +33,6 @@ import {
 import "react-chat-widget/lib/styles.css";
 import "../../css/userHome.css";
 import "../../css/createRides.css";
-import { Ride } from "../../store/company";
-import { format } from "path";
 
 const client = new WS("ws://localhost:8080");
 
@@ -42,9 +44,7 @@ const client = new WS("ws://localhost:8080");
 export const CreateRides: React.FC = () => {
   const dispatch = useDispatch();
   //redux state variables
-  const { isAuth, user } = useSelector<RootState, UserState>(
-    state => state.user
-  );
+  const { user } = useSelector<RootState, UserState>(state => state.user);
   const { profile, loading } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
@@ -53,10 +53,8 @@ export const CreateRides: React.FC = () => {
   );
 
   //state variables
-  const [launcher, setLauncher] = useState<HTMLButtonElement | null>(null);
   const [currentRiders, setCurrentRiders] = useState<Profile[]>([]);
   const [rideDate, setRideDate] = useState("");
-  const [chooseType, setChooseType] = useState(true);
   const [numRiders, setNumRiders] = useState("1");
   const [availableRiders, setAvailableRiders] = useState<Profile[]>([]);
   const [forceUpdate, setForceUpdate] = useState(0);
@@ -72,29 +70,8 @@ export const CreateRides: React.FC = () => {
     if (profile && profile.companyID) {
       dispatch(getCompany(profile.company));
       dispatch(getCompanyMembers(profile.companyID));
-      //this opens the websocket connection
-      client.onopen = () => {
-        console.log("WebSocket Client Connected");
-      };
-      //this handles messages received from the server for the chatbox
-      client.onmessage = message => {
-        //parse the message received
-        const messageStr = String(message.data);
-        console.log(messageStr);
-        const dividedMsg = messageStr.split(":");
-        //if the company id's match
-        if (dividedMsg[0] === profile.companyID) {
-          //if the name is not the same as the current user (meaning if this user didn't send this message)
-          if (dividedMsg[1] !== profile.name) {
-            //show who sent the message and their message
-            addResponseMessage(`${dividedMsg[1]}: ${dividedMsg[2]}`);
-          }
-        }
-      };
     }
-
-    launcher && launcher.click();
-  }, [loading]);
+  }, [loading, profile, dispatch]);
 
   useEffect(() => {
     profile &&
@@ -105,7 +82,7 @@ export const CreateRides: React.FC = () => {
         if (dividedMsg[0] === profile.name) addUserMessage(dividedMsg[1]);
         else addResponseMessage(message);
       });
-  }, [company]);
+  }, [company, profile]);
 
   //this useEffect will update the users based off the weekday selected by user
   useEffect(() => {
@@ -138,22 +115,7 @@ export const CreateRides: React.FC = () => {
     //reset riders user may have already selected since new date has been selected
     setCurrentRiders([]);
     setAvailableRiders(newRiders);
-  }, [rideDate]);
-
-  //this use effect is called when 'automatically' is chosen
-  useEffect(() => {
-    if (!chooseType) {
-      autoPopulate();
-    }
-  }, [chooseType]);
-
-  //this function will send the messages to the back end
-  const handleNewUserMessage = (newMessage: string) => {
-    if (profile?.companyID != undefined) {
-      const message = `${profile.companyID}:${profile.name}:${newMessage}`;
-      client.send(message);
-    }
-  };
+  }, [rideDate, members, user._id]);
 
   const selectRiderMap = (rider: Profile) => {
     if (currentRiders.length < parseInt(numRiders)) {
@@ -176,11 +138,11 @@ export const CreateRides: React.FC = () => {
     let numMaxRiders = parseInt(numRiders);
     let newRiders = currentRiders;
 
-    if (numMaxRiders !== NaN) {
+    if (!isNaN(numMaxRiders)) {
       while (numCurrentRiders < numMaxRiders) {
         //var to hold min distance found and rider profile
-        var foundUser: Profile | null = profile;
-        var minDistance = Number.MAX_VALUE;
+        let foundUser: Profile | null = profile;
+        let minDistance = Number.MAX_VALUE;
 
         //get closest rider
         availableRiders.forEach((rider: Profile) => {
@@ -249,12 +211,16 @@ export const CreateRides: React.FC = () => {
 
     window.open(url);
 
-    let newMessage = `I just made a ride for ${rideDate} with riders `;
-    for (var i = 0; i < currentRiders.length; i++) {
-      if (i != currentRiders.length - 1) {
-        newMessage += currentRiders[i].name + ", ";
-      } else {
-        newMessage += "and " + currentRiders[i].name + "!";
+    let newMessage = `I just made a ride for *${rideDate}* with riders `;
+    if (currentRiders.length === 1) {
+      newMessage += currentRiders[0].name;
+    } else {
+      for (var i = 0; i < currentRiders.length; i++) {
+        if (i !== currentRiders.length - 1) {
+          newMessage += currentRiders[i].name + ", ";
+        } else {
+          newMessage += "and " + currentRiders[i].name + "!";
+        }
       }
     }
 
