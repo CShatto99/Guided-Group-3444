@@ -1,7 +1,12 @@
 import axios from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setAlert } from "./alert";
-import { Ride } from "./company";
+
+export interface Ride {
+  dateOfRide: string;
+  driver: Profile;
+  riders: Profile[];
+}
 
 //Interface for Profile objects
 export interface Profile {
@@ -14,7 +19,7 @@ export interface Profile {
   zip: string;
   lat: number;
   long: number;
-  rides: Ride;
+  rides: Ride[];
   admin: string | null;
   rideDays: string;
   company: string;

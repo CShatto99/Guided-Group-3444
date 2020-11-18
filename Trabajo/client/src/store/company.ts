@@ -39,12 +39,6 @@ interface createNewCompany {
   email: string | undefined;
 }
 
-export interface Ride {
-  dateOfRide: string;
-  driver: Profile | null;
-  riders: Profile[];
-}
-
 /* Function:    createlice
  * Parameters:  An object containing the name, initial state, and reducers object of the company slice.
  * Return:      Slice object.

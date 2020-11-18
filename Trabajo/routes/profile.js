@@ -16,21 +16,27 @@ const NodeGeocoder = require("node-geocoder");
 const { ObjectId } = require("mongodb");
 
 router.post("/ride", authToken, async (req, res) => {
-  const { rides } = req.body;
+  const { ride } = req.body;
 
   try {
     const updatedProfile = await updateProfile({
-      ...rides.driver,
-      ...{ _id: ObjectId(rides.driver._id) },
-      rides,
+      ...ride.driver,
+      ...{ _id: ObjectId(ride.driver._id) },
+      rides: [...ride.driver.rides, ...[ride]],
     });
 
-    rides.riders.map(async rider => {
-      await updateProfile({ ...rider, ...{ _id: ObjectId(rider._id) }, rides });
+    ride.riders.map(async rider => {
+      await updateProfile({
+        ...rider,
+        ...{ _id: ObjectId(rider._id) },
+        rides: [...rider.rides, ...[ride]],
+      });
     });
 
+    console.log(updatedProfile);
     res.json({ profile: updatedProfile });
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ msg: "Internal Server error" });
   }
 });
@@ -163,7 +169,7 @@ router.post("/", authToken, async (req, res) => {
     }
 
     // If the profile does not exist, create it and insert it
-    const profile = { ...req.body, ...{ userID: req.user.ID.id } };
+    const profile = { ...req.body, ...{ userID: req.user.ID.id, rides: [] } };
 
     //get lat/long
     const options = {
