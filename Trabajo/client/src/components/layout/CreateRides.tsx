@@ -88,16 +88,16 @@ export const CreateRides: React.FC = () => {
   useEffect(() => {
     //first check if this user is already in a ride that day
     let userInRide = false;
-    if(profile && profile.rides) {
+    if (profile && profile.rides) {
       profile.rides.forEach((ride: Ride) => {
-        if(ride.dateOfRide === rideDate) {
+        if (ride.dateOfRide === rideDate) {
           userInRide = true;
         }
       });
     }
 
     //only do the following code if user is not in ride for the day selected
-    if(!userInRide) {
+    if (!userInRide) {
       let newRiders: Profile[] = [];
 
       const weekday = new Date(rideDate).getDay();
@@ -110,9 +110,11 @@ export const CreateRides: React.FC = () => {
             //next check to make sure they aren't already in a ride for the day selected
             let alreadyRiding: boolean = false;
             member.rides?.forEach((ride: Ride) => {
-              if(ride.dateOfRide === rideDate) {alreadyRiding = true;}
+              if (ride.dateOfRide === rideDate) {
+                alreadyRiding = true;
+              }
             });
-  
+
             //if all checks passed, add user to newriders array
             if (!alreadyRiding) {
               newRiders.push(member);
@@ -123,14 +125,11 @@ export const CreateRides: React.FC = () => {
       //reset riders user may have already selected since new date has been selected
       setCurrentRiders([]);
       setAvailableRiders(newRiders);
-    }
-
-    else {
+    } else {
       alert("You are already in a ride that day!");
       setCurrentRiders([]);
       setAvailableRiders([]);
     }
-    
   }, [rideDate, members, user._id]);
 
   const selectRiderMap = (rider: Profile) => {
@@ -249,7 +248,7 @@ export const CreateRides: React.FC = () => {
   };
 
   const getModal = () => {
-    if(currentRiders.length > 0) {
+    if (currentRiders.length > 0) {
       return (
         <Modal isOpen={modal} toggle={toggle}>
           <ModalHeader toggle={toggle}>Modal title</ModalHeader>
@@ -275,9 +274,8 @@ export const CreateRides: React.FC = () => {
             </Button>
           </ModalFooter>
         </Modal>
-      )
-    }
-    else {
+      );
+    } else {
       return (
         <Modal isOpen={modal} toggle={toggle}>
           <ModalHeader toggle={toggle}>Unable to Create Ride</ModalHeader>
@@ -290,19 +288,17 @@ export const CreateRides: React.FC = () => {
             </Button>
           </ModalFooter>
         </Modal>
-        )
+      );
     }
-  }
+  };
 
   //if the user is authorized and logged in and has a profile then render the page
   return redirectToRides ? (
     <Redirect to="/userHome/rides" />
   ) : (
     <>
-      <div>
-        {getModal()}
-      </div>
-      <div className="home-container">
+      <div>{getModal()}</div>
+      <div className="crt-rides-container">
         {profile ? (
           <Row className="align-items-center">
             <Col xs={12} lg={6} className="map-container">
@@ -312,7 +308,7 @@ export const CreateRides: React.FC = () => {
                 selectRider={selectRiderMap}
               />
             </Col>
-            <Col xs={12} lg={6}>
+            <Col xs={12} lg={6} className="crt-form-container">
               <Form>
                 <FormGroup>
                   <Label htmlFor="rideDate">First Pick a Date</Label>
