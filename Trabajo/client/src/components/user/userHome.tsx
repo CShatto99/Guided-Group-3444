@@ -100,16 +100,14 @@ export const UserHome: React.FC = () => {
           <div className="map-container">
             <UserHomeMap company={company} users={members} />
           </div>
-          <Button
-            className="submitButton crt-rides"
-            href="/userHome/createRides"
-          >
-            Create Rides
-          </Button>
           <Widget
             handleNewUserMessage={handleNewUserMessage}
             title={profile.company}
-            subtitle="Say hi to your co-workers!"
+            subtitle={
+              <Button className="crt-rides" href="/userHome/createRides">
+                Create Rides
+              </Button>
+            }
             showTimeStamp={false}
             launcher={(handleToggle: any) => (
               <button
@@ -121,31 +119,6 @@ export const UserHome: React.FC = () => {
               ></button>
             )}
           />
-          {/* <Row className="align-items-center ">
-            <Col xs={12} xl={5} className="map-container">
-              <UserHomeMap users={members} />
-            </Col>
-            <Col xs={12} xl={5} className="chat-container">
-              <Button className={"submitButton"} href="/userHome/createRides">
-                Create Rides
-              </Button>
-              <Widget
-                handleNewUserMessage={handleNewUserMessage}
-                title={profile.company}
-                subtitle="Say hi to your co-workers!"
-                showTimeStamp={false}
-                launcher={(handleToggle: any) => (
-                  <button
-                    style={{ display: "none" }}
-                    ref={button => setLauncher(button)}
-                    onClick={() => {
-                      handleToggle();
-                    }}
-                  ></button>
-                )}
-              />
-            </Col>
-          </Row> */}
         </>
       ) : (
         <div className={"userHomeMap"}>

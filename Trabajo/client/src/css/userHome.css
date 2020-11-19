@@ -60,18 +60,21 @@
 }
 
 .crt-rides {
-  width: 100%;
-  margin: 0;
-  background-color: #000 !important;
-  border-color: #000 !important;
-  border-radius: 0% !important;
+  width: 40%;
+  color: #000 !important;
+  background-color: #e1b382 !important;
+  border-color: #e1b382 !important;
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
     0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12) !important;
+
+  transition: ease-in 150ms !important;
 }
 
 .crt-rides:hover {
-  background-color: #2d545e !important;
-  border-color: #2d545e !important;
+  transition: ease-out 150ms;
+  background-color: #c39c71 !important;
+  border-color: #c39c71 !important;
+  transform: scale(1.03);
 }
 
 @media screen and (max-width: 1000px) {
