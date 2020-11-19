@@ -86,35 +86,51 @@ export const CreateRides: React.FC = () => {
 
   //this useEffect will update the users based off the weekday selected by user
   useEffect(() => {
-    let newRiders: Profile[] = [];
+    //first check if this user is already in a ride that day
+    let userInRide = false;
+    if(profile && profile.rides) {
+      profile.rides.forEach((ride: Ride) => {
+        if(ride.dateOfRide === rideDate) {
+          userInRide = true;
+        }
+      });
+    }
 
-    const weekday = new Date(rideDate).getDay();
-    //weekdays: 0 monday, 1 tuesday, 2 wednesday, 3 thursday, 4 friday, 5 saturday, 6 sunday
+    //only do the following code if user is not in ride for the day selected
+    if(!userInRide) {
+      let newRiders: Profile[] = [];
 
-    members?.forEach((member: Profile) => {
-      //first check to make sure userID doesnt match
-      if (member.userID !== user._id) {
-        //next check they need rides for the weekday selected
-        if (member.rideDays[weekday] === "1") {
-          //next check to make sure they aren't already in a ride for the day selected
-          let alreadyRiding: boolean = false;
-          member.rides?.forEach((ride: Ride) => {
-            ride.dateOfRide === rideDate
-              ? (alreadyRiding = true)
-              : (alreadyRiding = false);
-          });
-
-          //if all checks passed, add user to newriders array
-          if (!alreadyRiding) {
-            newRiders.push(member);
+      const weekday = new Date(rideDate).getDay();
+      //weekdays: 0 monday, 1 tuesday, 2 wednesday, 3 thursday, 4 friday, 5 saturday, 6 sunday
+      members?.forEach((member: Profile) => {
+        //first check to make sure userID doesnt match
+        if (member.userID !== user._id) {
+          //next check they need rides for the weekday selected
+          if (member.rideDays[weekday] === "1") {
+            //next check to make sure they aren't already in a ride for the day selected
+            let alreadyRiding: boolean = false;
+            member.rides?.forEach((ride: Ride) => {
+              if(ride.dateOfRide === rideDate) {alreadyRiding = true;}
+            });
+  
+            //if all checks passed, add user to newriders array
+            if (!alreadyRiding) {
+              newRiders.push(member);
+            }
           }
         }
-      }
-    });
+      });
+      //reset riders user may have already selected since new date has been selected
+      setCurrentRiders([]);
+      setAvailableRiders(newRiders);
+    }
 
-    //reset riders user may have already selected since new date has been selected
-    setCurrentRiders([]);
-    setAvailableRiders(newRiders);
+    else {
+      alert("You are already in a ride that day!");
+      setCurrentRiders([]);
+      setAvailableRiders([]);
+    }
+    
   }, [rideDate, members, user._id]);
 
   const selectRiderMap = (rider: Profile) => {
@@ -232,12 +248,9 @@ export const CreateRides: React.FC = () => {
     setRedirectToRides(true);
   };
 
-  //if the user is authorized and logged in and has a profile then render the page
-  return redirectToRides ? (
-    <Redirect to="/userHome/rides" />
-  ) : (
-    <>
-      <div>
+  const getModal = () => {
+    if(currentRiders.length > 0) {
+      return (
         <Modal isOpen={modal} toggle={toggle}>
           <ModalHeader toggle={toggle}>Modal title</ModalHeader>
           <ModalBody>
@@ -262,6 +275,32 @@ export const CreateRides: React.FC = () => {
             </Button>
           </ModalFooter>
         </Modal>
+      )
+    }
+    else {
+      return (
+        <Modal isOpen={modal} toggle={toggle}>
+          <ModalHeader toggle={toggle}>Unable to Create Ride</ModalHeader>
+          <ModalBody>
+            <div>You have no riders selected!</div>
+          </ModalBody>
+          <ModalFooter>
+            <Button className="btn-cancel" onClick={toggle}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+        )
+    }
+  }
+
+  //if the user is authorized and logged in and has a profile then render the page
+  return redirectToRides ? (
+    <Redirect to="/userHome/rides" />
+  ) : (
+    <>
+      <div>
+        {getModal()}
       </div>
       <div className="home-container">
         {profile ? (

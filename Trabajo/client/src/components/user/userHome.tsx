@@ -75,7 +75,6 @@ export const UserHome: React.FC = () => {
       company.messages &&
       company.messages.forEach(message => {
         const dividedMsg = message.split(":");
-        console.log(dividedMsg[0], profile.name);
         if (dividedMsg[0] === profile.name) addUserMessage(dividedMsg[1]);
         else addResponseMessage(message);
       });
