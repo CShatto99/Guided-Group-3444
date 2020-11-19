@@ -307,6 +307,7 @@ export const CreateRides: React.FC = () => {
           <Row className="align-items-center">
             <Col xs={12} lg={6} className="map-container">
               <UserHomeMap
+                company={company}
                 users={availableRiders}
                 selectRider={selectRiderMap}
               />

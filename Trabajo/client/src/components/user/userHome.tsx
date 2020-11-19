@@ -98,7 +98,7 @@ export const UserHome: React.FC = () => {
       {profile ? (
         <>
           <div className="map-container">
-            <UserHomeMap users={members} />
+            <UserHomeMap company={company} users={members} />
           </div>
           <Button
             className="submitButton crt-rides"
