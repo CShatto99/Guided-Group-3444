@@ -9,6 +9,7 @@ import {
   Nav,
 } from "reactstrap";
 import { RootState } from "../../store";
+import { ProfileState } from "../../store/profile";
 import { logout, UserState } from "../../store/user";
 
 /* This function is the top navigation bar shown on all web pages.
@@ -19,6 +20,9 @@ export const TopNavBar: React.FC = () => {
   const dispatch = useDispatch();
   const { isAuth, user } = useSelector<RootState, UserState>(
     state => state.user
+  );
+  const { profile, loading } = useSelector<RootState, ProfileState>(
+    state => state.profile
   );
 
   //component state variables
@@ -75,6 +79,12 @@ export const TopNavBar: React.FC = () => {
           Company
         </Button>
       </NavItem>
+      {profile?.admin ? 
+      <NavItem>
+        <Button className={"navButton"} href="/userHome/admin/changeCompanyCode">
+          Admin
+        </Button>
+      </NavItem> : <></>}
       <NavItem>
         <Button className={"navButton"} onClick={userLogout}>
           Logout
