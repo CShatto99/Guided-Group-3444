@@ -23,10 +23,10 @@ app.use((_, res, next) => {
 
 //web sockets
 const WebSocket = require("ws");
-const authToken = require("./middleware/authToken");
 
 //this sets up the web socket connection and make sure it is an authenticated user requesting
 const wss = new WebSocket.Server({
+  path: "/ws",
   //port to use for websockets
   port: 8080,
   //authentication method
