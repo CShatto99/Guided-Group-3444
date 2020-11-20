@@ -15,7 +15,8 @@ import {
 } from "../../store/company";
 import { w3cwebsocket as WS } from "websocket";
 
-const client = new WS("ws://localhost:8080");
+const HOST = window.location.origin.replace(/^http/, "ws");
+const client = new WS(HOST);
 
 /* UserHome is where the user will land once they are logged in and
  * have created a profile.  If the user is affiliated with a company,
