@@ -34,7 +34,7 @@ import { UserRides } from "./components/user/UserRides";
 
 const App = () => {
   useEffect(() => {
-    store.dispatch(refresh());
+    if (localStorage.getItem("isAuth") === "true") store.dispatch(refresh());
   }, []);
 
   return (

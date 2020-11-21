@@ -34,7 +34,13 @@ import "react-chat-widget/lib/styles.css";
 import "../../css/userHome.css";
 import "../../css/createRides.css";
 
-const client = new WS("ws://localhost:8080/ws");
+let HOST = window.location.origin.replace(/^http/, "ws");
+if (HOST.search("3000") === -1) {
+  HOST += ":8080";
+} else {
+  HOST = HOST.replace("3000", "8080");
+}
+const client = new WS(HOST);
 
 /* UserHome is where the user will land once they are logged in and
  * have created a profile.  If the user is affiliated with a company,

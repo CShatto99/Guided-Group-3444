@@ -10,12 +10,14 @@ import {
   Alert,
   Row,
   Spinner,
+  ButtonGroup,
 } from "reactstrap";
 import { CompanyState, getAllCompanies } from "../../store/company";
 import { RootState } from "../../store";
 import { UserState } from "../../store/user";
 import { ProfileState, updateProfileCompany } from "../../store/profile";
 import { AlertState } from "../../store/alert";
+import { JoinCompany } from "./JoinCompany";
 import "../../css/layoutStyles.css";
 import "../../css/updateUserCompany.css";
 
@@ -40,6 +42,7 @@ export const UpdateUserCompany: React.FC<{}> = () => {
   const [name, setName] = useState("Select Company");
   const [code, setCode] = useState("");
   const [image, setImage] = useState("/images/defaultCompany.png");
+  const [page, setPage] = useState("join");
 
   /* useEffect is called when the component loads or when any of the state
    * variables in the array included at the end of the function is updated.
@@ -60,13 +63,6 @@ export const UpdateUserCompany: React.FC<{}> = () => {
       }
     }
   }, [isAuth, profile, companies, dispatch]);
-
-  // useEffect(() => {
-  //   companies &&
-  //     companies.forEach(c => {
-  //       if (c.name === e.target.value) setImage(c.image);
-  //     });
-  // }, [companies]);
 
   /* Function:    handleSubmit
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form
@@ -89,69 +85,12 @@ export const UpdateUserCompany: React.FC<{}> = () => {
   return loading ? (
     <Spinner />
   ) : (
-    <Row className="update-comp-container">
-      <Col xs={12} lg={6} className="gen-container">
-        {msg && status === 200 && <Alert color="success">{msg}</Alert>}
-        {msg && status && status !== 200 && <Alert color="danger">{msg}</Alert>}
-        <h1>Join A New Company</h1>
-        <Form
-          onSubmit={(e: React.ChangeEvent<HTMLFormElement>) => handleSubmit(e)}
-          className="p-3"
-        >
-          <FormGroup row>
-            <Label for="companies">Select Company</Label>
-            <Input
-              type="select"
-              name="companies"
-              id="companies"
-              value={name}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setName(e.target.value);
-                companies &&
-                  companies.forEach(c => {
-                    if (c.name === e.target.value) setImage(c.image);
-                  });
-              }}
-            >
-              {companies &&
-                companies.map(val => {
-                  return <option key={val.name}>{val.name}</option>;
-                })}
-            </Input>
-          </FormGroup>
-          <FormGroup row>
-            <Label for="code">Company Code</Label>
-            <Input
-              type="password"
-              name="code"
-              id="company"
-              placeholder="************"
-              required
-              value={code}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setCode(e.target.value)
-              }
-            />
-          </FormGroup>
-          <Button className={"submitButton"} type="submit">
-            Register
-          </Button>
-        </Form>
-      </Col>
-      <Col xs={12} lg={6} className="img-container">
-        <img src={image} alt="companyPhoto" className="crt-company-img" />
-      </Col>
-      <Col xs={12} className="crt-cmp-container">
-        <h3>Is your company not listed? Create it here:</h3>
-        <Button
-          type="button"
-          style={{ marginLeft: "15px" }}
-          className={"navButton"}
-          href="/userHome/createCompany"
-        >
-          Create Company
-        </Button>
-      </Col>
-    </Row>
+    <>
+      <ButtonGroup>
+        <Button onClick={() => setPage("join")}>Join Company</Button>
+        <Button onClick={() => setPage("create")}>Create Company</Button>
+      </ButtonGroup>
+      {page === "join" && <JoinCompany />}
+    </>
   );
 };

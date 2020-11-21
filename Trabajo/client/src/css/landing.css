@@ -10,8 +10,20 @@
   max-height: 100%;
 }
 
+.header-img {
+  width: 100%;
+  height: 300px;
+  background-image: url("../img/hero.png");
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+}
+
 .header-info {
   margin-bottom: 5rem;
+  position: relative;
 }
 
 .landing-section {
@@ -39,6 +51,23 @@
 
 .landing-text p {
   margin: 0;
+}
+
+.hero-btn {
+  background-color: #2d545e !important;
+  color: white !important;
+  margin: 5px 5px;
+  width: 20%;
+  border-radius: 1rem;
+  transition: ease-out 150ms;
+  padding: 0.3rem 0;
+}
+
+.hero-btn:hover {
+  background-color: #12343b !important;
+  color: #c3c3c3 !important;
+  text-decoration: none;
+  transform: scale(1.03);
 }
 
 @media (max-width: 992px) {

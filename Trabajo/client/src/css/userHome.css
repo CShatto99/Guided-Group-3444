@@ -32,7 +32,7 @@
 }
 
 .rcw-conversation-container > .rcw-header {
-  background-color: #12343b;
+  background-color: #2d545e;
 }
 
 .rcw-response .rcw-message-text {
@@ -40,7 +40,7 @@
 }
 
 .rcw-client .rcw-message-text {
-  background-color: #2d545e;
+  background-color: #12343b;
   color: #fff;
 }
 

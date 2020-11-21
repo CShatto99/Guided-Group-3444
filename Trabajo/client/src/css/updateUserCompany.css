@@ -26,6 +26,10 @@
   justify-content: center;
 }
 
+.btn-container {
+  align-self: flex-start;
+}
+
 @media (max-width: 1000px) {
   .img-container {
     padding-top: 2rem;
