@@ -1,0 +1,34 @@
+/*  FooterBar Styles */
+.footerBar {
+  height: 10vh;
+  background-color: black;
+  stroke: white;
+  font-size: small;
+  display: flex;
+  flex-direction: column;
+}
+
+.footerLink {
+  stroke: white;
+  color: white;
+}
+
+.footer-nav {
+  width: 40rem;
+  max-width: 72rem;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (max-width: 1000px) {
+  .footer-nav {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}

@@ -1,9 +1,13 @@
 .update-comp-container {
-  display: flex;
-  justify-content: center;
   align-items: center;
   padding: 2rem;
   max-width: 100rem;
+  margin: 3rem 0;
+}
+
+.page-btns {
+  width: 100%;
+  display: block;
 }
 
 .img-container {

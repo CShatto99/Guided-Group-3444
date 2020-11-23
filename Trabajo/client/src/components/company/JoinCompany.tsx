@@ -46,7 +46,7 @@ export const JoinCompany: React.FC<{}> = () => {
         setName(companies[0].name);
       }
     }
-  }, [isAuth, profile, companies, dispatch]);
+  }, [isAuth]);
 
   /* Function:    handleSubmit
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form

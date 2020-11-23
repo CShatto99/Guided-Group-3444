@@ -11,6 +11,7 @@ import {
 import { RootState } from "../../store";
 import { ProfileState } from "../../store/profile";
 import { logout, UserState } from "../../store/user";
+import "../../css/topNavbar.css";
 
 /* This function is the top navigation bar shown on all web pages.
  * The buttons that are shown depend on if the user is logged in or not.
@@ -79,12 +80,18 @@ export const TopNavBar: React.FC = () => {
           Company
         </Button>
       </NavItem>
-      {profile?.admin ? 
-      <NavItem>
-        <Button className={"navButton"} href="/userHome/admin/changeCompanyCode">
-          Admin
-        </Button>
-      </NavItem> : <></>}
+      {profile?.admin ? (
+        <NavItem>
+          <Button
+            className={"navButton"}
+            href="/userHome/admin/changeCompanyCode"
+          >
+            Admin
+          </Button>
+        </NavItem>
+      ) : (
+        <></>
+      )}
       <NavItem>
         <Button className={"navButton"} onClick={userLogout}>
           Logout

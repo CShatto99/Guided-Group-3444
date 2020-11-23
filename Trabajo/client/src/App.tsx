@@ -9,12 +9,12 @@ import { Register } from "./components/auth/Register";
 import { NotFound } from "./components/layout/NotFound";
 import { FooterBar } from "./components/layout/FooterBar";
 import store from "./store";
-import { CreateCompany } from "./components/company/createCompany";
+import { CreateCompany } from "./components/company/CreateCompany";
 import { UserHome } from "./components/user/userHome";
 import { UpdateProfile } from "./components/user/updateProfile";
 import { CreateRides } from "./components/layout/CreateRides";
-import { ChangeCompanyCode } from "./components/company/changeCompanyCode";
-import { UpdateUserCompany } from "./components/company/updateUserCompany";
+import { ChangeCompanyCode } from "./components/company/ChangeCompanyCode";
+import { UpdateUserCompany } from "./components/company/UpdateUserCompany";
 import { refresh } from "./store/user";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import { UserRides } from "./components/user/UserRides";
@@ -34,15 +34,15 @@ import { UserRides } from "./components/user/UserRides";
 
 const App = () => {
   useEffect(() => {
-    if (localStorage.getItem("isAuth") === "true") store.dispatch(refresh());
+    store.dispatch(refresh());
   }, []);
 
   return (
     <BrowserRouter>
       <Provider store={store}>
-        <div className={"globalSettings"}>
+        <div className="globalSettings">
           <TopNavBar />
-          <div className={"mainContentArea"}>
+          <div className="mainContentArea">
             <Switch>
               <Route exact path="/" component={Landing} />
               <Route exact path="/login" component={Login} />

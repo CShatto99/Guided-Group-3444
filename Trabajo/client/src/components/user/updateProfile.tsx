@@ -119,7 +119,7 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
   return loading ? (
     <Spinner />
   ) : (
-    <div className={"registerContainer"}>
+    <div className={"upt-profile registerContainer"}>
       <div
         className={"formContainer"}
         style={{ width: "100%", maxWidth: "72rem" }}

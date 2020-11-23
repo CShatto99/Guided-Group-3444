@@ -1,5 +1,6 @@
 .crt-rides-container {
   width: 90%;
+  margin: 3rem 0;
 }
 
 .cr-buttons {
@@ -54,6 +55,10 @@
 }
 
 @media screen and (max-width: 1000px) {
+  .crt-rides-container {
+    margin: 2rem 0;
+  }
+
   .crt-form-container {
     margin-top: 2rem;
   }

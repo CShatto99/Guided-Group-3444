@@ -103,28 +103,32 @@ export const UserHome: React.FC = () => {
     <div className="home-container">
       {profile ? (
         <>
-          <div className="map-container">
-            <UserHomeMap company={company} users={members} />
-          </div>
-          <Widget
-            handleNewUserMessage={handleNewUserMessage}
-            title={profile.company}
-            subtitle={
-              <Button className="crt-rides" href="/userHome/createRides">
-                Create Rides
-              </Button>
-            }
-            showTimeStamp={false}
-            launcher={(handleToggle: any) => (
-              <button
-                style={{ display: "none" }}
-                ref={button => setLauncher(button)}
-                onClick={() => {
-                  handleToggle();
-                }}
-              ></button>
-            )}
-          />
+          <Row className="align-items-center">
+            <Col xs={12} lg={6} className="map-container">
+              <UserHomeMap company={company} users={members} />
+            </Col>
+            <Col xs={12} lg={6} className="chat-container">
+              <Widget
+                handleNewUserMessage={handleNewUserMessage}
+                title={profile.company}
+                subtitle={
+                  <Button className="crt-rides" href="/userHome/createRides">
+                    Create Rides
+                  </Button>
+                }
+                showTimeStamp={false}
+                launcher={(handleToggle: any) => (
+                  <button
+                    style={{ display: "none" }}
+                    ref={button => setLauncher(button)}
+                    onClick={() => {
+                      handleToggle();
+                    }}
+                  ></button>
+                )}
+              />
+            </Col>
+          </Row>
         </>
       ) : (
         <div className={"userHomeMap"}>

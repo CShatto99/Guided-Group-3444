@@ -1,3 +1,7 @@
+.upt-profile {
+  margin: 3rem 0;
+}
+
 .btn-group {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07),
     0 4px 8px rgba(0, 0, 0, 0.07), 0 8px 16px rgba(0, 0, 0, 0.07),
@@ -29,4 +33,10 @@
 .ride-btn:focus,
 .ride-btn-active:focus {
   box-shadow: none !important;
+}
+
+@media screen and (max-width: 1000px) {
+  .upt-profile {
+    margin: 1rem 0;
+  }
 }

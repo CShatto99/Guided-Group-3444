@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { Navbar, NavItem, Nav } from "reactstrap";
 import "../../css/layoutStyles.css";
+import "../../css/footerBar.css";
 
 // Interface for defining props for landing page
 interface FooterBarProps {}
@@ -11,20 +12,20 @@ interface FooterBarProps {}
  */
 export const FooterBar: React.FC<FooterBarProps> = () => {
   return (
-    <Navbar className={"footerBar"}>
-      <Nav vertical>
+    <Navbar className="footerBar">
+      <Nav className="footer-nav">
         <NavItem>
-          <Link className={"footerLink"} to="/">
+          <Link className="footerLink" to="/">
             Home
           </Link>
         </NavItem>
         <NavItem>
-          <Link className={"footerLink"} to="/contact">
+          <Link className="footerLink" to="/contact">
             Contact Us
           </Link>
         </NavItem>
         <NavItem>
-          <span className={"footerLink"}>© Guided Group</span>
+          <span className="footerLink">© Guided Group</span>
         </NavItem>
       </Nav>
     </Navbar>
