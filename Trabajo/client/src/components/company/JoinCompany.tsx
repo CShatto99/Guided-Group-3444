@@ -68,7 +68,7 @@ export const JoinCompany: React.FC<{}> = () => {
   return loading ? (
     <Spinner />
   ) : (
-    <Row className="update-comp-container">
+    <Row className="curr-page">
       <Col xs={12} lg={6} className="gen-container">
         {msg && status === 200 && <Alert color="success">{msg}</Alert>}
         {msg && status && status !== 200 && <Alert color="danger">{msg}</Alert>}
@@ -119,17 +119,6 @@ export const JoinCompany: React.FC<{}> = () => {
       </Col>
       <Col xs={12} lg={6} className="img-container">
         <img src={image} alt="companyPhoto" className="crt-company-img" />
-      </Col>
-      <Col xs={12} className="crt-cmp-container">
-        <h3>Is your company not listed? Create it here:</h3>
-        <Button
-          type="button"
-          style={{ marginLeft: "15px" }}
-          className={"navButton"}
-          href="/userHome/createCompany"
-        >
-          Create Company
-        </Button>
       </Col>
     </Row>
   );

@@ -14,7 +14,7 @@ import { UserHome } from "./components/user/userHome";
 import { UpdateProfile } from "./components/user/updateProfile";
 import { CreateRides } from "./components/layout/CreateRides";
 import { ChangeCompanyCode } from "./components/company/ChangeCompanyCode";
-import { UpdateUserCompany } from "./components/company/UpdateUserCompany";
+import { UpdateUserCompany } from "./components/company/Company";
 import { refresh } from "./store/user";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import { UserRides } from "./components/user/UserRides";
@@ -82,7 +82,7 @@ const App = () => {
               <Redirect to="/404" />
             </Switch>
           </div>
-          <FooterBar />
+          {/* <FooterBar /> */}
         </div>
       </Provider>
     </BrowserRouter>

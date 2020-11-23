@@ -126,7 +126,7 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
       {msg && status !== null && status !== 200 && (
         <Alert color="danger">{msg}</Alert>
       )}
-      <Row className="p-5">
+      <Row className="curr-page">
         <Col xs={12} lg={6} className="gen-container mb-5">
           <h1>Register New Company</h1>
           <Form
