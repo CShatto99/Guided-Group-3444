@@ -21,22 +21,22 @@ const LandingRef: React.FC<{}> = () => {
     <Redirect push to="/userHome" />
   ) : (
     <>
-      <div className="header-img">
-        <h1 className="titleHeader">Trabajo</h1>
-        <h1 className="subtitleHeader">
-          A ride-share solution for going to and from work
-        </h1>
-        <Link className="hero-btn" to="/register">
-          Get Started
-        </Link>
-      </div>
       <Row className="landing-container">
+        <div className="header-img">
+          <h1 className="titleHeader">Trabajo</h1>
+          <h1 className="subtitleHeader">
+            A ride-share solution for going to and from work
+          </h1>
+          <Link className="hero-btn" to="/register">
+            Get Started
+          </Link>
+        </div>
         <Col xs="12">
           <Row xs="12" className="landing-section justify-content-around">
             <Col xs="12" lg="5" className="left-child">
               <img src={carpool} alt="Carpool" />
             </Col>
-            <Col xs="12" lg="5" className="landing-text">
+            <Col xs="12" lg="5">
               <div>
                 <h3>Why Trabajo?</h3>
                 <p>
@@ -56,7 +56,7 @@ const LandingRef: React.FC<{}> = () => {
         </Col>
         <Col xs="12">
           <Row xs="12" className="landing-section justify-content-around">
-            <Col xs="12" lg="5" className="left-child landing-text">
+            <Col xs="12" lg="5" className="left-child">
               <div>
                 <h3>Eco Friendly</h3>
                 <p>
@@ -76,7 +76,7 @@ const LandingRef: React.FC<{}> = () => {
             <Col xs="12" lg="5" className="left-child">
               <img src={calendar} alt="Green Leaf" />
             </Col>
-            <Col xs="12" lg="5" className="landing-text">
+            <Col xs="12" lg="5">
               <div>
                 <h3>Find a Ride or Drive Others</h3>
                 <p>
@@ -92,7 +92,7 @@ const LandingRef: React.FC<{}> = () => {
         </Col>
         <Col xs="12">
           <Row xs="12" className="landing-section justify-content-around">
-            <Col xs="12" lg="5" className="landing-text left-child">
+            <Col xs="12" lg="5" className="left-child">
               <div>
                 <h3>
                   Manually choose riders, or let our system automatically choose

@@ -4,15 +4,6 @@
   text-decoration: underline;
 }
 
-.landingInfo {
-  height: 45vh;
-  width: 70%;
-  margin: 80px auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
 .textBoxInfo {
   background-color: #e1b382;
   width: 40%;

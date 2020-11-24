@@ -1,8 +1,6 @@
 .landing-container {
   width: 100%;
   height: 100%;
-  padding: 1.5rem;
-  max-width: 100rem;
 }
 
 .landing-container img {
@@ -12,17 +10,15 @@
 
 .header-img {
   width: 100%;
-  height: 300px;
+  height: 50vh;
   background-image: url("../img/hero.png");
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 1rem;
-}
-
-.header-info {
-  margin-bottom: 5rem;
+  padding: 1rem;
   position: relative;
 }
 
@@ -57,7 +53,7 @@
   background-color: #2d545e !important;
   color: white !important;
   margin: 5px 5px;
-  width: 20%;
+  width: 200px;
   border-radius: 1rem;
   transition: ease-out 150ms;
   padding: 0.3rem 0;
@@ -70,7 +66,7 @@
   transform: scale(1.03);
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1000px) {
   .header-info {
     margin-bottom: 4rem;
   }
@@ -89,6 +85,7 @@
 
   .landing-section {
     margin: 4rem 0;
+    padding: 0 1rem;
   }
 
   .left-child {

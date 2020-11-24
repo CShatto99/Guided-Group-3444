@@ -1,0 +1,35 @@
+.rides-container {
+  width: 100%;
+  max-width: 72rem;
+  margin: 2rem 0;
+}
+
+.ride-details {
+  padding: 1rem;
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
+}
+
+.ride-subheader {
+  display: flex;
+}
+
+.rider-list {
+  display: flex;
+  justify-content: space-around;
+}
+
+.rider-list p {
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 1000px) {
+  .rides-container {
+    padding: 1rem;
+  }
+
+  .rider-list {
+    flex-direction: column;
+  }
+}
