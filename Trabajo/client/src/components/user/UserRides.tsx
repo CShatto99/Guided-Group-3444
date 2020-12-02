@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Spinner, ListGroup } from "reactstrap";
 import { RootState } from "../../store";
-import { ProfileState, Ride, Profile } from "../../store/profile";
+import { ProfileState } from "../../store/profile";
 import "../../css/userRides.css";
 
 /* The UpdateProfile page is where the user can update their profile

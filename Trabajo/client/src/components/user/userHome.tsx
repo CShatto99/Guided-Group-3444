@@ -100,15 +100,13 @@ export const UserHome: React.FC = () => {
     <Redirect to="/userHome/updateProfile" />
   ) : (
     <div className="home-container">
-      {profile && company ? (
+      {profile ? (
         <>
           <Row className="align-items-center">
             <Col xs={12} lg={6} className="map-container">
-              <UserHomeMap
-                company={company}
-                users={members}
-                test={"hello world"}
-              />
+              {JSON.stringify(company) !== "{}" && (
+                <UserHomeMap company={company} users={members} />
+              )}
             </Col>
             <Col xs={12} lg={6} className="chat-container">
               <Widget

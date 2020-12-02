@@ -32,9 +32,6 @@
 .rcw-sender {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
 }
 
 .rcw-conversation-container > .rcw-header {

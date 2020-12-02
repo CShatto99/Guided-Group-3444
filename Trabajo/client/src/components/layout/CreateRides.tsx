@@ -308,11 +308,13 @@ export const CreateRides: React.FC = () => {
         {profile ? (
           <Row className="align-items-center">
             <Col xs={12} lg={6} className="map-container">
-              <UserHomeMap
-                company={company}
-                users={availableRiders}
-                selectRider={selectRiderMap}
-              />
+              {JSON.stringify(company) !== "{}" && (
+                <UserHomeMap
+                  company={company}
+                  users={availableRiders}
+                  selectRider={selectRiderMap}
+                />
+              )}
             </Col>
             <Col xs={12} lg={6} className="crt-form-container">
               <Form>
