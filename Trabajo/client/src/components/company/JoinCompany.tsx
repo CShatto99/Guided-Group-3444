@@ -69,7 +69,9 @@ export const JoinCompany: React.FC<{}> = () => {
   };
 
   return loading ? (
-    <Spinner />
+    <div className="spinner-wrapper">
+      <Spinner />
+    </div>
   ) : (
     <Row className="curr-page">
       <Col xs={12} lg={6} className="gen-container">

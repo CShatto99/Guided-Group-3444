@@ -1,21 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import {
-  Col,
-  Form,
-  FormGroup,
-  Input,
-  Label,
-  Row,
-  Spinner,
-  ListGroup,
-  ListGroupItem,
-} from "reactstrap";
+import { Spinner, ListGroup } from "reactstrap";
 import { RootState } from "../../store";
 import { ProfileState, Ride, Profile } from "../../store/profile";
-
 import "../../css/userRides.css";
-import { parseCommandLine, parseConfigFileTextToJson } from "typescript";
 
 /* The UpdateProfile page is where the user can update their profile
  * information.  If the user has just registered and does not yet have
@@ -27,43 +15,12 @@ export const UserRides: React.FC = () => {
     state => state.profile
   );
 
-  //state variables
-  const [dates, setDates] = useState<string[]>([]);
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedDriver, setSelectedDriver] = useState<Profile | null>(null);
-  const [selectedRiders, setSelectedRiders] = useState<Profile[]>([]);
-
-  useEffect(() => {
-    //fill page with rides
-    if (!loading && profile && profile.rides.length > 0) {
-      const loadDates: string[] = [];
-      profile.rides.forEach((ride: Ride) => {
-        loadDates.push(ride.dateOfRide);
-      });
-      setDates(profile.rides.map(ride => ride.dateOfRide));
-      setSelectedDate(profile.rides[0].dateOfRide);
-      setSelectedDriver(profile.rides[0].driver);
-      setSelectedRiders(profile.rides[0].riders);
-    }
-  }, [loading, profile]);
-
-  useEffect(() => {
-    if (profile) {
-      if (profile.rides) {
-        profile.rides.forEach((ride: Ride) => {
-          if (selectedDate === ride.dateOfRide) {
-            setSelectedDriver(ride.driver);
-            setSelectedRiders(ride.riders);
-          }
-        });
-      }
-    }
-  }, [selectedDate, profile]);
-
   //render the form
 
   return loading ? (
-    <Spinner />
+    <div className="spinner-wrapper">
+      <Spinner />
+    </div>
   ) : profile && profile.rides.length < 0 ? (
     <div className="formContainer" style={{ width: "100%", maxWidth: "40rem" }}>
       <h1>You Are Currently In No Rides</h1>
@@ -87,7 +44,7 @@ export const UserRides: React.FC = () => {
                     <h5>Riders</h5>
                     <div className="rider-list">
                       {ride.riders.map(rider => (
-                        <p>{rider.name}</p>
+                        <p key={rider.email}>{rider.name}</p>
                       ))}
                     </div>
                   </div>

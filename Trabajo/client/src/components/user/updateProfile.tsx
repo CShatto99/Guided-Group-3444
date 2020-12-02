@@ -117,7 +117,9 @@ export const UpdateProfile: React.FC<updateProfileProps> = () => {
 
   //render the form
   return loading ? (
-    <Spinner />
+    <div className="spinner-wrapper">
+      <Spinner />
+    </div>
   ) : (
     <div className={"upt-profile registerContainer"}>
       <div

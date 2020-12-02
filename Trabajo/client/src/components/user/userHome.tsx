@@ -93,16 +93,22 @@ export const UserHome: React.FC = () => {
 
   //if the user is authorized and logged in and has a profile then render the page
   return loading ? (
-    <Spinner />
+    <div className="spinner-wrapper">
+      <Spinner />
+    </div>
   ) : !loading && !profile ? (
     <Redirect to="/userHome/updateProfile" />
   ) : (
     <div className="home-container">
-      {profile ? (
+      {profile && company ? (
         <>
           <Row className="align-items-center">
             <Col xs={12} lg={6} className="map-container">
-              <UserHomeMap company={company} users={members} />
+              <UserHomeMap
+                company={company}
+                users={members}
+                test={"hello world"}
+              />
             </Col>
             <Col xs={12} lg={6} className="chat-container">
               <Widget

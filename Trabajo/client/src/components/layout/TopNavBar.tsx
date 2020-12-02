@@ -22,7 +22,7 @@ export const TopNavBar: React.FC = () => {
   const { isAuth, user } = useSelector<RootState, UserState>(
     state => state.user
   );
-  const { profile, loading } = useSelector<RootState, ProfileState>(
+  const { profile } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
 

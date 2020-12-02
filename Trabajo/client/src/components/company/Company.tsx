@@ -22,7 +22,9 @@ export const UpdateUserCompany: React.FC<{}> = () => {
 
   //return html form
   return loading ? (
-    <Spinner />
+    <div className="spinner-wrapper">
+      <Spinner />
+    </div>
   ) : (
     <div className="company-container">
       <ButtonGroup className="page-btns">
