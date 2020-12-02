@@ -96,7 +96,7 @@ export const loadProfile = () => async (
 
     dispatch(load_profile(data));
   } catch (error) {
-    console.log(error.response);
+    dispatch(setAlert(error.response.data.msg, error.response.status));
   }
 };
 
@@ -158,17 +158,4 @@ export const clearProfile = () => async (
   dispatch: (clear_profile: any) => void
 ) => {
   dispatch(clear_profile());
-};
-
-/* Function:    updateProfile
- * Parameters:  No parameters.
- * Return:      Void
- * Purpose:     This function makes a call to the API to delete a profile and clears the
- *              profile slice state.
- */
-export const deleteProfile = () => async (dispatch: () => void) => {
-  try {
-  } catch (error) {
-    console.log(error.response);
-  }
 };

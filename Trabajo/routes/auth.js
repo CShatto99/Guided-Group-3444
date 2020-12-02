@@ -57,7 +57,6 @@ router.get("/token", async (req, res) => {
  * Purpose: This post route will allow the user to sucessfully logout of Trabajo.
  * */
 router.post("/logout", (req, res) => {
-  console.log("logging out...");
   // response is sent that clears the cookie token and sends a 204 status indicating the user has successfully logged out.
   res.clearCookie("token");
   res.status(204).send();

@@ -19,7 +19,6 @@ let db;
 client.connect(err => {
   assert.strictEqual(null, err);
   console.log("Connected successfully to mongodb server");
-
   db = client.db(dbName);
 });
 

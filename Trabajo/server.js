@@ -52,7 +52,6 @@ const wss = new WebSocket.Server({
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
           if (err) {
-            console.log("failed attempt after verify");
             cb(false, 401, "unauthorized");
           } else {
             info.req.user = decoded;
@@ -74,7 +73,6 @@ wss.on("connection", conn => {
         client.send(message);
       }
     });
-    console.log(`received: ${message}`);
   });
 
   conn.send("Connected to the chat!");

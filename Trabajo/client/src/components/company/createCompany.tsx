@@ -122,12 +122,14 @@ export const CreateCompany: React.FC<createCompanyProps> = () => {
     <Redirect push to="/login" />
   ) : (
     <>
-      {msg && status === 200 && <Alert color="success">{msg}</Alert>}
-      {msg && status !== null && status !== 200 && (
-        <Alert color="danger">{msg}</Alert>
-      )}
       <Row className="curr-page">
         <Col xs={12} lg={6} className="gen-container mb-5">
+          {msg === "New company registered!" && status === 200 && (
+            <Alert color="success">{msg}</Alert>
+          )}
+          {msg && status !== null && status !== 200 && (
+            <Alert color="danger">{msg}</Alert>
+          )}
           <h1>Register New Company</h1>
           <Form
             onSubmit={(e: React.ChangeEvent<HTMLFormElement>) =>

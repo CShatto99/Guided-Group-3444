@@ -42,11 +42,14 @@ export const JoinCompany: React.FC<{}> = () => {
       companies?.map(c => {
         if (c.name === profile.company) setImage(c.image);
       });
-      if (companies) {
-        setName(companies[0].name);
-      }
     }
   }, [isAuth]);
+
+  useEffect(() => {
+    if (companies && companies.length > 0) {
+      setName(companies[0].name);
+    }
+  }, [companies]);
 
   /* Function:    handleSubmit
    * Parameters:  e: React.ChangeEvent<HTMLInputElement> - event from HTML form

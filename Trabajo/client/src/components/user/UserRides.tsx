@@ -62,8 +62,6 @@ export const UserRides: React.FC = () => {
 
   //render the form
 
-  profile && console.log(profile.rides);
-
   return loading ? (
     <Spinner />
   ) : profile && profile.rides.length < 0 ? (

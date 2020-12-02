@@ -51,14 +51,11 @@ export const UserHome: React.FC = () => {
       dispatch(getCompany(profile.company));
       dispatch(getCompanyMembers(profile.companyID));
       //this opens the websocket connection
-      client.onopen = () => {
-        console.log("WebSocket Client Connected");
-      };
+      client.onopen = () => {};
       //this handles messages received from the server for the chatbox
       client.onmessage = message => {
         //parse the message received
         const messageStr = String(message.data);
-        console.log(messageStr);
         const dividedMsg = messageStr.split(":");
         //if the company id's match
         if (dividedMsg[0] === profile.companyID) {

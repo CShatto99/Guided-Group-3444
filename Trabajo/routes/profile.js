@@ -33,10 +33,8 @@ router.post("/ride", authToken, async (req, res) => {
       });
     });
 
-    console.log(updatedProfile);
     res.json({ profile: updatedProfile });
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ msg: "Internal Server error" });
   }
 });

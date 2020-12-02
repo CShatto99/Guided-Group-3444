@@ -151,8 +151,6 @@ export const refresh = () => async (dispatch: (set_alert: any) => void) => {
   try {
     const { data } = await axios.get("/auth/token");
 
-    console.log("Refresh data: ", data);
-
     // TODO: make the token route fetch the current user
     if (data.accessToken) {
       setAuthToken(data.accessToken);
