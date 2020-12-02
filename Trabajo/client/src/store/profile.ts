@@ -102,7 +102,8 @@ export const loadProfile = () => async (
 
 export const updateProfileCompany = (
   company: string,
-  companyCode: string
+  companyCode: string,
+  admin: string | null
 ) => async (dispatch: (setAlert: any) => void) => {
   const config = {
     headers: {
@@ -113,7 +114,7 @@ export const updateProfileCompany = (
   try {
     const { data } = await axios.post(
       "/profile/company",
-      { company, companyCode },
+      { company, companyCode, admin },
       config
     );
 

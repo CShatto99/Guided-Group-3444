@@ -65,7 +65,7 @@ export const JoinCompany: React.FC<{}> = () => {
     //prevent standard form behavior
     e.preventDefault();
 
-    dispatch(updateProfileCompany(name, code));
+    profile && dispatch(updateProfileCompany(name, code, profile.admin));
   };
 
   return loading ? (

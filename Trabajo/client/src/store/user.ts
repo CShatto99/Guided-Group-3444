@@ -154,7 +154,9 @@ export const refresh = () => async (dispatch: (set_alert: any) => void) => {
     setAuthToken(data.accessToken);
 
     // TODO: make the token route fetch the current user
-    if (data.accessToken) {
+    if (!data.accessToken && localStorage.getItem("isAuth") === "true") {
+      dispatch(logout());
+    } else if (data.accessToken) {
       const res = await axios.get("/auth/user");
       dispatch(login_user(res.data.user));
       dispatch(loadProfile());

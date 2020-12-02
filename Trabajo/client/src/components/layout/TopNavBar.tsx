@@ -11,6 +11,7 @@ import {
 import { RootState } from "../../store";
 import { ProfileState } from "../../store/profile";
 import { logout, UserState } from "../../store/user";
+import { CompanyState } from "../../store/company";
 import "../../css/topNavbar.css";
 
 /* This function is the top navigation bar shown on all web pages.
@@ -24,6 +25,9 @@ export const TopNavBar: React.FC = () => {
   );
   const { profile } = useSelector<RootState, ProfileState>(
     state => state.profile
+  );
+  const { company } = useSelector<RootState, CompanyState>(
+    state => state.company
   );
 
   //component state variables
@@ -80,7 +84,7 @@ export const TopNavBar: React.FC = () => {
           Company
         </Button>
       </NavItem>
-      {profile?.admin ? (
+      {profile?.admin === company._id ? (
         <NavItem>
           <Button
             className={"navButton"}
