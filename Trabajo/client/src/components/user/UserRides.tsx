@@ -1,9 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Spinner, ListGroup } from "reactstrap";
+import { Spinner, ListGroup, Button } from "reactstrap";
 import { RootState } from "../../store";
-import { ProfileState } from "../../store/profile";
+import { ProfileState, Ride } from "../../store/profile";
 import "../../css/userRides.css";
+import { CompanyState } from "../../store/company";
 
 /* The UpdateProfile page is where the user can update their profile
  * information.  If the user has just registered and does not yet have
@@ -14,6 +15,23 @@ export const UserRides: React.FC = () => {
   const { profile, loading } = useSelector<RootState, ProfileState>(
     state => state.profile
   );
+  const { company } = useSelector<RootState, CompanyState>(
+    state => state.company
+  );
+
+  const openRides = (ride: Ride) => {
+    //next create the url to open on a new tab
+    let url = `http://google.com/maps/dir/?api=1&origin=${ride.driver?.lat},${ride.driver?.long}&destination=${company.lat},${company.long}&waypoints=`;
+    //loop through users to get their lat long for waypoints
+    ride.riders.forEach(rider => {
+          url += `${rider.lat},${rider.long}|`;
+    });
+
+    //remove last pipe
+    url = url.slice(0, -1);
+
+    window.open(url);
+  }
 
   //render the form
 
@@ -47,6 +65,7 @@ export const UserRides: React.FC = () => {
                         <p key={rider.email}>{rider.name}</p>
                       ))}
                     </div>
+                    <Button color="primary" onClick={() => openRides(ride)}>View Route</Button>
                   </div>
                 )
             )}
