@@ -84,7 +84,7 @@ export const TopNavBar: React.FC = () => {
           Company
         </Button>
       </NavItem>
-      {profile?.admin === company._id ? (
+      {profile?.admin === profile?.companyID ? (
         <NavItem>
           <Button
             className={"navButton"}

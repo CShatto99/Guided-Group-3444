@@ -37,9 +37,9 @@ import "../../css/createRides.css";
 
 let HOST = window.location.origin.replace(/^http/, "ws");
 if (HOST.search("3000") === -1) {
-  HOST += ":8080";
+  HOST += ":8080/ws";
 } else {
-  HOST = HOST.replace("3000", "8080");
+  HOST = HOST.replace("3000", "8080/ws");
 }
 const client = new WS(HOST);
 
