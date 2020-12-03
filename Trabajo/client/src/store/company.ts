@@ -39,6 +39,14 @@ interface createNewCompany {
   email: string | undefined;
 }
 
+interface updateCode {
+  email: string;
+  company: string;
+  oldCode: string;
+  newCode: string;
+  newCodeConfirm: string;
+}
+
 /* Function:    createlice
  * Parameters:  An object containing the name, initial state, and reducers object of the company slice.
  * Return:      Slice object.
@@ -157,3 +165,27 @@ export const createCompany = (company: createNewCompany) => async (
     dispatch(setAlert(error.response.data.msg, error.response.status));
   }
 };
+
+export const updateCompanyCode = (update: updateCode) => async (
+  dispatch: (setAlert: any) => void ) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const msg = {
+        email: update.email,
+        company: update.company,
+        oldCode: update.oldCode,
+        newCode: update.newCode,
+        newCodeConfirm: update.newCodeConfirm
+      }
+
+      const { data } = await axios.post("/company/updateCode", msg, config);
+      dispatch(setAlert("Code Updated!", 200));
+    } catch (error) {
+      dispatch(setAlert(error.response.data.msg, error.response.status));
+    }
+  };

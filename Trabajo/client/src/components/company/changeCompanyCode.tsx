@@ -1,10 +1,22 @@
 import React, { useState } from "react";
-import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Alert, Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
+import { RootState } from "../../store";
+import { AlertState } from "../../store/alert";
+import { updateCompanyCode } from "../../store/company";
+import { ProfileState } from "../../store/profile";
 
 /* ChangeCompanyCode is rendered when a user is an admin of a company and
  * they need to change the code for whatever reason
  */
 export const ChangeCompanyCode: React.FC = () => {
+  const dispatch = useDispatch();
+  const { profile, loading } = useSelector<RootState, ProfileState>(
+    state => state.profile
+  );
+  const { msg, status } = useSelector<RootState, AlertState>(
+    state => state.alert
+  );
   //state variables
   const [originalCode, setOriginalCode] = useState("");
   const [newCode, setNewCode] = useState("");
@@ -24,19 +36,25 @@ export const ChangeCompanyCode: React.FC = () => {
     //prevent standard form behavior
     e.preventDefault();
 
-    //TODO this isa placeholder until we implement this functionality in redux
-    let msg = "send form to API: \n";
-    msg += `original code: ${originalCode}\n`;
-    msg += `new code: ${newCode}\n`;
-    msg += `new code check: ${newCodeCheck}`;
-    alert(msg);
+    if(profile) {
+      const update = {
+        email: profile.email,
+        company: profile.company,
+        oldCode: originalCode,
+        newCode,
+        newCodeConfirm: newCodeCheck
+      }
 
-    //send form to API
+      //send form to API
+      dispatch(updateCompanyCode(update));
+    }
   };
 
   //render the form
   return (
     <div>
+      {msg && status === 200 && <Alert color="success">{msg}</Alert>}
+      {msg && status && status !== 200 && <Alert color="danger">{msg}</Alert>}
       <div className={"formContainer"}>
         <h1>Change Company Code</h1>
         <Form onSubmit={e => handleSubmit(e)}>

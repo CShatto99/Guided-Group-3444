@@ -7,6 +7,7 @@ const {
   insertCompany,
   findAllCompanies,
   findCompanyByName,
+  updateCompanyCode
 } = require("../mongodb/company");
 const {
   findProfileByEmail,
@@ -140,6 +141,51 @@ router.post("/create", authToken, async (req, res) => {
     // if there's an error, there will be a 500 status describing an interal server error
     return res.status(500).json({ msg: "Internal Server error" });
   }
+});
+
+router.post("/updateCode", authToken, async (req, res) => {
+  const {
+    email,
+    company,
+    oldCode,
+    newCode,
+    newCodeConfirm
+  } = req.body;
+
+  // check if valid user
+  if (!email || !company)
+    return res.status(404).json({ msg: "You are not an authorized user." });
+  
+  // check if any fields are empty
+  if (!oldCode || !newCode || !newCodeConfirm)
+    return res.status(400).json({ msg: "Please enter all required fields" });
+
+ // Check if passwords match
+ if (newCode !== newCodeConfirm)
+   return res.status(400).json({ msg: "Codes do not match." });
+
+  // check if company exists by casting the company name to lowercase
+  const lowercaseName = company.toLowerCase();
+  const companyFound = await findCompanyByName(lowercaseName);
+
+  // if the company is not found, the creator will be notified as such
+  if (!companyFound)
+    return res.status(400).json({ msg: "You are not authorized to perform this action." });
+
+    console.log(companyFound);
+
+  const match = await bcrypt.compare(oldCode, companyFound.hashedCode);
+  if (!match) return res.status(400).json({ msg: "Invalid company code." });
+
+  // hash company password
+  const salt = await bcrypt.genSalt();
+  const hashedCode = await bcrypt.hash(newCode, salt);
+
+  companyFound.hashedCode = hashedCode;
+
+  updateCompanyCode(companyFound);
+
+  return res.status(200).json({msg: "Success!"});
 });
 
 module.exports = router;

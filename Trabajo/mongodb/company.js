@@ -59,6 +59,26 @@ const findCompanyByName = async name => {
   }
 };
 
+const updateCompanyCode = async (company) => {
+  try {
+    const collection = db.collection("company");
+
+    const updatedCompany = await collection.findOneAndUpdate(
+      { _id: ObjectId(company._id) },
+      {
+        $set: company,
+      },
+      { returnOriginal: false }
+    );
+
+    console.log(updatedCompany);
+
+    return updatedProfile.value;
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 /* Function:    findAllCompanies
  * Parameters:  No parameters.
  * Return:      Array of company objects.
@@ -138,4 +158,5 @@ module.exports = {
   findCompanyByName,
   findAllCompanies,
   saveMessageToDB,
+  updateCompanyCode,
 };
