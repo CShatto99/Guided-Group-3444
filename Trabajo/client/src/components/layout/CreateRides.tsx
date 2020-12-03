@@ -13,6 +13,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Alert,
 } from "reactstrap";
 import { addResponseMessage, addUserMessage } from "react-chat-widget";
 import { w3cwebsocket as WS } from "websocket";
@@ -195,6 +196,9 @@ export const CreateRides: React.FC = () => {
         }
         numCurrentRiders++;
       }
+    }
+    if(newRiders.length === 0) {
+      alert("Could not find any riders for the selected date!");
     }
     //set new currentRiders
     setCurrentRiders(newRiders);
