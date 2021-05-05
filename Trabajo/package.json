@@ -1,5 +1,5 @@
 {
-  "name": "Trabajo",
+  "name": "trabajo",
   "version": "1.0.0",
   "description": "UNT 344 Group Repository",
   "main": "server.js",
@@ -8,7 +8,8 @@
     "server": "nodemon server.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "installDep": "npm i && cd client && npm i"
+    "installDep": "npm i && cd client && npm i",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
     "type": "git",
@@ -22,13 +23,19 @@
   },
   "homepage": "https://github.com/CShatto99/Guided-Group-3444#readme",
   "dependencies": {
+    "@types/google-maps-react": "^2.0.5",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "google-maps-react": "^2.0.6",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.5"
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.5",
+    "node-geocoder": "^3.27.0",
+    "uuid": "^8.3.1",
+    "ws": "^7.3.1"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",

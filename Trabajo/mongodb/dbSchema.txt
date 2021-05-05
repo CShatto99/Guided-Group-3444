@@ -1,0 +1,77 @@
+ID Collection:
+	Format: {_id : <int>, name : <str>, pass: <int>}
+
+	Example data:
+	    {_id : 1, name : "James", pass : 123},
+	    {_id : 2, name : "Keivn", pass : 234}, 
+	    {_id : 3, name : "Bill", pass : 345},
+	    {_id : 4, name : "Jimmy", pass : 456},
+	    {_id : 5, name : "Steven", pass : 567},
+	    {_id : 6, name : "Henry", pass : 678}
+
+Profile Collection:
+	Format: 
+		{_id : <int>,
+		email : <str>, 
+		phone : <str>,
+		address : <str>,
+		lat : <float>,
+		lon : <float>,
+		ridesGiven : <int>,
+		milesSaved : <float>}
+
+	Example data:
+		{_id : 1, email : "James@gmail.com", 
+		phone : "(888) 888-881",
+		address : "123 Fake Street, FakeTown, Tx 76201",
+		lat : 123.234,
+		lon : -123.123,
+		ridesGiven : 5,
+		milesSaved : 123},
+
+	    {_id : 2, email : "Keivn@gmail.com", 
+		phone : "(888) 888-882",
+		address : "234 Fake Street, FakeTown, Tx 76201",
+		lat : 123.345,
+		lon : -123.234,
+		ridesGiven : 0,
+		milesSaved : 42}, 
+
+	    {_id : 3, email : "Bill@gmail.com", 
+		phone : "(888) 888-883",
+		address : "345 Fake Street, FakeTown, Tx 76201",
+		lat : 123.456,
+		lon : -123.345,
+		ridesGiven : 3,
+		milesSaved : 32.6},
+
+	    {_id : 4, email : "Jimmy@gmail.com", 
+		phone : "(888) 888-884",
+		address : "456 Fake Street, FakeTown, Tx 76201",
+		lat : 123.567,
+		lon : -123.456,
+		ridesGiven : 25,
+		milesSaved : 23.1},
+
+	    {_id : 5, email : "Steven@gmail.com", 
+		phone : "(888) 888-885",
+		address : "567 Fake Street, FakeTown, Tx 76201",
+		lat : 123.678,
+		lon : -123.567,
+		ridesGiven : 2,
+		milesSaved : 52},
+
+	    {_id : 6, email : "Henry@gmail.com", 
+		phone : "(888) 888-886",
+		address : "678 Fake Street, FakeTown, Tx 76201",
+		lat : 123.789,
+		lon : -123.678,
+		ridesGiven : 0,
+		milesSaved : 104.3}
+
+Companies Collection:
+	Format: {_id : <int>, Name : <str>, Address : <str>}
+
+	Example Data:
+		{_id : 1, Name : "Dell", Address : "123 Dell Str, FakeTown, Tx 76201"},
+		{_id : 2, Name : "Oracle", Address : "321 Oracle Dr, FakeTown, Tx 76201"}
